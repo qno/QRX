@@ -1,0 +1,24 @@
+{
+  "slug": "QRX",
+  "name": "QRX",
+  "version": "1.0.0",
+  "license": "GPL-3.0-or-later",
+  "brand": "QRX",
+  "author": "Silvio Kunaschk",
+  "authorEmail": "silvio.kunaschk@gmail.com",
+  "authorUrl": "",
+  "pluginUrl": "https://github.com/qno/QRX",
+  "manualUrl": "https://github.com/qno/QRX/wiki",
+  "sourceUrl": "https://github.com/qno/QRX",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "CVWizard",
+      "name": "CVWizard",
+      "description": "Visualization of voltage controlled module parameters.",
+      "tags": ["Utility", "Attenuator"],
+      "manualUrl": "https://github.com/qno/QRX/wiki/CVWizard"
+    }
+  ]
+}
