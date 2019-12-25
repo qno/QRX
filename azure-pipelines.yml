@@ -139,9 +139,6 @@ stages:
             pip install $(cpt-pkg) $(bpt-pkg)
             $(conan-add-remotes)
           displayName: setup dependencies
-        - bash: |
-            $(add-gitrev-to-plugin-version)
-          displayName: add gitrev to plugin version
         - script: |
             PLUGIN_SLUG=`jq -r .slug plugin.json`
             PLUGIN_VERSION=`jq -r .version plugin.json`
@@ -172,6 +169,9 @@ stages:
             python -m pip install $(cpt-pkg) $(bpt-pkg)
             $(conan-add-remotes)
           displayName: setup dependencies
+        - bash: |
+            $(add-gitrev-to-plugin-version)
+          displayName: add gitrev to plugin version
         - script: |
             jq .slug plugin.json > tmpPluginSlug
             set /p PLUGIN_SLUG= < tmpPluginSlug
