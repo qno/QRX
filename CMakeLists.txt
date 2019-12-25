@@ -24,7 +24,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
-file(GLOB_RECURSE HEADERS src/*.hpp)
+file(GLOB_RECURSE HEADERS include/*.hpp)
 
 file(GLOB_RECURSE CVWIZARD_SOURCES src/CVWizard/*.cpp)
 file(GLOB_RECURSE CVWIZARD_HEADERS include/CVWizard/*.hpp)
