@@ -1,0 +1,242 @@
+# https://docs.microsoft.com/de-de/azure/devops/pipelines/agents/hosted?view=azure-devops#software
+trigger:
+- master
+
+variables:
+  python-version: "3.7"
+  conan-pkg: "conan"
+  cpt-pkg:  "conan_package_tools"
+  bpt-pkg: "bincrafters_package_tools"
+  linux-deps: "python3-setuptools python3-pip build-essential automake autoconf libtool cmake gcc g++ clang ninja-build git jq p7zip-full"
+  vcvracksdk-conan-upload-remote: "qno"
+  vcvracksdk-conan-remote: "$(vcvracksdk-conan-upload-remote) https://api.bintray.com/conan/qno/conan-public"
+
+  conan-add-remotes: |
+    conan user
+    conan remote add $(vcvracksdk-conan-remote) --insert
+    conan remote add conan-community https://api.bintray.com/conan/conan-community/conan
+    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+
+  # Xcode Version overview: https://gist.github.com/yamaya/2924292
+  # available versions: https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/macos/macos-10.14-Readme.md
+  XCODE_VERSION: 10.2
+
+  add-gitrev-to-plugin-version: |
+    gitrev=`git rev-parse --short HEAD`
+    version="1.dev.${gitrev}"
+    echo "Updating to version=$version"
+    tf=`mktemp`
+    jq --arg VERSION "$version" '.version=$VERSION' plugin.json > $tf
+    mv $tf plugin.json
+  add-release-notes: |
+    cat <<- EOH
+    # VCV Rack QRX plugin binaries (development builds)
+    The build date and most recent commits are:
+    EOH
+    date
+    echo ""
+    echo "Most recent commits:"
+    echo ""
+    git log --pretty=oneline | head -5
+
+stages:
+- stage: build
+  displayName: Build Plugin
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/container-phases?view=azure-devops&tabs=yaml
+  jobs:
+    # maybe also try CentOS and Arch builds?
+    - job: LinuxGCC
+      pool:
+        vmImage: 'ubuntu-16.04'
+      container:
+        image: ubuntu:disco
+        options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+      steps:
+        - script: |
+            /tmp/docker exec -t -u 0 ci-container \
+            sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+          displayName: add sudo to container #https://github.com/Microsoft/azure-pipelines-agent/issues/2043
+        - script: |
+            export PATH="$PATH:$HOME/.local/bin"
+            sudo apt install -y $(linux-deps)
+            pip3 install --user $(conan-pkg)
+            pip3 install --user $(cpt-pkg) $(bpt-pkg)
+            $(conan-add-remotes)
+          displayName: setup dependencies
+        - script: |
+            $(add-gitrev-to-plugin-version)
+            export PATH="$PATH:$HOME/.local/bin"
+            PLUGIN_SLUG=`jq -r .slug plugin.json`
+            PLUGIN_VERSION=`jq -r .version plugin.json`
+            pushd .
+            mkdir build && cd build
+            conan install .. -s compiler.libcxx=libstdc++11 -s build_type=Release --build=missing
+            cmake -DPLUGIN_SLUG=$PLUGIN_SLUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
+            cmake --build . --target install
+            cd dist
+            strip -s $PLUGIN_SLUG/plugin.so
+            7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
+            popd
+          displayName: build Plugin
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/build/dist
+            artifact: Plugin-Linux
+    - job: LinuxClang
+      pool:
+        vmImage: 'ubuntu-16.04'
+      container:
+        image: ubuntu:disco
+        options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
+      steps:
+        - script: |
+            /tmp/docker exec -t -u 0 ci-container \
+            sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
+          displayName: add sudo to container #https://github.com/Microsoft/azure-pipelines-agent/issues/2043
+        - script: |
+            export PATH="$PATH:$HOME/.local/bin"
+            sudo apt install -y $(linux-deps)
+            pip3 install --user $(conan-pkg)
+            pip3 install --user $(cpt-pkg) $(bpt-pkg)
+            $(conan-add-remotes)
+          displayName: setup dependencies
+        - script: |
+            $(add-gitrev-to-plugin-version)
+            export PATH="$PATH:$HOME/.local/bin"
+            export CC=clang
+            export CXX=clang++
+            PLUGIN_SLUG=`jq -r .slug plugin.json`
+            PLUGIN_VERSION=`jq -r .version plugin.json`
+            pushd .
+            mkdir build && cd build
+            conan install .. -s build_type=Release --profile ../.ci/conan_profile_linux_clang8 --build=missing
+            cmake -DPLUGIN_SLUG=$PLUGIN_SLUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
+            cmake --build . --target install
+            cd dist
+            strip -s $PLUGIN_SLUG/plugin.so
+            7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin-clang.zip $PLUGIN_SLUG
+            popd
+          displayName: build Plugin
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/build/dist
+            artifact: Plugin-Linux-Clang
+    - job: MacOS1014
+      pool:
+        vmImage: macOS-10.14
+      steps:
+        - task: UsePythonVersion@0
+          inputs:
+           versionSpec: $(python-version)
+        - script: |
+            /bin/bash -c "sudo xcode-select -s /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer"
+            export PATH="$HOME/.local/bin:$PATH"
+            pip install --upgrade pip
+            brew update || brew update
+            brew install autoconf automake libtool pkg-config p7zip
+            brew install cmake || true
+            pip install --upgrade $(conan-pkg)
+            pip install $(cpt-pkg) $(bpt-pkg)
+            $(conan-add-remotes)
+          displayName: setup dependencies
+        - bash: |
+            $(add-gitrev-to-plugin-version)
+          displayName: add gitrev to plugin version
+        - script: |
+            PLUGIN_SLUG=`jq -r .slug plugin.json`
+            PLUGIN_VERSION=`jq -r .version plugin.json`
+            pushd .
+            mkdir build && cd build
+            conan install .. -s build_type=Release --build=missing
+            cmake -DPLUGIN_SLUG=$PLUGIN_SLUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist ..
+            cmake --build . --target install
+            cd dist
+            strip -S $PLUGIN_SLUG/plugin.dylib
+            7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
+            popd
+          displayName: build Plugin
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/build/dist
+            artifact: Plugin-Mac
+    - job: MinGW
+      pool:
+        vmImage: vs2017-win2016
+      steps:
+        - task: UsePythonVersion@0
+          inputs:
+           versionSpec: $(python-version)
+        - script: |
+            python -m pip install --upgrade pip
+            python -m pip install $(conan-pkg)
+            python -m pip install $(cpt-pkg) $(bpt-pkg)
+            $(conan-add-remotes)
+          displayName: setup dependencies
+        - script: |
+            jq .slug plugin.json > tmpPluginSlug
+            set /p PLUGIN_SLUG= < tmpPluginSlug
+            jq .version plugin.json > tmpPluginVersion
+            set /p PLUGIN_VERSION= < tmpPluginVersion
+            mkdir build
+            cd build
+            conan install .. -s build_type=Release --profile ../.ci/conan_profile_mingw_gcc8 --build=missing
+            call .\activate_run.bat
+            REM # see https://stackoverflow.com/a/45104058 - MinGW sh.exe must NOT be in your path
+            cmake -DPLUGIN_SLUG=%PLUGIN_SLUG% -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
+            cmake --build . --target install
+            cd dist
+            strip -s %PLUGIN_SLUG%\plugin.dll
+            7z a -tzip -mx=9 %PLUGIN_SLUG%-%PLUGIN_VERSION%-win.zip %PLUGIN_SLUG%
+            cd ..
+            call .\deactivate_run.bat
+          displayName: build Plugin
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)\build\dist
+            artifact: Plugin-Win
+- stage: publish
+  displayName: Publish Plugin
+  dependsOn: build
+  jobs:
+    - job: PublishArtifacts
+      steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: Plugin-Linux
+            patterns: "**/*.zip"
+            targetPath: $(Build.ArtifactStagingDirectory)
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: Plugin-Linux-Clang
+            patterns: "**/*.zip"
+            targetPath: $(Build.ArtifactStagingDirectory)
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: Plugin-Mac
+            patterns: "**/*.zip"
+            targetPath: $(Build.ArtifactStagingDirectory)
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: Plugin-Win
+            patterns: "**/*.zip"
+            targetPath: $(Build.ArtifactStagingDirectory)
+        - script: |
+            ls -l $(Build.ArtifactStagingDirectory)
+            export EXTEND_TAG=`date "+%Y%m%d"`
+            for file in $(Build.ArtifactStagingDirectory)/*.zip; do mv "$file" "${file/.zip/-${EXTEND_TAG}.zip}"; done
+            ls -l $(Build.ArtifactStagingDirectory)
+          displayName: Tag asset names with Date
+        - script: |
+            $(add-release-notes) > $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
+          displayName: Add release notes
+        - task: GitHubRelease@0
+          displayName: "Update Github Release"
+          inputs:
+            gitHubConnection: github.com_qno
+            repositoryName: qno/QRX
+            action: edit
+            tag: Nightly
+            target: '$(Build.SourceVersion)'
+            addChangeLog: false
+            releaseNotesFile: $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
+            assets: $(Build.ArtifactStagingDirectory)/*.zip
