@@ -140,6 +140,7 @@ stages:
             $(conan-add-remotes)
           displayName: setup dependencies
         - script: |
+            $(add-gitrev-to-plugin-version)
             PLUGIN_SLUG=`jq -r .slug plugin.json`
             PLUGIN_VERSION=`jq -r .version plugin.json`
             pushd .
