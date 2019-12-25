@@ -231,13 +231,13 @@ stages:
             $(add-release-notes) > $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
           displayName: Add release notes
         - task: GitHubRelease@0
-          displayName: "Update Github Release"
+          displayName: Update Github Release
           inputs:
             gitHubConnection: github.com_qno
             repositoryName: qno/QRX
             action: edit
             tag: Nightly
-            target: '$(Build.SourceVersion)'
+            target: $(Build.SourceVersion)
             isPreRelease: true
             addChangeLog: false
             releaseNotesFile: $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
