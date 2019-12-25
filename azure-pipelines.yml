@@ -238,6 +238,7 @@ stages:
             action: edit
             tag: Nightly
             target: '$(Build.SourceVersion)'
+            isPreRelease: true
             addChangeLog: false
             releaseNotesFile: $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
             assets: $(Build.ArtifactStagingDirectory)/*.zip
