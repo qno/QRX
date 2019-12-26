@@ -29,7 +29,7 @@ namespace qrx {
     private:
 
         CVWizardModule *m_module;
-        GLFWwindow *m_rackWindow;
+        GLFWwindow* _glfwWindow;
 
         bool m_mappingModeActive = false;
     };
