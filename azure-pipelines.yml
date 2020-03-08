@@ -153,7 +153,7 @@ stages:
             set /p PLUGIN_VERSION= < tmpPluginVersion
             mkdir build
             cd build
-            conan install .. -s build_type=Release --profile ./mingw
+            conan install .. -s build_type=Release --profile ../mingw
             call .\activate_run.bat
             REM # see https://stackoverflow.com/a/45104058 - MinGW sh.exe must NOT be in your path
             cmake -DPLUGIN_SLUG=%PLUGIN_SLUG% -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
