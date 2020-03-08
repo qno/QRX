@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
+
 # set this to the plugin slug!
 set(PLUGIN_NAME QRX)
 
@@ -39,7 +41,6 @@ target_include_directories(${LIB_NAME} PRIVATE include)
 target_link_libraries(${LIB_NAME} ${CONAN_LIBS})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-  set_target_properties(${LIB_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
   set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ".dylib")
 endif ()
 
