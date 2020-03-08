@@ -59,38 +59,38 @@ stages:
             imageName: ubuntu-latest
             prepare-env: |
               export PATH="$PATH:/home/vsts/.local/bin"
-              sudo apt install -y python3-setuptools p7zip-full
+              sudo apt install -y python3-setuptools p7zip-full ninja
             pip-command: pip3
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: ""
             define-plugin-slug: |
-              PLUGIN_SLUG=`jq -r .slug ../plugin.json`
-              PLUGIN_VERSION=`jq -r .version ../plugin.json`
+              PLUGIN_SLUG=`jq -r .slug plugin.json`
+              PLUGIN_VERSION=`jq -r .version plugin.json`
             cmake-defines: -DPLUGIN_SLUG=$PLUGIN_SLUG
             zip-command: 7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
             create-dist: |
               strip -s $PLUGIN_SLUG/plugin.so
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
-            activate-env: chmod 755 activate.sh && ./activate.sh
-            deactivate-env: chmod 755 deactivate.sh && ./deactivate.sh
+            activate-env: ""
+            deactivate-env: ""
           MacOS:
             imageName: macOS-latest
             prepare-env: |
               export PATH=$PATH:$HOME/.local/bin
               brew update || brew update
-              brew install p7zip
+              brew install p7zip ninja
             pip-command: pip
             conan-libcxx-setting: ""
             conan-profile: ""
             define-plugin-slug: |
-              PLUGIN_SLUG=`jq -r .slug ../plugin.json`
-              PLUGIN_VERSION=`jq -r .version ../plugin.json`
+              PLUGIN_SLUG=`jq -r .slug plugin.json`
+              PLUGIN_VERSION=`jq -r .version plugin.json`
             cmake-defines: -DPLUGIN_SLUG=$PLUGIN_SLUG
             create-dist: |
               strip -S $PLUGIN_SLUG/plugin.dylib
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
-            activate-env: chmod 755 activate.sh && ./activate.sh
-            deactivate-env: chmod 755 deactivate.sh && ./deactivate.sh
+            activate-env: ""
+            deactivate-env: ""
           Windows:
             imageName: windows-latest
             prepare-env: $(create-mingw-profile)
@@ -98,9 +98,9 @@ stages:
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: -p ..\mingw
             define-plugin-slug: |
-              jq .slug ..\plugin.json > tmpPluginSlug
+              jq .slug plugin.json > tmpPluginSlug
               set /p PLUGIN_SLUG= < tmpPluginSlug
-              jq .version ..\plugin.json > tmpPluginVersion
+              jq .version plugin.json > tmpPluginVersion
               set /p PLUGIN_VERSION= < tmpPluginVersion
             cmake-defines: -DPLUGIN_SLUG=%PLUGIN_SLUG% -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
             create-dist: |
@@ -115,17 +115,17 @@ stages:
         - task: UsePythonVersion@0
           inputs:
            versionSpec: $(python-version)
-        - script: |
+        - bash: |
            $(prepare-env)
            $(pip-command) install --user --upgrade pip
            $(pip-command) install --user conan
            conan user
            $(conan-add-remotes)
            $(add-gitrev-to-plugin-version)
+           $(define-plugin-slug)
            mkdir build && cd build
            conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile)
            $(activate-env)
-           $(define-plugin-slug)
            cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
            cmake --build . --target install
            cd dist
