@@ -59,7 +59,7 @@ stages:
   # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/container-phases?view=azure-devops&tabs=yaml
   jobs:
     # maybe also try CentOS and Arch builds?
-    - job: LinuxGCC
+    - job: Linux
       pool:
         vmImage: 'ubuntu-16.04'
       container:
@@ -154,7 +154,7 @@ stages:
             mkdir build
             cd build
             conan install .. -s build_type=Release --profile ../mingw
-            call .\activate_run.bat
+            call .\activate.bat
             REM # see https://stackoverflow.com/a/45104058 - MinGW sh.exe must NOT be in your path
             cmake -DPLUGIN_SLUG=%PLUGIN_SLUG% -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
             cmake --build . --target install
@@ -162,7 +162,7 @@ stages:
             strip -s %PLUGIN_SLUG%\plugin.dll
             7z a -tzip -mx=9 %PLUGIN_SLUG%-%PLUGIN_VERSION%-win.zip %PLUGIN_SLUG%
             cd ..
-            call .\deactivate_run.bat
+            call .\deactivate.bat
           displayName: build Plugin
         - task: PublishPipelineArtifact@1
           inputs:
