@@ -71,8 +71,8 @@ stages:
             create-dist: |
               strip -s $PLUGIN_SLUG/plugin.so
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
-            activate-env: ""
-            deactivate-env: ""
+            activate-env: "./activate.sh"
+            deactivate-env: "./deactivate.sh"
           MacOS:
             imageName: macOS-latest
             prepare-env: |
@@ -89,14 +89,14 @@ stages:
             create-dist: |
               strip -S $PLUGIN_SLUG/plugin.dylib
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
-            activate-env: ""
-            deactivate-env: ""
+            activate-env: "./activate.sh"
+            deactivate-env: "./deactivate.sh"
           Windows:
             imageName: windows-latest
             prepare-env: $(create-mingw-profile)
             pip-command: python -m pip
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
-            conan-profile: "-p mingw"
+            conan-profile: -p ../mingw
             define-plugin-slug: |
               jq .slug plugin.json > tmpPluginSlug
               set /p PLUGIN_SLUG= < tmpPluginSlug
