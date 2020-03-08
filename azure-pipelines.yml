@@ -1,21 +1,35 @@
 # https://docs.microsoft.com/de-de/azure/devops/pipelines/agents/hosted?view=azure-devops#software
 trigger:
 - master
+pr:
+- master
 
 variables:
   python-version: "3.7"
-  conan-pkg: "conan"
-  cpt-pkg:  "conan_package_tools"
-  bpt-pkg: "bincrafters_package_tools"
+  conan-pkg: conan
   linux-deps: "python3-setuptools python3-pip build-essential automake autoconf libtool cmake gcc g++ clang ninja-build git jq p7zip-full"
-  vcvracksdk-conan-upload-remote: "qno"
-  vcvracksdk-conan-remote: "$(vcvracksdk-conan-upload-remote) https://api.bintray.com/conan/qno/conan-public"
+  conan-remote: qno https://api.bintray.com/conan/qno/conan-public
+  create-mingw-profile: |
+    (
+      echo [settings]
+      echo os=Windows
+      echo os_build=Windows
+      echo arch=x86_64
+      echo arch_build=x86_64
+      echo compiler=gcc
+      echo compiler.version=8
+      echo compiler.exception=seh
+      echo compiler.libcxx=libstdc++11
+      echo compiler.threads=posix
+      echo build_type=Release
+      echo [build_requires]
+      echo mingw_installer/1.0@conan/stable
+      echo msys2/20190524
+    ) > mingw
 
   conan-add-remotes: |
     conan user
-    conan remote add $(vcvracksdk-conan-remote) --insert
-    conan remote add conan-community https://api.bintray.com/conan/conan-community/conan
-    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+    conan remote add $(conan-remote) --insert
 
   # Xcode Version overview: https://gist.github.com/yamaya/2924292
   # available versions: https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/macos/macos-10.14-Readme.md
@@ -60,7 +74,6 @@ stages:
             export PATH="$PATH:$HOME/.local/bin"
             sudo apt install -y $(linux-deps)
             pip3 install --user $(conan-pkg)
-            pip3 install --user $(cpt-pkg) $(bpt-pkg)
             $(conan-add-remotes)
           displayName: setup dependencies
         - script: |
@@ -82,45 +95,6 @@ stages:
           inputs:
             path: $(System.DefaultWorkingDirectory)/build/dist
             artifact: Plugin-Linux
-    - job: LinuxClang
-      pool:
-        vmImage: 'ubuntu-16.04'
-      container:
-        image: ubuntu:disco
-        options: "--name ci-container -v /usr/bin/docker:/tmp/docker:ro"
-      steps:
-        - script: |
-            /tmp/docker exec -t -u 0 ci-container \
-            sh -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -y install sudo"
-          displayName: add sudo to container #https://github.com/Microsoft/azure-pipelines-agent/issues/2043
-        - script: |
-            export PATH="$PATH:$HOME/.local/bin"
-            sudo apt install -y $(linux-deps)
-            pip3 install --user $(conan-pkg)
-            pip3 install --user $(cpt-pkg) $(bpt-pkg)
-            $(conan-add-remotes)
-          displayName: setup dependencies
-        - script: |
-            $(add-gitrev-to-plugin-version)
-            export PATH="$PATH:$HOME/.local/bin"
-            export CC=clang
-            export CXX=clang++
-            PLUGIN_SLUG=`jq -r .slug plugin.json`
-            PLUGIN_VERSION=`jq -r .version plugin.json`
-            pushd .
-            mkdir build && cd build
-            conan install .. -s build_type=Release --profile ../.ci/conan_profile_linux_clang8 --build=missing
-            cmake -DPLUGIN_SLUG=$PLUGIN_SLUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
-            cmake --build . --target install
-            cd dist
-            strip -s $PLUGIN_SLUG/plugin.so
-            7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin-clang.zip $PLUGIN_SLUG
-            popd
-          displayName: build Plugin
-        - task: PublishPipelineArtifact@1
-          inputs:
-            path: $(System.DefaultWorkingDirectory)/build/dist
-            artifact: Plugin-Linux-Clang
     - job: MacOS1014
       pool:
         vmImage: macOS-10.14
@@ -136,7 +110,6 @@ stages:
             brew install autoconf automake libtool pkg-config p7zip
             brew install cmake || true
             pip install --upgrade $(conan-pkg)
-            pip install $(cpt-pkg) $(bpt-pkg)
             $(conan-add-remotes)
           displayName: setup dependencies
         - script: |
@@ -145,7 +118,7 @@ stages:
             PLUGIN_VERSION=`jq -r .version plugin.json`
             pushd .
             mkdir build && cd build
-            conan install .. -s build_type=Release --build=missing
+            conan install .. -s build_type=Release
             cmake -DPLUGIN_SLUG=$PLUGIN_SLUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist ..
             cmake --build . --target install
             cd dist
@@ -165,9 +138,9 @@ stages:
           inputs:
            versionSpec: $(python-version)
         - script: |
+            $(create-mingw-profile)
             python -m pip install --upgrade pip
             python -m pip install $(conan-pkg)
-            python -m pip install $(cpt-pkg) $(bpt-pkg)
             $(conan-add-remotes)
           displayName: setup dependencies
         - bash: |
@@ -180,7 +153,7 @@ stages:
             set /p PLUGIN_VERSION= < tmpPluginVersion
             mkdir build
             cd build
-            conan install .. -s build_type=Release --profile ../.ci/conan_profile_mingw_gcc8 --build=missing
+            conan install .. -s build_type=Release --profile ./mingw
             call .\activate_run.bat
             REM # see https://stackoverflow.com/a/45104058 - MinGW sh.exe must NOT be in your path
             cmake -DPLUGIN_SLUG=%PLUGIN_SLUG% -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
@@ -204,11 +177,6 @@ stages:
         - task: DownloadPipelineArtifact@2
           inputs:
             artifact: Plugin-Linux
-            patterns: "**/*.zip"
-            targetPath: $(Build.ArtifactStagingDirectory)
-        - task: DownloadPipelineArtifact@2
-          inputs:
-            artifact: Plugin-Linux-Clang
             patterns: "**/*.zip"
             targetPath: $(Build.ArtifactStagingDirectory)
         - task: DownloadPipelineArtifact@2
