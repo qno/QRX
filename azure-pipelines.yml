@@ -59,7 +59,7 @@ stages:
             imageName: ubuntu-latest
             prepare-env: |
               export PATH="$PATH:/home/vsts/.local/bin"
-              sudo apt install -y python3-setuptools p7zip-full ninja
+              sudo apt install -y python3-setuptools p7zip-full ninja-build
             pip-command: pip3
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: ""
@@ -116,22 +116,24 @@ stages:
           inputs:
            versionSpec: $(python-version)
         - bash: |
-           $(prepare-env)
-           $(pip-command) install --user --upgrade pip
-           $(pip-command) install --user conan
-           conan user
-           $(conan-add-remotes)
-           $(add-gitrev-to-plugin-version)
-           $(define-plugin-slug)
-           mkdir build && cd build
-           conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile)
-           $(activate-env)
-           cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
-           cmake --build . --target install
-           cd dist
-           $(create-dist)
-           cd ..
-           $(deactivate-env)
+            $(add-gitrev-to-plugin-version)
+          displayName: add git rev
+        - script: |
+            $(prepare-env)
+            $(pip-command) install --user --upgrade pip
+            $(pip-command) install --user conan
+            conan user
+            $(conan-add-remotes)
+            $(define-plugin-slug)
+            mkdir build && cd build
+            conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile)
+            $(activate-env)
+            cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
+            cmake --build . --target install
+            cd dist
+            $(create-dist)
+            cd ..
+            $(deactivate-env)
           displayName: create conan package
 
   - stage: publish
