@@ -73,6 +73,7 @@ stages:
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
             activate-env: ""
             deactivate-env: ""
+            artifact: Plugin-Linux
           MacOS:
             imageName: macOS-latest
             prepare-env: |
@@ -91,6 +92,7 @@ stages:
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
             activate-env: ""
             deactivate-env: ""
+            artifact: Plugin-Mac
           Windows:
             imageName: windows-latest
             prepare-env: $(create-mingw-profile)
@@ -108,6 +110,7 @@ stages:
               7z a -tzip -mx=9 %PLUGIN_SLUG%-%PLUGIN_VERSION%-win.zip %PLUGIN_SLUG%
             activate-env: call .\activate.bat
             deactivate-env: call .\deactivate.bat
+            artifact: Plugin-Win
 
       pool:
         vmImage: $(imageName)
@@ -135,6 +138,10 @@ stages:
             cd ..
             $(deactivate-env)
           displayName: create conan package
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/build/dist
+            artifact: $(artifact)
 
   - stage: publish
     displayName: Publish Plugin
