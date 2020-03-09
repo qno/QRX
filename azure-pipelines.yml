@@ -59,7 +59,7 @@ stages:
             imageName: ubuntu-latest
             prepare-env: |
               export PATH="$PATH:/home/vsts/.local/bin"
-              sudo apt install -y python3-setuptools p7zip-full ninja-build
+              sudo apt install -y python3-setuptools p7zip-full
             pip-command: pip3
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: ""
@@ -71,15 +71,15 @@ stages:
             create-dist: |
               strip -s $PLUGIN_SLUG/plugin.so
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
-            activate-env: ""
-            deactivate-env: ""
+            activate-env: ". ./activate.sh"
+            deactivate-env: ". ./deactivate.sh"
             artifact: Plugin-Linux
           MacOS:
             imageName: macOS-latest
             prepare-env: |
               export PATH=$PATH:$HOME/.local/bin
               brew update || brew update
-              brew install p7zip ninja
+              brew install p7zip
             pip-command: pip
             conan-libcxx-setting: ""
             conan-profile: ""
@@ -90,8 +90,8 @@ stages:
             create-dist: |
               strip -S $PLUGIN_SLUG/plugin.dylib
               7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
-            activate-env: ""
-            deactivate-env: ""
+            activate-env: ". ./activate.sh"
+            deactivate-env: ". ./deactivate.sh"
             artifact: Plugin-Mac
           Windows:
             imageName: windows-latest
