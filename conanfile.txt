@@ -5,7 +5,6 @@ ninja/1.9.0
 
 [generators]
 cmake
-make
 virtualenv
 
 [options]
