@@ -16,3 +16,8 @@ conanbuild*
 conan*.txt
 conan.lock
 graph_info*
+
+# visual studio build artifacts
+CMakeSettings.json
+/.vs
+/out
