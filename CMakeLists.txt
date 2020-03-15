@@ -44,6 +44,13 @@ else ()
   endif ()
 endif ()
 
+#if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+#message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+#  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.9/conan.cmake" "${CMAKE_BINARY_DIR}/conan.cmake")
+#endif ()
+#include(${CMAKE_BINARY_DIR}/conan.cmake)
+#conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP)
+
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.hpp)
 
@@ -70,4 +77,4 @@ file(INSTALL plugin.json res ${LICENSE} DESTINATION dist/${PLUGIN_NAME})
 install(DIRECTORY ${PROJECT_BINARY_DIR}/lib/ DESTINATION ${PROJECT_BINARY_DIR}/dist/${PLUGIN_NAME} OPTIONAL)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/dist/${PLUGIN_NAME}/ DESTINATION ${PLUGIN_NAME})
 
-#add_subdirectory(test)
+add_subdirectory(test)
