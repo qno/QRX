@@ -2,7 +2,8 @@
 
 rack::plugin::Plugin* pluginInstance;
 
-void init(rack::plugin::Plugin* p) {
+void init(rack::plugin::Plugin* p)
+{
    pluginInstance = p;
    
    // Add modules here

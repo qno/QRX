@@ -6,30 +6,34 @@
 
 namespace qrx {
 
-class WizScrew : public rack::app::SvgScrew {
- public:
+class WizScrew : public rack::app::SvgScrew
+{
+public:
   
-  WizScrew() {
-     setSvg(APP->window->loadSvg(rack::asset::plugin(pluginInstance, "res/CVWizard/Screw.svg")));
-  }
+   WizScrew()
+   {
+      setSvg(APP->window->loadSvg(rack::asset::plugin(pluginInstance, "res/CVWizard/Screw.svg")));
+   }
 };
 
-class CVWizardWidget : public rack::ModuleWidget {
- public:
+class CVWizardWidget : public rack::ModuleWidget
+{
+public:
   
-  CVWizardWidget(CVWizardModule* module);
+   CVWizardWidget(CVWizardModule* module);
   
-  virtual ~CVWizardWidget() = default;
+   virtual ~CVWizardWidget() = default;
   
-  void step() override;
+   void step() override;
   
-  void draw(const DrawArgs& args) override;
- 
- private:
+   void draw(const DrawArgs& args) override;
+
+private:
   
-  CVWizardModule* _module;
-  GLFWwindow* _glfwWindow;
+   CVWizardModule* _module;
+   GLFWwindow* _glfwWindow;
   
-  bool m_mappingModeActive = false;
+   bool m_mappingModeActive = false;
 };
+
 }

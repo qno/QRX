@@ -4,30 +4,31 @@
 
 namespace qrx {
 
-class CVWizardModule : public rack::Module {
- public:
+class CVWizardModule : public rack::Module
+{
+public:
   
-  enum ParamIds {
-    NUM_PARAMS
-  };
+   enum ParamIds {
+      NUM_PARAMS
+   };
   
-  enum InputIds {
-    NUM_INPUTS
-  };
+   enum InputIds {
+      NUM_INPUTS
+   };
   
-  enum OutputIds {
-    NUM_OUTPUTS
-  };
+   enum OutputIds {
+      NUM_OUTPUTS
+   };
   
-  enum LightIds {
-    NUM_LIGHTS
-  };
+   enum LightIds {
+      NUM_LIGHTS
+   };
   
-  CVWizardModule();
+   CVWizardModule();
   
-  virtual ~CVWizardModule() = default;
+   virtual ~CVWizardModule() = default;
   
-  void process(const ProcessArgs& args) override;
+   void process(const ProcessArgs& args) override;
 };
 
 }

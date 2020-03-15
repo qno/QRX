@@ -5,7 +5,8 @@ using namespace rack;
 namespace qrx {
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
-   : ModuleWidget(), _module(module) {
+   : ModuleWidget(), _module(module)
+{
    setModule(module);
    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
 
@@ -17,7 +18,8 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    addChild(createWidget<WizScrew>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 }
 
-void CVWizardWidget::step() {
+void CVWizardWidget::step()
+{
    if (!m_mappingModeActive) {
       if (GLFW_MOD_CONTROL == (APP->window->getMods() & GLFW_MOD_CONTROL)) {
 
@@ -41,7 +43,8 @@ void CVWizardWidget::step() {
    ModuleWidget::step();
 }
 
-void CVWizardWidget::draw(const DrawArgs& args) {
+void CVWizardWidget::draw(const DrawArgs& args)
+{
    ModuleWidget::draw(args);
 }
 
