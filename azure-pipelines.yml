@@ -133,7 +133,9 @@ stages:
             $(activate-env)
             cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
             cmake --build . --target install
-            cd dist
+            cd test
+            ctest
+            cd ../dist
             $(create-dist)
             cd ..
             $(deactivate-env)

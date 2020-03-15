@@ -14,12 +14,12 @@ public:
    virtual const std::string getStringMMM() = 0;
 };
 
-TEST_CASE("Test1", "[xxx]")
+TEST_CASE("Test1", "[simple]")
 {
    REQUIRE(1 == 1);
 }
 
-TEST_CASE("Test Mockup", "[hippomock]")
+TEST_CASE("Mockup", "[hippomock]")
 {
    MockRepository mockRepository;
    auto mock = mockRepository.Mock<MockInterface>();
