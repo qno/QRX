@@ -6,7 +6,6 @@ pr:
 
 variables:
   python-version: "3.7"
-  conan-remote: qno https://api.bintray.com/conan/qno/conan-public
   create-mingw-profile: |
     (
       echo [settings]
@@ -27,7 +26,8 @@ variables:
 
   conan-add-remotes: |
     conan user
-    conan remote add $(conan-remote) --insert
+    conan remote add conan-transit https://api.bintray.com/conan/conan/conan-transit
+    conan remote add qno https://api.bintray.com/conan/qno/conan-public --insert
 
   add-gitrev-to-plugin-version: |
     gitrev=`git rev-parse --short HEAD`

@@ -1,29 +1,30 @@
 #define CATCH_CONFIG_MAIN
 
+#include <hippomocks.h>
 #include <catch2/catch.hpp>
+
+#include <string>
+
+class MockInterface
+{
+public:
+   MockInterface() = delete;
+   virtual ~MockInterface() = default;
+   virtual const int getInt666() = 0;
+   virtual const std::string getStringMMM() = 0;
+};
 
 TEST_CASE("Test1", "[xxx]")
 {
-  REQUIRE(1 == 1);
-  REQUIRE(true == false);
+   REQUIRE(1 == 1);
 }
 
-TEST_CASE("Test2", "[yyy]")
+TEST_CASE("Test Mockup", "[hippomock]")
 {
-  REQUIRE(2 == 1);
-}
-
-TEST_CASE("xxx", "[xxy]")
-{
-  REQUIRE("yyy" == "xxx");
-}
-
-TEST_CASE("aaa", "[aaa]")
-{
-  REQUIRE(1 + 1 == 2);
-}
-
-TEST_CASE("ddd", "[888")
-{
-  REQUIRE(true == 1);
+   MockRepository mockRepository;
+   auto mock = mockRepository.Mock<MockInterface>();
+   mockRepository.ExpectCall(mock, MockInterface::getInt666).Return(666);
+   mockRepository.ExpectCall(mock, MockInterface::getStringMMM).Return(std::string{"MMM"});
+   REQUIRE(666 == mock->getInt666());
+   REQUIRE(std::string{"MMM"} == mock->getStringMMM());
 }
