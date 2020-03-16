@@ -1,10 +1,11 @@
 #pragma once
 
-#include <QRXPlugin.hpp>
+//#include <QRXPlugin.hpp>
+#include <engine/Module.hpp>
 
 namespace qrx {
 
-class CVWizardModule : public rack::Module
+class CVWizardModule : public rack::engine::Module
 {
 public:
   
@@ -29,6 +30,10 @@ public:
    virtual ~CVWizardModule() = default;
   
    void process(const ProcessArgs& args) override;
+   
+   json_t* dataToJson() override;
+   
+   void dataFromJson(json_t* root) override;
 };
 
 }

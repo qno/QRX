@@ -6,6 +6,7 @@
 #include <string>
 
 #include <engine/Module.hpp>
+#include <CVWizard/CVWizardModule.hpp>
 
 struct MyParam
 {
@@ -62,23 +63,18 @@ inline bool operator== (const Module::ProcessArgs& lhs, const Module::ProcessArg
 TEST_CASE("Mock stuff from Rack", "[rack] [hippomocks]")
 {
    using namespace rack::engine;
+   using namespace qrx;
    MockRepository mockRepository;
-   auto mock = mockRepository.Mock<Module>();
+   auto mock = mockRepository.Mock<CVWizardModule>();
    
    auto args = Module::ProcessArgs{111.f, 222.f};
    auto json = std::unique_ptr<json_t>(new json_t{JSON_INTEGER, 88});
    
-   mockRepository.ExpectCall(mock, Module::process);
-   mockRepository.OnCall(mock, Module::onSampleRateChange);
-   mockRepository.OnCall(mock, Module::onReset);
-   mockRepository.OnCall(mock, Module::onRandomize);
-   mockRepository.OnCall(mock, Module::onAdd);
-   mockRepository.OnCall(mock, Module::onRemove);
-   mockRepository.ExpectCalls(mock, Module::dataToJson, 3).Return(json.get());
-   mockRepository.ExpectCalls(mock, Module::dataFromJson, 2);
+   mockRepository.ExpectCall(mock, CVWizardModule::process);
+   mockRepository.ExpectCalls(mock, CVWizardModule::dataToJson, 3).Return(json.get());
+   mockRepository.ExpectCalls(mock, CVWizardModule::dataFromJson, 2);
    
    mock->process(args);
-   mock->onSampleRateChange();
    REQUIRE(mock->dataToJson() == json.get());
    REQUIRE(mock->dataToJson()->type == json->type);
    REQUIRE(mock->dataToJson()->refcount == json->refcount);
