@@ -139,6 +139,7 @@ stages:
             $(create-dist)
             cd ..
             $(deactivate-env)
+          failOnStderr: true
           displayName: create conan package
         - task: PublishPipelineArtifact@1
           inputs:
