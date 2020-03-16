@@ -133,9 +133,11 @@ stages:
             $(activate-env)
             cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
             cmake --build . --target install
+            cd dist
             $(create-dist)
             cd ..
             $(deactivate-env)
+            cd ..
           displayName: create conan package
         - script: |
             $(activate-env)
