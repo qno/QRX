@@ -140,10 +140,13 @@ stages:
             cd ..
           displayName: create conan package
         - script: |
+            cd build
             $(activate-env)
-            cd build/test
+            cd test
             ctest
+            cd ..
             $(deactivate-env)
+            cd ..
           failOnStderr: true
           displayName: run unit tests
         - task: PublishPipelineArtifact@1
