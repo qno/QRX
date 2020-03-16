@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include <engine/Module.hpp>
 #include <CVWizard/CVWizardModule.hpp>
 
 struct MyParam

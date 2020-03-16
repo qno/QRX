@@ -1,6 +1,10 @@
 find_package(Catch2 REQUIRED)
 
-add_executable(catchTest myCatch.cpp)
+if (NOT MINGW)
+  set(TEST_SOURCES ${PROJECT_SOURCE_DIR}/src/CVWizard/CVWizardModule.cpp)
+endif ()
+
+add_executable(catchTest myCatch.cpp ${TEST_SOURCES})
 target_link_libraries(catchTest Catch2::Catch2)
 
 include_directories(catchTest ${PROJECT_SOURCE_DIR}/include)
