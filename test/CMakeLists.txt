@@ -12,5 +12,5 @@ include_directories(catchTest ${PROJECT_SOURCE_DIR}/include)
 
 include(CTest)
 enable_testing()
-include(ParseAndAddCatchTests)
-ParseAndAddCatchTests(catchTest)
+include(Catch)
+catch_discover_tests(catchTest)
