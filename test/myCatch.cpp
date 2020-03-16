@@ -29,19 +29,21 @@ public:
 };
 
 
-TEST_CASE("Test1", "[simple]")
+TEST_CASE("Test1", "[tag]")
 {
-   REQUIRE(1 == 1);
+   auto value = 1;
+   auto expected = 1;
+   REQUIRE(value == expected);
 }
 
-TEST_CASE("Mockup", "[hippomock]")
+TEST_CASE("Use a simple Mockup", "[hippomocks] [another tag]")
 {
    MockRepository mockRepository;
    auto mock = mockRepository.Mock<MockInterface>();
    mockRepository.ExpectCall(mock, MockInterface::getInt666).Return(666);
    mockRepository.ExpectCall(mock, MockInterface::getStringMMM).Return(std::string{"MMM"});
-   REQUIRE(666 == mock->getInt666());
-   REQUIRE(std::string{"MMM"} == mock->getStringMMM());
+   REQUIRE(mock->getInt666() == 666);
+   REQUIRE(mock->getStringMMM() == std::string{"MMM"});
    
    auto p = MyParam{1,2};
    mockRepository.ExpectCall(mock, MockInterface::getParam).With(p).Return(p);
@@ -57,7 +59,7 @@ inline bool operator== (const Module::ProcessArgs& lhs, const Module::ProcessArg
 }
 }
 
-TEST_CASE("ModuleMockup", "[rack]")
+TEST_CASE("Mock stuff from Rack", "[rack] [hippomocks]")
 {
    using namespace rack::engine;
    MockRepository mockRepository;
