@@ -147,6 +147,7 @@ stages:
           failOnStderr: true
           displayName: run unit tests
         - script: |
+           $(define-plugin-slug)
             cd build
             $(activate-env)
             cd dist
