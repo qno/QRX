@@ -5,14 +5,17 @@ if (NOT MINGW)
 endif ()
 
 add_executable(catchTest myCatch.cpp ${TEST_SOURCES})
+
+# -O0 is required for FakeIt!
+target_compile_options(catchTest PRIVATE "-O0")
 target_link_libraries(catchTest Catch2::Catch2)
 
-include_directories(catchTest ${PROJECT_SOURCE_DIR}/include)
+include_directories( ${PROJECT_SOURCE_DIR}/include include)
 
-# this is needed in Debug mode, otherwise linking will fail with too big obj file error
-#if (${MINGW})
-#  target_compile_options(catchTest PRIVATE "-Wa,-mbig-ob")
-#endif ()
+if (MINGW)
+  # avoid linking failure with too big obj file error
+  target_compile_options(catchTest PRIVATE "-Wa,-mbig-ob")
+endif ()
 
 include(CTest)
 enable_testing()

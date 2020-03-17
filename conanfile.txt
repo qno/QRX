@@ -1,7 +1,6 @@
 [requires]
 vcvrack-sdk/1.1.6@vcvrack/stable
 Catch2/2.11.1@catchorg/stable
-HippoMocks/5.9@dascandy/testing
 ninja/1.9.0
 
 [generators]

@@ -1,6 +1,10 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-override"
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+
 #define CATCH_CONFIG_MAIN
 
-#include <hippomocks.h>
+#include <fakeit.hpp>
 #include <catch2/catch.hpp>
 
 #include <string>
@@ -23,7 +27,7 @@ class MockInterface
 public:
    MockInterface() = delete;
    virtual ~MockInterface() = default;
-   virtual const int getInt666() = 0;
+   virtual int getInt666() = 0;
    virtual const std::string getStringMMM() = 0;
    virtual const MyParam getParam(const MyParam& p) = 0;
 };
@@ -36,18 +40,26 @@ TEST_CASE("Test1", "[tag]")
    REQUIRE(value == expected);
 }
 
-TEST_CASE("Use a simple Mockup", "[hippomocks] [another tag]")
+TEST_CASE("Use a simple Mockup with FakeIt", "[fakeit] [another tag]")
 {
-   MockRepository mockRepository;
-   auto mock = mockRepository.Mock<MockInterface>();
-   mockRepository.ExpectCall(mock, MockInterface::getInt666).Return(666);
-   mockRepository.ExpectCall(mock, MockInterface::getStringMMM).Return(std::string{"MMM"});
-   REQUIRE(mock->getInt666() == 666);
-   REQUIRE(mock->getStringMMM() == std::string{"MMM"});
+   using namespace fakeit;
+   Mock<MockInterface> mock;
    
+   auto s = std::string{"MMM"};
    auto p = MyParam{1,2};
-   mockRepository.ExpectCall(mock, MockInterface::getParam).With(p).Return(p);
-   REQUIRE(mock->getParam(p) == p);
+   
+   When(Method(mock,getInt666)).Return(666);
+   When(Method(mock,getStringMMM)).Return(s);
+   When(Method(mock,getParam).Using(p)).Return(p);
+   
+   auto& m = mock.get();
+   REQUIRE(m.getInt666() == 666);
+   REQUIRE(m.getStringMMM() == s);
+   REQUIRE(m.getParam(p) == p);
+   
+   Verify(Method(mock,getInt666));
+   Verify(Method(mock,getStringMMM));
+   Verify(Method(mock,getParam).Using(p));
 }
 
 namespace rack {
@@ -59,24 +71,34 @@ inline bool operator== (const Module::ProcessArgs& lhs, const Module::ProcessArg
 }
 }
 
-TEST_CASE("Mock stuff from Rack", "[rack] [hippomocks]")
+TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
 {
+   using namespace fakeit;
    using namespace rack::engine;
    using namespace qrx;
-   MockRepository mockRepository;
-   auto mock = mockRepository.Mock<CVWizardModule>();
+   
+   Mock<CVWizardModule> mock;
    
    auto args = Module::ProcessArgs{111.f, 222.f};
    auto json = std::unique_ptr<json_t>(new json_t{JSON_INTEGER, 88});
    
-   mockRepository.ExpectCall(mock, CVWizardModule::process);
-   mockRepository.ExpectCalls(mock, CVWizardModule::dataToJson, 3).Return(json.get());
-   mockRepository.ExpectCalls(mock, CVWizardModule::dataFromJson, 2);
+   When(Method(mock,process).Using(args));
+   When(Method(mock,dataToJson)).Return(json.get());
+   When(Method(mock,dataFromJson).Using(json.get()));
    
-   mock->process(args);
-   REQUIRE(mock->dataToJson() == json.get());
-   REQUIRE(mock->dataToJson()->type == json->type);
-   REQUIRE(mock->dataToJson()->refcount == json->refcount);
-   mock->dataFromJson(json.get());
-   mock->dataFromJson(json.get());
+   auto& m = mock.get();
+   
+   m.process(args);
+   REQUIRE(m.dataToJson() == json.get());
+   REQUIRE(m.dataToJson()->type == json->type);
+   REQUIRE(m.dataToJson()->refcount == json->refcount);
+   m.dataFromJson(json.get());
+   m.dataFromJson(json.get());
+   
+   Verify(Method(mock,process)).Once();
+   Verify(Method(mock,dataToJson)).Exactly(3);
+   Verify(Method(mock,dataFromJson).Using(json.get())).Twice();
 }
+
+
+#pragma GCC diagnostic pop
