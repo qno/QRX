@@ -10,7 +10,6 @@
 #include <string>
 
 #include <CVWizard/CVWizardModule.hpp>
-#include <engine/Module.hpp>
 
 struct MyParam
 {
@@ -69,10 +68,13 @@ inline bool operator== (const Module::ProcessArgs& lhs, const Module::ProcessArg
 {
    return (lhs.sampleRate == rhs.sampleRate) && (lhs.sampleTime == rhs.sampleTime);
 }
+
+Module::Module() { }
+Module::~Module() { }
+void Module::config(int, int, int, int) { }
 }
 }
 
-/*
 TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
 {
    using namespace fakeit;
@@ -85,15 +87,14 @@ TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
    auto args = Module::ProcessArgs{111.f, 222.f};
    auto json = std::unique_ptr<json_t>(new json_t{JSON_INTEGER, 88});
    
-   When(Dtor(mock)).AlwaysReturn());
-   When(Method(mock,process).Using(args));
+   //When(Method(mock,process).Using(args));
    When(Method(mock,dataToJson)).Return(json.get());
    When(Method(mock,dataFromJson).Using(json.get()));
    
    auto& m = mock.get();
    
    //m.process(args);
-   //REQUIRE(m.dataToJson() == json.get());
+   REQUIRE(m.dataToJson() == json.get());
    //REQUIRE(m.dataToJson()->type == json->type);
    //REQUIRE(m.dataToJson()->refcount == json->refcount);
    //m.dataFromJson(json.get());
@@ -103,6 +104,6 @@ TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
    //Verify(Method(mock,dataToJson)).Exactly(3);
    //Verify(Method(mock,dataFromJson).Using(json.get())).Twice();
 }
-*/
 
 #pragma GCC diagnostic pop
+

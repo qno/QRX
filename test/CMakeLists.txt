@@ -1,10 +1,10 @@
 find_package(Catch2 REQUIRED)
 
 if (NOT MINGW)
-  #set(TEST_SOURCES ${PROJECT_SOURCE_DIR}/src/CVWizard/CVWizardModule.cpp)
+  set(TEST_SOURCES ${PROJECT_SOURCE_DIR}/src/CVWizard/CVWizardModule.cpp)
 endif ()
 
-add_executable(catchTest myCatch.cpp )#${TEST_SOURCES})
+add_executable(catchTest myCatch.cpp ${TEST_SOURCES})
 
 # -O0 is required for FakeIt!
 target_compile_options(catchTest PRIVATE "-O0")
