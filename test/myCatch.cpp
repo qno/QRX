@@ -85,25 +85,26 @@ TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
    Mock<Module> moduleMock;
    
    auto args = Module::ProcessArgs{111.f, 222.f};
-   auto json = std::unique_ptr<json_t>(new json_t{JSON_INTEGER, 88});
+   auto json = std::unique_ptr<json_t>(new json_t{JSON_OBJECT, 88});
+
+   // https://github.com/eranpeer/FakeIt/wiki/Dangers-of-checking-arguments-passed-by-reference
+   Module::ProcessArgs tmp;
+   When(Method(mock,process).Using(_)).AlwaysDo([&](const Module::ProcessArgs& pa){tmp = pa;});
    
-   //When(Method(mock,process).Using(args));
-   When(Method(mock,dataToJson)).Return(json.get());
-   When(Method(mock,dataFromJson).Using(json.get()));
+   When(Method(mock,dataToJson)).AlwaysReturn(json.get());
+   When(Method(mock,dataFromJson).Using(_));
    
    auto& m = mock.get();
    
-   //m.process(args);
+   m.process(args);
    REQUIRE(m.dataToJson() == json.get());
-   //REQUIRE(m.dataToJson()->type == json->type);
-   //REQUIRE(m.dataToJson()->refcount == json->refcount);
-   //m.dataFromJson(json.get());
+   REQUIRE(m.dataToJson()->type == JSON_OBJECT);
+   REQUIRE(m.dataToJson()->refcount == 88);
    //m.dataFromJson(json.get());
    
-   //Verify(Method(mock,process).Using(args)).Once();
-   //Verify(Method(mock,dataToJson)).Exactly(3);
-   //Verify(Method(mock,dataFromJson).Using(json.get())).Twice();
+   Verify(Method(mock,process).Using(args)).Once();
+   Verify(Method(mock,dataToJson)).Exactly(3);
+   //Verify(Method(mock,dataFromJson).Using(json.get())).Once();
 }
 
 #pragma GCC diagnostic pop
-
