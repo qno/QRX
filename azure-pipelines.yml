@@ -149,7 +149,7 @@ stages:
           displayName: run unit tests
         - task: PublishTestResults@2
           inputs:
-            testResultsFormat: cTest
+            testResultsFormat: CTest
             testResultsFiles: "**/$(ut-result-file)"
             #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
             #mergeTestResults: false # Optional
