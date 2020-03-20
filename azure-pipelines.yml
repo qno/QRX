@@ -138,11 +138,8 @@ stages:
           displayName: compile
         - script: |
             cd build
-            ls  -la
             $(activate-env)
-            cd test
             ctest -T Test -VV --output-on-failure --no-compress-output
-            cd ..
             $(deactivate-env)
             cd ..
           failOnStderr: true

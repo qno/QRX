@@ -18,7 +18,5 @@ if (MINGW)
   target_compile_options(catchTest PRIVATE "-Wa,-mbig-ob")
 endif ()
 
-include(CTest)
-enable_testing()
 include(Catch)
 catch_discover_tests(catchTest)
