@@ -148,10 +148,9 @@ stages:
           inputs:
             testResultsFormat: CTest
             testResultsFiles: "**/Test.xml"
-            #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-            #mergeTestResults: false # Optional
+            mergeTestResults: true
             #failTaskOnFailedTests: false # Optional
-            #testRunTitle: # Optional
+            testRunTitle: $(artifact)
             #buildPlatform: # Optional
             #buildConfiguration: # Optional
             #publishRunAttachments: true # Optional
