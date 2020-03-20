@@ -6,7 +6,6 @@ pr:
 
 variables:
   python-version: "3.7"
-  ut-result-file: testresult.txt
   create-mingw-profile: |
     (
       echo [settings]
@@ -141,7 +140,7 @@ stages:
             cd build
             $(activate-env)
             cd test
-            ctest -O $(ut-result-file)
+            ctest -T Test -VV --output-on-failure --no-compress-output
             cd ..
             $(deactivate-env)
             cd ..
@@ -150,7 +149,7 @@ stages:
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: CTest
-            testResultsFiles: "**/$(ut-result-file)"
+            testResultsFiles: "**/Test.xml"
             #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
             #mergeTestResults: false # Optional
             #failTaskOnFailedTests: false # Optional
