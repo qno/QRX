@@ -147,6 +147,17 @@ stages:
             cd ..
           failOnStderr: true
           displayName: run unit tests
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: cTest
+            testResultsFiles: "**/$(ut-result-file)"
+            #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+            #mergeTestResults: false # Optional
+            #failTaskOnFailedTests: false # Optional
+            #testRunTitle: # Optional
+            #buildPlatform: # Optional
+            #buildConfiguration: # Optional
+            #publishRunAttachments: true # Optional
         - script: |
            $(define-plugin-slug)
             cd build
@@ -166,19 +177,6 @@ stages:
     displayName: Publish Plugin
     dependsOn: build
     jobs:
-      - job: PublishUnitTestResults
-        steps:
-        - task: PublishTestResults@2
-          inputs:
-            testResultsFormat: cTest
-            testResultsFiles: $(ut-result-file)
-            #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-            #mergeTestResults: false # Optional
-            #failTaskOnFailedTests: false # Optional
-            #testRunTitle: # Optional
-            #buildPlatform: # Optional
-            #buildConfiguration: # Optional
-            #publishRunAttachments: true # Optional
       - job: PublishArtifacts
         steps:
           - task: DownloadPipelineArtifact@2
