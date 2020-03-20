@@ -7,8 +7,8 @@ endif ()
 add_executable(catchTest myCatch.cpp ${TEST_SOURCES})
 
 # -O0 is required for FakeIt!
-target_compile_options(catchTest PRIVATE "-O0" "-coverage" "-fprofile-arcs" "-ftest-coverage")#"-g")
-target_link_options(catchTest PRIVATE "-coverage" "-lgcov")
+target_compile_options(catchTest PRIVATE "-O0")# "-coverage" "-fprofile-arcs" "-ftest-coverage")#"-g")
+#target_link_options(catchTest PRIVATE "-coverage" "-lgcov")
 target_link_libraries(catchTest Catch2::Catch2)
 
 include_directories( ${PROJECT_SOURCE_DIR}/include include)
