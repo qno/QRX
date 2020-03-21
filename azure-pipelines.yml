@@ -166,7 +166,7 @@ stages:
           inputs:
               codeCoverageTool: Cobertura
               summaryFileLocation: $(System.DefaultWorkingDirectory)/build/coverage.xml
-              #pathToSources: # Optional
+              pathToSources: $(System.DefaultWorkingDirectory)
               #reportDirectory: # Optional
               #additionalCodeCoverageFiles: # Optional
               #failIfCoverageEmpty: false # Optional
