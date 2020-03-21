@@ -2,13 +2,13 @@
 #pragma GCC diagnostic ignored "-Wsuggest-override"
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
+#include <CVWizard/CVWizardModule.hpp>
+
+#include <TestOperators.hpp>
 #include <catch2/catch.hpp>
 #include <fakeit.hpp>
-#include <TestOperators.hpp>
 
 #include <string>
-
-#include <CVWizard/CVWizardModule.hpp>
 
 struct MyParam
 {
