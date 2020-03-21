@@ -148,7 +148,7 @@ stages:
             $(prepare-env)
             cd build
             $(activate-env)
-            gcovr -r .. -o coverage.xml -x -b -v .
+            gcovr -r .. -o coverage.xml -x -v -b --exclude-unreachable-branches --exclude=$(System.DefaultWorkingDirectory)/test/* .
             $(deactivate-env)
             cd ..
           displayName: gcovr
@@ -157,19 +157,14 @@ stages:
             testResultsFormat: CTest
             testResultsFiles: "**/Test.xml"
             mergeTestResults: true
-            #failTaskOnFailedTests: false # Optional
+            failTaskOnFailedTests: false
             testRunTitle: $(artifact)
-            #buildPlatform: # Optional
-            #buildConfiguration: # Optional
-            #publishRunAttachments: true # Optional
         - task: PublishCodeCoverageResults@1
           inputs:
               codeCoverageTool: Cobertura
               summaryFileLocation: $(System.DefaultWorkingDirectory)/build/coverage.xml
               pathToSources: $(System.DefaultWorkingDirectory)
-              #reportDirectory: # Optional
-              #additionalCodeCoverageFiles: # Optional
-              #failIfCoverageEmpty: false # Optional
+              failIfCoverageEmpty: false
         - script: |
            $(define-plugin-slug)
             cd build
