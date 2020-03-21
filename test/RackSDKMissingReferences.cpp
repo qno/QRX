@@ -2,46 +2,52 @@
 
 extern "C" {
 
-int glfwGetKey(GLFWwindow* window, int key) { return {}; }
+int glfwGetKey(GLFWwindow*, int) { return {}; }
 
-NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b) { return {}; }
-NVGcolor nvgRGBf(float r, float g, float b){ return {}; }
-NVGcolor nvgRGBAf(float r, float g, float b, float a) { return {}; }
-NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) { return {}; }
+NVGcolor nvgRGB(unsigned char, unsigned char, unsigned char) { return {}; }
+NVGcolor nvgRGBf(float, float, float){ return {}; }
+NVGcolor nvgRGBAf(float, float, float, float) { return {}; }
+NVGcolor nvgRGBA(unsigned char, unsigned char, unsigned char, unsigned char) { return {}; }
 }
 
 namespace rack {
 
-struct App;
 App* appGet() { return{}; }
 
-//rack::Window::loadSvg(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
-//rack::Window::getMods()'
-//undefined reference to `pluginInstance'
+Window::Window() { }
+Window::~Window() { }
+std::shared_ptr<Svg> Window::loadSvg(const std::string&) { return{}; }
+int Window::getMods() { return{}; }
+
+namespace plugin {
+void Plugin::addModel(Model* model) { }
+Model* Plugin::getModel(std::string slug) { return{}; }
+}
 
 namespace app {
-//rack::app::ModuleWidget::ModuleWidget()'
-//rack::app::ModuleWidget::~ModuleWidget()'
-//rack::app::ModuleWidget::setModule(rack::engine::Module*)'
-//rack::app::ModuleWidget::setPanel(std::shared_ptr<rack::Svg>)'
-//rack::app::ModuleWidget::draw(rack::widget::Widget::DrawArgs const&)'
-//rack::app::SvgScrew::SvgScrew()'
-//rack::app::SvgScrew::setSvg(std::shared_ptr<rack::Svg>)'
-//rack::app::ModuleWidget::onButton(rack::event::Button const&)'
-//rack::app::ModuleWidget::onHoverKey(rack::event::HoverKey const&)'
-//rack::app::ModuleWidget::onDragStart(rack::event::DragStart const&)'
-//rack::app::ModuleWidget::onDragEnd(rack::event::DragEnd const&)'
-//rack::app::ModuleWidget::onDragMove(rack::event::DragMove const&)'
-//rack::app::ModuleWidget::toJson()'
-//rack::app::ModuleWidget::fromJson(json_t*)'
+ModuleWidget::ModuleWidget() { }
+ModuleWidget::~ModuleWidget() { }
+void ModuleWidget::setModule(engine::Module*) { }
+void ModuleWidget::setPanel(std::shared_ptr<rack::Svg>) { }
+void ModuleWidget::draw(const widget::Widget::DrawArgs&) { }
+void ModuleWidget::onButton(const event::Button&) { }
+void ModuleWidget::onHoverKey(const event::HoverKey&) { }
+void ModuleWidget::onDragStart(const event::DragStart&) { }
+void ModuleWidget::onDragEnd(const event::DragEnd&) { }
+void ModuleWidget::onDragMove(const event::DragMove&) { }
+json_t*  ModuleWidget::toJson() { return{}; }
+void ModuleWidget::fromJson(json_t*) { }
+
+SvgScrew::SvgScrew() { }
+void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
 }
 
 namespace logger {
-//rack::logger::log(rack::logger::Level, char const*, int, char const*, ...)'
+void log(Level, const char*, int, const char*, ...) { }
 }
 
 namespace asset {
-//rack::asset::plugin(rack::plugin::Plugin*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)'
+std::string plugin(plugin::Plugin*, std::string) { return{}; }
 }
 
 namespace engine {
@@ -52,13 +58,14 @@ void Module::config(int, int, int, int) { }
 }
 
 namespace widget {
-//rack::widget::Widget::step()'
-//rack::widget::Widget::~Widget()'
-//rack::widget::Widget::getChildrenBoundingBox()'
-//rack::widget::Widget::getRelativeOffset(rack::math::Vec, rack::widget::Widget*)'
-//rack::widget::Widget::getViewport(rack::math::Rect)'
-//rack::widget::Widget::draw(rack::widget::Widget::DrawArgs const&)'
-//rack::widget::Widget::addChild(rack::widget::Widget*)'
+Widget::~Widget() { }
+void Widget::step() { }
+math::Rect Widget::getChildrenBoundingBox() { return{}; }
+math::Vec Widget::getRelativeOffset(math::Vec, Widget*) { return{}; }
+math::Rect Widget::getViewport(math::Rect) { return{}; }
+
+void Widget::draw(const Widget::DrawArgs&) { }
+void Widget::addChild(Widget*) { }
 }
 
 }
