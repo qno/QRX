@@ -2,6 +2,8 @@
 vcvrack-sdk/1.1.6@vcvrack/stable
 Catch2/2.11.1@catchorg/stable
 ninja/1.9.0
+# extra deps for unit test build
+jansson/2.12
 
 [generators]
 cmake

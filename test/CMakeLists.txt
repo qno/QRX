@@ -9,7 +9,7 @@ file(GLOB TEST_SOURCES *Test.cpp)
 add_library(RackSDKReferences STATIC RackSDKMissingReferences)
 add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
 
-target_link_libraries(${UT_EXE} RackSDKReferences)
+target_link_libraries(${UT_EXE} RackSDKReferences ${CONAN_LIBS_JANSSON})
 
 # -O0 is required for FakeIt!
 target_compile_options(${UT_EXE} PRIVATE "-O0")
