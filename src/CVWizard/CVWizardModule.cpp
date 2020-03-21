@@ -17,7 +17,9 @@ void CVWizardModule::process(const ProcessArgs& args)
 
 json_t* CVWizardModule::dataToJson()
 {
-   return {};
+   auto json = new json_t{};
+   
+   return json;
 }
 
 void CVWizardModule::dataFromJson(json_t* root)

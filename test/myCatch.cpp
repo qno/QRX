@@ -91,15 +91,4 @@ TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
    Verify(Method(mock,dataFromJson).Using(json.get())).Twice();
 }
 
-TEST_CASE("test a project class for coverage", "[rack] [coverage]")
-{
-   using namespace fakeit;
-   using namespace rack::engine;
-   using namespace qrx;
-   
-   CVWizardModule wiz;
-   
-   REQUIRE(wiz.dataToJson() == nullptr);
-}
-
 #pragma GCC diagnostic pop
