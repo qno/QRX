@@ -145,12 +145,12 @@ stages:
           failOnStderr: true
           displayName: run unit tests
         - script: |
-          cd build
-          $(activate-env)
-          gcovr -r .. -o coverage.xml -x -b -v .
-          $(deactivate-env)
-          cd ..
-        displayName: gcovr
+            cd build
+            $(activate-env)
+            gcovr -r .. -o coverage.xml -x -b -v .
+            $(deactivate-env)
+            cd ..
+          displayName: gcovr
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: CTest
@@ -163,7 +163,7 @@ stages:
             #publishRunAttachments: true # Optional
         - task: PublishCodeCoverageResults@1
           inputs:
-              codeCoverageTool: cobertura
+              codeCoverageTool: Cobertura
               summaryFileLocation:
               #pathToSources: # Optional
               #reportDirectory: # Optional
