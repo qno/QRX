@@ -59,7 +59,7 @@ stages:
             imageName: ubuntu-latest
             prepare-env: |
               export PATH="$PATH:/home/vsts/.local/bin"
-              sudo apt install -y python3-setuptools p7zip-full
+              sudo apt install -y python3-setuptools p7zip-full gcovr
             pip-command: pip3
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: ""
@@ -79,7 +79,7 @@ stages:
             prepare-env: |
               export PATH=$PATH:$HOME/.local/bin
               brew update || brew update
-              brew install p7zip
+              brew install p7zip gcovr
             pip-command: pip
             conan-libcxx-setting: ""
             conan-profile: ""
@@ -144,6 +144,13 @@ stages:
             cd ..
           failOnStderr: true
           displayName: run unit tests
+        - script: |
+          cd build
+          $(activate-env)
+          gcovr -r .. -o coverage.xml -x -b -v .
+          $(deactivate-env)
+          cd ..
+        displayName: gcovr
         - task: PublishTestResults@2
           inputs:
             testResultsFormat: CTest
@@ -154,6 +161,14 @@ stages:
             #buildPlatform: # Optional
             #buildConfiguration: # Optional
             #publishRunAttachments: true # Optional
+        - task: PublishCodeCoverageResults@1
+          inputs:
+              codeCoverageTool: cobertura
+              summaryFileLocation:
+              #pathToSources: # Optional
+              #reportDirectory: # Optional
+              #additionalCodeCoverageFiles: # Optional
+              #failIfCoverageEmpty: false # Optional
         - script: |
            $(define-plugin-slug)
             cd build
