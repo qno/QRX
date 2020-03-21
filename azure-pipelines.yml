@@ -131,7 +131,7 @@ stages:
             mkdir build && cd build
             conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile)
             $(activate-env)
-            cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja ..
+            cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja -DENABLE_COVERAGE=On ..
             cmake --build . --target install
             $(deactivate-env)
             cd ..
