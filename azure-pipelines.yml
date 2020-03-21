@@ -129,7 +129,7 @@ stages:
             $(conan-add-remotes)
             $(define-plugin-slug)
             mkdir build && cd build
-            conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile)
+            conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile) --build missing
             $(activate-env)
             cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja -DENABLE_COVERAGE=On ..
             cmake --build . --target install
