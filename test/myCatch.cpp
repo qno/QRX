@@ -6,6 +6,7 @@
 
 #include <catch2/catch.hpp>
 #include <fakeit.hpp>
+#include <TestOperators.hpp>
 
 #include <string>
 
@@ -60,19 +61,6 @@ TEST_CASE("Use a simple Mockup with FakeIt", "[fakeit] [another tag]")
    Verify(Method(mock,getInt666));
    Verify(Method(mock,getStringMMM));
    Verify(Method(mock,getParam).Using(p));
-}
-
-namespace rack {
-namespace engine {
-inline bool operator== (const Module::ProcessArgs& lhs, const Module::ProcessArgs& rhs)
-{
-   return (lhs.sampleRate == rhs.sampleRate) && (lhs.sampleTime == rhs.sampleTime);
-}
-
-Module::Module() { }
-Module::~Module() { }
-void Module::config(int, int, int, int) { }
-}
 }
 
 TEST_CASE("FakIt stuff from Rack", "[rack] [fakeit]")
