@@ -164,7 +164,7 @@ stages:
         - task: PublishCodeCoverageResults@1
           inputs:
               codeCoverageTool: Cobertura
-              summaryFileLocation:
+              summaryFileLocation: $(System.DefaultWorkingDirectory)/build/coverage.xml
               #pathToSources: # Optional
               #reportDirectory: # Optional
               #additionalCodeCoverageFiles: # Optional
