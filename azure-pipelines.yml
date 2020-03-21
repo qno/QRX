@@ -148,7 +148,7 @@ stages:
             $(prepare-env)
             cd build
             $(activate-env)
-            gcovr -r .. -o coverage.xml -x -v -b --exclude-unreachable-branches .
+            gcovr -o coverage.xml -x -v -b --exclude-unreachable-branches -r ../src .
             $(deactivate-env)
             cd ..
           displayName: gcovr
