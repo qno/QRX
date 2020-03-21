@@ -145,6 +145,7 @@ stages:
           failOnStderr: true
           displayName: run unit tests
         - script: |
+            $(prepare-env)
             cd build
             $(activate-env)
             gcovr -r .. -o coverage.xml -x -b -v .
