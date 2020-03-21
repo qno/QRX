@@ -2,16 +2,9 @@ option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
 find_package(Catch2 REQUIRED)
 
-set(TEST_SOURCES ${PROJECT_SOURCE_DIR}/src/CVWizard/CVWizardModule.cpp
-                 #${PROJECT_SOURCE_DIR}/src/CVWizard/CVWizardWidget.cpp
-   )
-
-#file(GLOB_RECURSE TEST_SOURCES ${PROJECT_SOURCE_DIR}/src/**/*.cpp)
-message(STATUS "TSRC: ${TEST_SOURCES}")
-
 add_library(RackSDKReferences STATIC RackSDKMissingReferences)
+add_executable(catchTest myCatch.cpp CatchMain.cpp ${SOURCES})
 
-add_executable(catchTest myCatch.cpp ${TEST_SOURCES})
 target_link_libraries(catchTest RackSDKReferences)
 
 # -O0 is required for FakeIt!

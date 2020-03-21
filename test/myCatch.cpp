@@ -2,8 +2,6 @@
 #pragma GCC diagnostic ignored "-Wsuggest-override"
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
-#define CATCH_CONFIG_MAIN
-
 #include <catch2/catch.hpp>
 #include <fakeit.hpp>
 #include <TestOperators.hpp>
