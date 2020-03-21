@@ -59,7 +59,7 @@ stages:
             imageName: ubuntu-latest
             prepare-env: |
               export PATH="$PATH:/home/vsts/.local/bin"
-              sudo apt install -y python3-setuptools p7zip-full gcovr
+              sudo apt install -y python3-setuptools p7zip-full
             pip-command: pip3
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
             conan-profile: ""
@@ -79,7 +79,7 @@ stages:
             prepare-env: |
               export PATH=$PATH:$HOME/.local/bin
               brew update || brew update
-              brew install p7zip gcovr
+              brew install p7zip
             pip-command: pip
             conan-libcxx-setting: ""
             conan-profile: ""
@@ -124,7 +124,7 @@ stages:
         - script: |
             $(prepare-env)
             $(pip-command) install --user --upgrade pip
-            $(pip-command) install --user conan
+            $(pip-command) install --user conan gcovr
             conan user
             $(conan-add-remotes)
             $(define-plugin-slug)
