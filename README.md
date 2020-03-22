@@ -5,7 +5,7 @@
 
 ---
 
-![QRX Plugin version](https://img.shields.io/badge/QRX%20Plugin%20version-1.0.1-blue)
+![Version](https://img.shields.io/badge/Version-1.dev.0-blue)
 ![conan vcvrack-sdk](https://img.shields.io/badge/conan-vcvrack--sdk%2F1.1.6%40vcvrack%2Fstable-blue)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/qno/QRX?include_prereleases)
 ![GitHub All Releases](https://img.shields.io/github/downloads/qno/QRX/total)
