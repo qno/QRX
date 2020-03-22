@@ -4,12 +4,15 @@
 
 #include <CVWizard/CVWizardModule.hpp>
 
-#include <TestOperators.hpp>
 #include <catch2/catch.hpp>
-#include <fakeit.hpp>
 
-using namespace fakeit;
+
 using namespace qrx;
+
+TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
+{
+   REQUIRE(CVWizardModule::SLUG == std::string{"CVWizard"});
+}
 
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
