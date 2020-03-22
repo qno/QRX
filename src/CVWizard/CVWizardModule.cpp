@@ -4,6 +4,8 @@ using namespace rack;
 
 namespace qrx {
 
+const std::string CVWizardModule::SLUG{"CVWizard"};
+
 CVWizardModule::CVWizardModule()
    : Module()
 {

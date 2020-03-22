@@ -20,10 +20,22 @@ std::shared_ptr<Svg> Window::loadSvg(const std::string&) { return{}; }
 int Window::getMods() { return{}; }
 
 namespace plugin {
-void Plugin::addModel(Model* model) { }
-Model* Plugin::getModel(std::string slug) { return{}; }
+Plugin::~Plugin()
+{ }
+void Plugin::addModel(Model* model)
+{ models.push_back(model); }
+Model* Plugin::getModel(std::string slug)
+{
+   for (auto m : models)
+   {
+      if (m->slug == slug)
+      {
+         return m;
+      }
+   }
+   return nullptr;
 }
-
+}
 namespace app {
 ModuleWidget::ModuleWidget() { }
 ModuleWidget::~ModuleWidget() { }

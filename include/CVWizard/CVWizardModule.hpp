@@ -1,13 +1,14 @@
 #pragma once
 
-//#include <QRXPlugin.hpp>
-#include <engine/Module.hpp>
+#include <QRXPlugin.hpp>
 
 namespace qrx {
 
 class CVWizardModule : public rack::engine::Module
 {
 public:
+   
+   static const std::string SLUG;
   
    enum ParamIds {
       NUM_PARAMS
