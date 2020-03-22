@@ -62,6 +62,7 @@ source_group("Header Files" FILES ${HEADERS})
 source_group("CVWizard Header Files" FILES ${CVWIZARD_HEADERS})
 
 add_library(${LIB_NAME} MODULE ${SOURCES} ${CVWIZARD_SOURCES})
+target_compile_options(${LIB_NAME} PRIVATE "-fuse-ld=gold" "-flto")
 
 target_include_directories(${LIB_NAME} PRIVATE include)
 
