@@ -6,11 +6,11 @@ set(UT_EXE PluginUnittests)
 
 file(GLOB TEST_SOURCES *Test.cpp)
 
-add_library(FakeRackSDK STATIC FakeRackSDK.cpp)
+add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 
 add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
 
-target_link_libraries(${UT_EXE} FakeRackSDK ${CONAN_LIBS_JANSSON})
+target_link_libraries(${UT_EXE} RackSDKFakeImplementation ${CONAN_LIBS_JANSSON})
 
 # -O0 is required for FakeIt!
 target_compile_options(${UT_EXE} PRIVATE "-O0" "-fuse-ld=gold" "-flto")
