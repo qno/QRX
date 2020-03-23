@@ -5,13 +5,18 @@ using namespace rack;
 namespace qrx {
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
-   : ModuleWidget(), _module(module)
+   : ModuleWidget()
+   , _module(module)
+   , _appWindow(APP->window)
+   , _glfwWindow(_appWindow->win)
 {
-   setModule(module);
-   setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
+   assert(_module);
+   assert(_appWindow);
+   assert(_glfwWindow);
 
-   _glfwWindow = APP->window->win;
-
+   setModule(_module);
+   setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
+   
    addChild(createWidget<WizScrew>(Vec(RACK_GRID_WIDTH, 0)));
    addChild(createWidget<WizScrew>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
    addChild(createWidget<WizScrew>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
@@ -21,7 +26,7 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
 void CVWizardWidget::step()
 {
    if (!m_mappingModeActive) {
-      if (GLFW_MOD_CONTROL == (APP->window->getMods() & GLFW_MOD_CONTROL)) {
+      if (GLFW_MOD_CONTROL == (_appWindow->getMods() & GLFW_MOD_CONTROL)) {
 
          const auto x = glfwGetKey(_glfwWindow, GLFW_KEY_M);
 
