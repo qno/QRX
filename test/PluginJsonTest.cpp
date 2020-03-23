@@ -14,7 +14,6 @@
 TEST_CASE("plugin.json", "[plugin] [json]")
 {
    const auto QRX = std::string{"QRX"};
-   const auto Version = std::string{"1.dev.0"};
    const auto LicenseGPLv3 = std::string{"GPL-3.0-or-later"};
    const auto Author = std::string{"Silvio Kunaschk"};
    
@@ -42,11 +41,11 @@ TEST_CASE("plugin.json", "[plugin] [json]")
       REQUIRE(std::string(json_string_value(name)) == QRX);
    }
    
-   SECTION("ensure that version is correct")
+   SECTION("ensure that version is not empty")
    {
       const auto version = json_object_get(pluginJson.get(), "version");
       REQUIRE(version != nullptr);
-      REQUIRE(std::string(json_string_value(version)) == Version);
+      REQUIRE(!std::string(json_string_value(version)).empty());
    }
    
    SECTION("ensure that license is GPLv3")
