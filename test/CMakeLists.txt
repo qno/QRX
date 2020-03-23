@@ -9,6 +9,7 @@ file(GLOB TEST_SOURCES *Test.cpp)
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 
 add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
+target_compile_definitions(${UT_EXE} PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
 
 target_link_libraries(${UT_EXE} RackSDKFakeImplementation ${CONAN_LIBS_JANSSON})
 
