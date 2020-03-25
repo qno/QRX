@@ -1,3 +1,3 @@
-add_library(FakeIt::FakeIt INTERFACE IMPORTED)
-target_include_directories(FakeIt::FakeIt INTERFACE include)
-target_compile_options(FakeIt::FakeIt INTERFACE "-O0")
+add_library(FakeIt INTERFACE)
+target_include_directories(FakeIt INTERFACE include)
+target_compile_options(FakeIt INTERFACE "-O0")

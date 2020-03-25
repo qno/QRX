@@ -13,7 +13,7 @@ add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
 target_include_directories(${UT_EXE} PRIVATE ${PROJECT_SOURCE_DIR}/include include FakeIt/include)
 target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} RackSDKFakeImplementation ${CONAN_LIBS_JANSSON} FakeIt::FakeIt Catch2::Catch2)
+target_link_libraries(${UT_EXE} RackSDKFakeImplementation ${CONAN_LIBS_JANSSON} FakeIt Catch2::Catch2)
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
