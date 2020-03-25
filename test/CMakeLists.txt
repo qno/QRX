@@ -1,22 +1,19 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
 find_package(Catch2 REQUIRED)
+include(FakeIt/FakeIt.cmake)
 
 set(UT_EXE PluginUnittests)
 
 file(GLOB TEST_SOURCES *Test.cpp)
 
-add_library(TEST_HEADERS INTERFACE)
-target_include_directories(TEST_HEADERS INTERFACE ${PROJECT_SOURCE_DIR}/include INTERFACE include)
-target_compile_options(TEST_HEADERS INTERFACE "-O0") # -O0 is required for FakeIt!
-
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 
 add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
+target_include_directories(${UT_EXE} PRIVATE ${PROJECT_SOURCE_DIR}/include include FakeIt/include)
 target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} TEST_HEADERS RackSDKFakeImplementation ${CONAN_LIBS_JANSSON} Catch2::Catch2)
-
+target_link_libraries(${UT_EXE} RackSDKFakeImplementation ${CONAN_LIBS_JANSSON} FakeIt::FakeIt Catch2::Catch2)
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
