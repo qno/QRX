@@ -25,7 +25,8 @@ TEST_CASE("plugin.json", "[plugin] [json]")
    const auto jsonFile = std::string{GETSTRING(PLUGIN_JSON_FILE)};
    REQUIRE(!jsonFile.empty());
    
-   auto pluginJson = std::unique_ptr<json_t>(json_load_file(jsonFile.c_str(), JSON_ENCODE_ANY, nullptr));
+   auto jsonError = json_error_t{};
+   auto pluginJson = std::unique_ptr<json_t>(json_load_file(jsonFile.c_str(), JSON_ENCODE_ANY, &jsonError));
    
    SECTION("ensure that plugin.json exists")
    {
