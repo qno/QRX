@@ -5,11 +5,21 @@ include(FakeIt/FakeIt.cmake)
 
 set(UT_EXE PluginUnittests)
 
-file(GLOB TEST_SOURCES *Test.cpp)
+set(SRC ${PROJECT_SOURCE_DIR}/src)
+set(SOURCES ${SRC}/QRXPlugin.cpp
+            ${SRC}/PluginSettings.cpp
+            ${SRC}/CVWizard/CVWizard.cpp
+            ${SRC}/CVWizard/CVWizardModule.cpp
+            ${SRC}/CVWizard/CVWizardWidget.cpp)
+
+set(TESTS_SOURCES QRXPluginTest.cpp
+                  PluginJsonTest.cpp
+                  PluginSettingsTest.cpp
+                  CVWizard/CVWizardTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 
-add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TEST_SOURCES} ${SOURCES})
+add_executable(${UT_EXE} CatchMain.cpp myCatch.cpp ${TESTS_SOURCES} ${SOURCES})
 target_include_directories(${UT_EXE} PRIVATE ${PROJECT_SOURCE_DIR}/include include)
 target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)

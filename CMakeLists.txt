@@ -45,38 +45,15 @@ else ()
   endif ()
 endif ()
 
-#if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-#message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-#  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.9/conan.cmake" "${CMAKE_BINARY_DIR}/conan.cmake")
-#endif ()
-#include(${CMAKE_BINARY_DIR}/conan.cmake)
-#conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP)
-
-file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE HEADERS include/*.hpp)
-
-file(GLOB_RECURSE CVWIZARD_SOURCES src/CVWizard/*.cpp)
 file(GLOB_RECURSE CVWIZARD_HEADERS include/CVWizard/*.hpp)
-
 source_group("Header Files" FILES ${HEADERS})
 source_group("CVWizard Header Files" FILES ${CVWIZARD_HEADERS})
 
-add_library(${LIB_NAME} MODULE ${SOURCES} ${CVWIZARD_SOURCES})
-target_compile_options(${LIB_NAME} PRIVATE "-fuse-ld=gold" "-flto")
-
-target_include_directories(${LIB_NAME} PRIVATE include)
-
-target_link_libraries(${LIB_NAME} ${CONAN_LIBS})
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-  set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ".dylib")
-endif ()
-
-set_target_properties(${LIB_NAME} PROPERTIES PREFIX "")
+add_subdirectory(src)
+add_subdirectory(test)
 
 file(GLOB LICENSE LICENSE*)
 file(INSTALL plugin.json res ${LICENSE} DESTINATION dist/${PLUGIN_NAME})
 install(TARGETS ${LIB_NAME} LIBRARY DESTINATION ${PROJECT_BINARY_DIR}/dist/${PLUGIN_NAME} OPTIONAL)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/dist/${PLUGIN_NAME}/ DESTINATION ${PLUGIN_NAME})
-
-add_subdirectory(test)
