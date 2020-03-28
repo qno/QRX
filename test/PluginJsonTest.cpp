@@ -14,8 +14,13 @@
 TEST_CASE("plugin.json", "[plugin] [json]")
 {
    const auto QRX = std::string{"QRX"};
+   const auto URL = std::string{"https://github.com/qno"};
    const auto LicenseGPLv3 = std::string{"GPL-3.0-or-later"};
    const auto Author = std::string{"Silvio Kunaschk"};
+   const auto AuthorUrl = std::string{URL};
+   const auto PluginUrl = std::string{URL + "/QRX"};
+   const auto ManualUrl = std::string{PluginUrl + "/wiki"};
+   const auto CVWizardManualUrl = std::string{ManualUrl + "/CVWizard-Module"};
    
    const auto jsonFile = std::string{GETSTRING(PLUGIN_JSON_FILE)};
    REQUIRE(!jsonFile.empty());
@@ -69,25 +74,18 @@ TEST_CASE("plugin.json", "[plugin] [json]")
       REQUIRE(std::string(json_string_value(author)) == Author);
    }
    
-   SECTION("ensure that pluginUrl is not empty")
+   SECTION("ensure that pluginUrl is correct")
    {
       const auto pluginUrl = json_object_get(pluginJson.get(), "pluginUrl");
       REQUIRE(pluginUrl != nullptr);
-      REQUIRE(!std::string(json_string_value(pluginUrl)).empty());
+      REQUIRE(std::string(json_string_value(pluginUrl)) == PluginUrl);
    }
    
-   SECTION("ensure that manualUrl is not empty")
+   SECTION("ensure that manualUrl is correct")
    {
       const auto manualUrl = json_object_get(pluginJson.get(), "manualUrl");
       REQUIRE(manualUrl != nullptr);
-      REQUIRE(!std::string(json_string_value(manualUrl)).empty());
-   }
-   
-   SECTION("ensure that manualUrl is not empty")
-   {
-      const auto manualUrl = json_object_get(pluginJson.get(), "manualUrl");
-      REQUIRE(manualUrl != nullptr);
-      REQUIRE(!std::string(json_string_value(manualUrl)).empty());
+      REQUIRE(std::string(json_string_value(manualUrl)) == ManualUrl);
    }
    
    const auto modules = json_object_get(pluginJson.get(), "modules");
@@ -116,11 +114,11 @@ TEST_CASE("plugin.json", "[plugin] [json]")
          REQUIRE(description != nullptr);
          REQUIRE(!std::string(json_string_value(description)).empty());
       }
-      SECTION("ensure that CVWizard module manualUrl is not empty")
+      SECTION("ensure that CVWizard module manualUrl is correct")
       {
          const auto manualUrl = json_object_get(value, "manualUrl");
          REQUIRE(manualUrl != nullptr);
-         REQUIRE(!std::string(json_string_value(manualUrl)).empty());
+         REQUIRE(std::string(json_string_value(manualUrl)) == CVWizardManualUrl);
       }
       SECTION("ensure that CVWizard module tags are not empty")
       {
