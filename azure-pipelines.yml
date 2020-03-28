@@ -187,7 +187,7 @@ stages:
             cd build
             $(deactivate-env)
             cd ..
-          displayName: build with Rack Makefile
+          displayName: Rack Makefile build
 
   - stage: publish
     displayName: Publish Plugin
