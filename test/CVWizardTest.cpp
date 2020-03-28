@@ -6,12 +6,11 @@
 
 #include <catch2/catch.hpp>
 
-
 using namespace qrx;
 
 TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
 {
-   REQUIRE(CVWizardModule::SLUG == std::string{"CVWizard"});
+   REQUIRE(std::string{CVWizardModule::SLUG} == std::string{"CVWizard"});
 }
 
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")

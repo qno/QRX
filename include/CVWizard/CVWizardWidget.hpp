@@ -19,9 +19,9 @@ class CVWizardWidget : public rack::ModuleWidget
 {
 public:
   
-   CVWizardWidget(CVWizardModule* module);
+   explicit CVWizardWidget(CVWizardModule* module);
   
-   virtual ~CVWizardWidget() = default;
+   ~CVWizardWidget() override = default;
   
    void step() override;
   

@@ -16,7 +16,7 @@ TEST_CASE("create QRXPlugin", "[plugin]")
    {
       const auto model = plugin.getModel(qrx::CVWizardModule::SLUG);
       REQUIRE(model != nullptr);
-      REQUIRE(model->slug == qrx::CVWizardModule::SLUG);
+      REQUIRE(model->slug == std::string{qrx::CVWizardModule::SLUG});
    }
 }
 

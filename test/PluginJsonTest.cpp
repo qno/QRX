@@ -3,6 +3,7 @@
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
 #include <CVWizard/CVWizardModule.hpp>
+#include <PluginSettings.hpp>
 
 #include <jansson.h>
 #include <catch2/catch.hpp>
@@ -13,7 +14,7 @@
 // see https://vcvrack.com/manual/Manifest
 TEST_CASE("plugin.json", "[plugin] [json]")
 {
-   const auto QRX = std::string{"QRX"};
+   const auto QRX = std::string{qrx::PluginSettings::SLUG};
    const auto URL = std::string{"https://github.com/qno"};
    const auto LicenseGPLv3 = std::string{"GPL-3.0-or-later"};
    const auto Author = std::string{"Silvio Kunaschk"};
@@ -101,13 +102,13 @@ TEST_CASE("plugin.json", "[plugin] [json]")
       {
          const auto slug = json_object_get(value, "slug");
          REQUIRE(slug != nullptr);
-         REQUIRE(std::string(json_string_value(slug)) == qrx::CVWizardModule::SLUG);
+         REQUIRE(std::string(json_string_value(slug)) == std::string{qrx::CVWizardModule::SLUG});
       }
       SECTION("ensure CVWizard module name is CVWizard")
       {
          const auto name = json_object_get(value, "name");
          REQUIRE(name != nullptr);
-         REQUIRE(std::string(json_string_value(name)) == qrx::CVWizardModule::SLUG);
+         REQUIRE(std::string(json_string_value(name)) == std::string{qrx::CVWizardModule::SLUG});
       }
       SECTION("ensure that CVWizard module description is not empty")
       {

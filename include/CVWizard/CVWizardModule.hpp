@@ -8,7 +8,7 @@ class CVWizardModule : public rack::engine::Module
 {
 public:
    
-   static const std::string SLUG;
+   static constexpr char const* SLUG = "CVWizard";
   
    enum ParamIds {
       NUM_PARAMS
@@ -28,7 +28,7 @@ public:
   
    CVWizardModule();
   
-   virtual ~CVWizardModule() = default;
+   ~CVWizardModule() override = default;
   
    void process(const ProcessArgs& args) override;
    
