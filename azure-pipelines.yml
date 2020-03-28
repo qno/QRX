@@ -179,6 +179,15 @@ stages:
           inputs:
             path: $(System.DefaultWorkingDirectory)/build/dist
             artifact: $(artifact)
+        - script: |
+            cd build
+            $(activate-env)
+            cd ..
+            make
+            cd build
+            $(deactivate-env)
+            cd ..
+          displayName: build with Rack Makefile
 
   - stage: publish
     displayName: Publish Plugin
