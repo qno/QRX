@@ -60,6 +60,7 @@ void log(Level, const char*, int, const char*, ...) { }
 
 namespace asset {
 std::string plugin(plugin::Plugin*, std::string) { return{}; }
+std::string user(std::string) { return{}; }
 }
 
 namespace engine {

@@ -22,8 +22,17 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
       auto defaultSettings = cvwizard::ModuleSettings::Settings{};
       auto loadedDefaultSettings = pluginSettings.getCVWizardSettings();
       REQUIRE(loadedDefaultSettings == defaultSettings);
-      pluginSettings.load();
-      pluginSettings.save();
+   }
+   
+   SECTION("ensure that getCVWizardSettings after dumpSettings returns dumped settings")
+   {
+      auto dumpedSettings = cvwizard::ModuleSettings::Settings{};
+      dumpedSettings.ShowMappingTooltips = true;
+      dumpedSettings.MappingKey = 22;
+      dumpedSettings.MappingCancelKey = 33;
+      dumpedSettings.MappingTooltipKey = 44;
+      pluginSettings.dumpSettings(dumpedSettings);
+      REQUIRE(pluginSettings.getCVWizardSettings() == dumpedSettings);
    }
 }
 

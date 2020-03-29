@@ -19,6 +19,9 @@ public:
    
    cvwizard::ModuleSettings::Settings getCVWizardSettings() override;
    void dumpSettings(const cvwizard::ModuleSettings::Settings& settings) override;
+   
+private:
+   cvwizard::ModuleSettings::Settings _cvWizardSettings;
 };
 
 }
