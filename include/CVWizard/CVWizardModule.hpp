@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QRXPlugin.hpp>
+#include <CVWizard/ModuleSettings.hpp>
+
+#include <memory>
 
 namespace qrx {
 namespace cvwizard {
@@ -32,7 +35,6 @@ public:
    };
    
    CVWizardModule();
-   
    ~CVWizardModule() override = default;
    
    void process(const ProcessArgs& args) override;
@@ -40,6 +42,11 @@ public:
    json_t* dataToJson() override;
    
    void dataFromJson(json_t* root) override;
+   
+   ModuleSettings& getSettings() const;
+   
+private:
+   std::shared_ptr<ModuleSettings> _settings;
 };
 
 }

@@ -16,6 +16,15 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
    {
       REQUIRE(std::string{PluginSettings::SLUG} == std::string{"QRX"});
    }
+   
+   SECTION("ensure that non existing QRX.json returns default settings")
+   {
+      auto defaultSettings = cvwizard::ModuleSettings::Settings{};
+      auto loadedDefaultSettings = pluginSettings.getCVWizardSettings();
+      REQUIRE(loadedDefaultSettings == defaultSettings);
+      pluginSettings.load();
+      pluginSettings.save();
+   }
 }
 
 #pragma GCC diagnostic pop

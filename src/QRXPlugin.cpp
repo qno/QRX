@@ -1,14 +1,15 @@
 #include <QRXPlugin.hpp>
+#include <PluginSettings.hpp>
 
 rack::plugin::Plugin* pluginInstance;
+std::shared_ptr<qrx::PluginSettings> pluginSettings;
 
 void init(rack::plugin::Plugin* p)
 {
+   pluginSettings = std::make_shared<qrx::PluginSettings>();
+   pluginSettings->load();
+   
    pluginInstance = p;
    
-   // Add modules here
    p->addModel(modelCVWizard);
-
-   // Any other plugin initialization may go here.
-   // As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
 }

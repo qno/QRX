@@ -1,12 +1,21 @@
 #include <CVWizard/CVWizardModule.hpp>
+#include <PluginSettings.hpp>
 
 using namespace rack;
+
+extern std::shared_ptr<qrx::PluginSettings> pluginSettings;
+
+std::shared_ptr<qrx::cvwizard::ModuleSettings> addSettings()
+{
+   return std::dynamic_pointer_cast<qrx::cvwizard::ModuleSettings>(pluginSettings);
+}
 
 namespace qrx {
 namespace cvwizard {
 
 CVWizardModule::CVWizardModule()
    : Module()
+   , _settings(addSettings())
 {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 }
@@ -30,6 +39,11 @@ json_t* CVWizardModule::dataToJson()
 void CVWizardModule::dataFromJson(json_t* root)
 {
 
+}
+
+ModuleSettings& CVWizardModule::getSettings() const
+{
+   return *_settings;
 }
 
 }

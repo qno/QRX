@@ -3,6 +3,7 @@
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
 #include <CVWizard/CVWizardModule.hpp>
+#include <PluginSettings.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -15,6 +16,8 @@ TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
 
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
+   auto plugin = rack::plugin::Plugin{};
+   init(&plugin);
    CVWizardModule wiz;
    auto jsonResult = std::unique_ptr<json_t>(wiz.dataToJson());
    REQUIRE(jsonResult != nullptr);
@@ -40,6 +43,12 @@ TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
    }
    
    //REQUIRE(json_dumps(jsonResult.get(), JSON_ENCODE_ANY) == "1");
+   
+   SECTION("CVWizardModule getSettings")
+   {
+      const auto defaultSettings = ModuleSettings::Settings{};
+      REQUIRE(wiz.getSettings().getCVWizardSettings() == defaultSettings);
+   }
 }
 
 #pragma GCC diagnostic pop
