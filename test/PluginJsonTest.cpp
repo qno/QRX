@@ -21,6 +21,7 @@ TEST_CASE("plugin.json", "[plugin] [json]")
    const auto AuthorUrl = std::string{URL};
    const auto PluginUrl = std::string{URL + "/QRX"};
    const auto ManualUrl = std::string{PluginUrl + "/wiki"};
+   const auto CVWizardSLUG = std::string{qrx::cvwizard::CVWizardModule::SLUG};
    const auto CVWizardManualUrl = std::string{ManualUrl + "/CVWizard-Module"};
    
    const auto jsonFile = std::string{GETSTRING(PLUGIN_JSON_FILE)};
@@ -102,13 +103,13 @@ TEST_CASE("plugin.json", "[plugin] [json]")
       {
          const auto slug = json_object_get(value, "slug");
          REQUIRE(slug != nullptr);
-         REQUIRE(std::string(json_string_value(slug)) == std::string{qrx::CVWizardModule::SLUG});
+         REQUIRE(std::string(json_string_value(slug)) == CVWizardSLUG);
       }
       SECTION("ensure CVWizard module name is CVWizard")
       {
          const auto name = json_object_get(value, "name");
          REQUIRE(name != nullptr);
-         REQUIRE(std::string(json_string_value(name)) == std::string{qrx::CVWizardModule::SLUG});
+         REQUIRE(std::string(json_string_value(name)) == CVWizardSLUG);
       }
       SECTION("ensure that CVWizard module description is not empty")
       {

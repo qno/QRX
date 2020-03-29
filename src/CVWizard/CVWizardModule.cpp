@@ -3,6 +3,7 @@
 using namespace rack;
 
 namespace qrx {
+namespace cvwizard {
 
 CVWizardModule::CVWizardModule()
    : Module()
@@ -31,4 +32,5 @@ void CVWizardModule::dataFromJson(json_t* root)
 
 }
 
+}
 }

@@ -6,7 +6,7 @@
 
 #include <catch2/catch.hpp>
 
-using namespace qrx;
+using namespace qrx::cvwizard;
 
 TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
 {

@@ -4,6 +4,7 @@
 #include <CVWizard/CVWizardModule.hpp>
 
 namespace qrx {
+namespace cvwizard {
 
 class WizScrew : public rack::app::SvgScrew
 {
@@ -36,4 +37,5 @@ private:
    bool m_mappingModeActive = false;
 };
 
+}
 }
