@@ -17,20 +17,42 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
       REQUIRE(std::string{PluginSettings::SLUG} == std::string{"QRX"});
    }
    
-   SECTION("ensure that not calling load returns CVWizard default settings")
+   SECTION("ensure that created PluginSettings instance returns CVWizard default settings")
    {
       PluginSettings pluginSettings{};
       REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
    }
    
-   SECTION("ensure that non existing QRX.json returns CVWizard default settings")
+   SECTION("ensure that PluginSettings load for non existing QRX.json returns CVWizard default settings")
    {
       PluginSettings pluginSettings{};
       pluginSettings.load();
       REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
    }
    
-   SECTION("ensure that getCVWizardSettings after dumpSettings returns dumped settings")
+   SECTION("ensure PluginSettings returns settings from file with non default settings" )
+   {
+      PluginSettings pluginSettings{};
+      pluginSettings.load("non-default-settings.json");
+      REQUIRE(!(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings));
+   }
+   
+   SECTION("ensure PluginSettings return default settings if corrupted settings file was loaded" )
+   {
+      PluginSettings pluginSettings{};
+      pluginSettings.load("corrupted-settings.json");
+      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
+   }
+   
+   SECTION("ensure CVWizardModule get default settings attribute if file with corrupted settings attribute loaded" )
+   {
+      PluginSettings pluginSettings{};
+      pluginSettings.load("corrupted-attribute.json");
+      REQUIRE(!(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings));
+      REQUIRE(pluginSettings.getCVWizardSettings().MappingTooltipKey == defaultCVWizardSettings.MappingTooltipKey);
+   }
+   
+   SECTION("ensure that PluginSettings getCVWizardSettings returns dumped settings after dumpSettings called")
    {
       PluginSettings pluginSettings{};
       auto dumpedSettings = cvwizard::ModuleSettings::Settings{};
