@@ -10,24 +10,31 @@ using namespace qrx;
 
 TEST_CASE("PluginSettings", "[plugin] [settings]")
 {
-   PluginSettings pluginSettings{};
+   const auto defaultCVWizardSettings = cvwizard::ModuleSettings::Settings{};
    
    SECTION("ensure that slug is QRX")
    {
       REQUIRE(std::string{PluginSettings::SLUG} == std::string{"QRX"});
    }
    
-   SECTION("ensure that non existing QRX.json returns default settings")
+   SECTION("ensure that not calling load returns CVWizard default settings")
    {
-      auto defaultSettings = cvwizard::ModuleSettings::Settings{};
-      auto loadedDefaultSettings = pluginSettings.getCVWizardSettings();
-      REQUIRE(loadedDefaultSettings == defaultSettings);
+      PluginSettings pluginSettings{};
+      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
+   }
+   
+   SECTION("ensure that non existing QRX.json returns CVWizard default settings")
+   {
+      PluginSettings pluginSettings{};
+      pluginSettings.load();
+      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
    }
    
    SECTION("ensure that getCVWizardSettings after dumpSettings returns dumped settings")
    {
+      PluginSettings pluginSettings{};
       auto dumpedSettings = cvwizard::ModuleSettings::Settings{};
-      dumpedSettings.ShowMappingTooltips = true;
+      dumpedSettings.ShowMappingTooltips = false;
       dumpedSettings.MappingKey = 22;
       dumpedSettings.MappingCancelKey = 33;
       dumpedSettings.MappingTooltipKey = 44;
