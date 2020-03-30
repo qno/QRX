@@ -18,7 +18,7 @@ public:
       int  MappingKey          = KEY_M;
       int  MappingCancelKey    = KEY_ESC;
       int  MappingTooltipKey   = KEY_T;
-      bool ShowMappingTooltips = false;
+      bool ShowMappingTooltips = true;
       
       bool operator== (const Settings& other) const
       {

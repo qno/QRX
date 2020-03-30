@@ -29,14 +29,8 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
       REQUIRE(defaultSettings.MappingKey == GLFW_KEY_M);
       REQUIRE(defaultSettings.MappingCancelKey == GLFW_KEY_ESCAPE);
       REQUIRE(defaultSettings.MappingTooltipKey == GLFW_KEY_T);
-      REQUIRE(defaultSettings.ShowMappingTooltips ==  false);
+      REQUIRE(defaultSettings.ShowMappingTooltips ==  true);
    }
-   
-   /*
-   Verify(Method(mock,process).Using(args)).Once();
-   Verify(Method(mock,dataToJson)).Exactly(3);
-   Verify(Method(mock,dataFromJson).Using(json.get())).Twice();
-    */
 }
 
 #pragma GCC diagnostic pop
