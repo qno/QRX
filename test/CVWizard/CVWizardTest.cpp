@@ -16,10 +16,8 @@ TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
 
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
-   auto plugin = rack::plugin::Plugin{};
-   init(&plugin);
-   CVWizardModule wiz;
-   auto jsonResult = std::unique_ptr<json_t>(wiz.dataToJson());
+   CVWizardModule cvWizard;
+   auto jsonResult = std::unique_ptr<json_t>(cvWizard.dataToJson());
    REQUIRE(jsonResult != nullptr);
    
    SECTION("json result type is JSON_OBJECT")
@@ -43,11 +41,45 @@ TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
    }
    
    //REQUIRE(json_dumps(jsonResult.get(), JSON_ENCODE_ANY) == "1");
+}
+
+TEST_CASE("CVWizardModule module settings", "[cvwizard] [module]")
+{
+   const auto defaultSettings = ModuleSettings::Settings{};
    
-   SECTION("CVWizardModule getSettings")
+   SECTION("CVWizardModule get default settings")
    {
-      const auto defaultSettings = ModuleSettings::Settings{};
-      REQUIRE(wiz.getSettings().getCVWizardSettings() == defaultSettings);
+      auto pluginSettings = std::make_shared<qrx::PluginSettings>();
+      CVWizardModule cvWizard;
+      cvWizard.addSettings(pluginSettings);
+      REQUIRE(cvWizard.getSettings().getCVWizardSettings() == defaultSettings);
+   }
+   
+   SECTION("ensure CVWizardModule get settings from file with non default settings" )
+   {
+      auto pluginSettings = std::make_shared<qrx::PluginSettings>();
+      pluginSettings->load("non-default-settings.json");
+      CVWizardModule cvWizard;
+      cvWizard.addSettings(pluginSettings);
+      REQUIRE(!(cvWizard.getSettings().getCVWizardSettings() == defaultSettings));
+   }
+   
+   SECTION("ensure CVWizardModule get default settings if corrupted settings file loaded" )
+   {
+      auto pluginSettings = std::make_shared<qrx::PluginSettings>();
+      pluginSettings->load("corrupted-settings.json");
+      CVWizardModule cvWizard;
+      cvWizard.addSettings(pluginSettings);
+      REQUIRE(cvWizard.getSettings().getCVWizardSettings() == defaultSettings);
+   }
+   SECTION("ensure CVWizardModule get default settings attribute if file with corrupted settings attribute loaded" )
+   {
+      auto pluginSettings = std::make_shared<qrx::PluginSettings>();
+      pluginSettings->load("corrupted-attribute.json");
+      CVWizardModule cvWizard;
+      cvWizard.addSettings(pluginSettings);
+      REQUIRE(!(cvWizard.getSettings().getCVWizardSettings() == defaultSettings));
+      REQUIRE(cvWizard.getSettings().getCVWizardSettings().MappingTooltipKey == defaultSettings.MappingTooltipKey);
    }
 }
 

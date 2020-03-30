@@ -43,6 +43,8 @@ public:
    
    void dataFromJson(json_t* root) override;
    
+   void addSettings(std::shared_ptr<ModuleSettings> settings);
+   
    ModuleSettings& getSettings() const;
    
 private:

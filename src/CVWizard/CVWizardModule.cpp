@@ -3,19 +3,23 @@
 
 using namespace rack;
 
+#ifndef QRX_UNITTESTS
 extern std::shared_ptr<qrx::PluginSettings> pluginSettings;
 
-std::shared_ptr<qrx::cvwizard::ModuleSettings> addSettings()
+std::shared_ptr<qrx::cvwizard::ModuleSettings> addPluginSettings()
 {
    return std::dynamic_pointer_cast<qrx::cvwizard::ModuleSettings>(pluginSettings);
 }
+#endif
 
 namespace qrx {
 namespace cvwizard {
 
 CVWizardModule::CVWizardModule()
    : Module()
-   , _settings(addSettings())
+#ifndef QRX_UNITTESTS
+   , _settings{addPluginSettings()}
+#endif
 {
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 }
@@ -39,6 +43,11 @@ json_t* CVWizardModule::dataToJson()
 void CVWizardModule::dataFromJson(json_t* root)
 {
 
+}
+
+void CVWizardModule::addSettings(std::shared_ptr<ModuleSettings> settings)
+{
+   _settings = settings;
 }
 
 ModuleSettings& CVWizardModule::getSettings() const

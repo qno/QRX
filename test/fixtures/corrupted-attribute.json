@@ -1,0 +1,9 @@
+{
+  "CVWizard":
+  {
+   "MappingKey": 1,
+   "MappingCancelKey": 2,
+   "MappingTooltipKeyCorrupt": 3,
+   "ShowMappingTooltips": false
+  }
+}
