@@ -4,7 +4,7 @@
 #include <logger.hpp>
 
 #include <memory>
-#include <iostream>
+
 namespace qrx {
 
 PluginSettings::~PluginSettings()
