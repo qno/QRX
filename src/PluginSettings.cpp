@@ -3,6 +3,7 @@
 #include <asset.hpp>
 #include <logger.hpp>
 
+#include <fstream>
 #include <memory>
 
 namespace qrx {
@@ -42,6 +43,12 @@ void PluginSettings::save(const std::string& file) const
 {
    const auto jsonFile = rack::asset::user(file);
    INFO("Save %s plugin settings to '%s'", SLUG, jsonFile.c_str());
+   
+   auto json = std::unique_ptr<json_t>(json_object());
+   saveCVWizardSettings(*json);
+   
+   std::ofstream settingsFile(jsonFile, std::ofstream::trunc);
+   settingsFile << json_dumps(json.get(), JSON_ENCODE_ANY | JSON_INDENT(2));
 }
 
 cvwizard::ModuleSettings::Settings PluginSettings::getCVWizardSettings()
@@ -82,6 +89,20 @@ void PluginSettings::loadCVWizardSettings(const json_t& json)
          _cvWizardSettings.ShowMappingTooltips = json_boolean_value(showMappingTooltips);
       }
    }
+}
+
+void PluginSettings::saveCVWizardSettings(json_t& json) const
+{
+   using namespace qrx::cvwizard;
+   
+   auto cvWizardSettingsJson = std::unique_ptr<json_t>(json_object());
+   
+   json_object_set_new(cvWizardSettingsJson.get(), MappingKey, json_integer(_cvWizardSettings.MappingKey));
+   json_object_set_new(cvWizardSettingsJson.get(), MappingCancelKey, json_integer(_cvWizardSettings.MappingCancelKey));
+   json_object_set_new(cvWizardSettingsJson.get(), MappingTooltipKey, json_integer(_cvWizardSettings.MappingTooltipKey));
+   json_object_set_new(cvWizardSettingsJson.get(), ShowMappingTooltips, json_boolean(_cvWizardSettings.ShowMappingTooltips));
+   
+   json_object_set_new(&json, "CVWizard", cvWizardSettingsJson.get());
 }
 
 }

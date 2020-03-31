@@ -27,6 +27,7 @@ public:
 private:
    
    void loadCVWizardSettings(const json_t& json);
+   void saveCVWizardSettings(json_t& json) const;
    
    cvwizard::ModuleSettings::Settings _cvWizardSettings;
 };
