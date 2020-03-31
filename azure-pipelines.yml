@@ -98,7 +98,7 @@ stages:
             prepare-env: $(create-mingw-profile)
             pip-command: python -m pip
             conan-libcxx-setting: -s compiler.libcxx=libstdc++11
-            conan-profile: -p ..\mingw
+            conan-profile: -pr ..\mingw
             define-plugin-slug: |
               jq .slug plugin.json > tmpPluginSlug
               set /p PLUGIN_SLUG= < tmpPluginSlug
