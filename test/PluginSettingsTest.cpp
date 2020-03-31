@@ -6,6 +6,7 @@
 
 #include <catch2/catch.hpp>
 
+
 using namespace qrx;
 
 TEST_CASE("PluginSettings", "[plugin] [settings]")
@@ -91,19 +92,38 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       const auto savedSettingsFile = std::string{"saved-dumped.json"};
       
       auto settingsToDump = cvwizard::ModuleSettings::Settings{};
-      settingsToDump.MappingTooltipKey = 1111;
-      settingsToDump.MappingCancelKey = 2222;
-      settingsToDump.MappingKey = 3333;
+      settingsToDump.MappingTooltipKey   = 1111;
+      settingsToDump.MappingCancelKey    = 2222;
+      settingsToDump.MappingKey          = 3333;
       settingsToDump.ShowMappingTooltips = false;
       
       PluginSettings pluginSettingsSaver{};
       pluginSettingsSaver.dumpSettings(settingsToDump);
       pluginSettingsSaver.save(savedSettingsFile);
-   
+      
       PluginSettings pluginSettingsLoader{};
       pluginSettingsLoader.load(savedSettingsFile);
       
       REQUIRE(pluginSettingsLoader.getCVWizardSettings() == settingsToDump);
+   }
+   
+   SECTION("ensure that PluginSettings destructor calls save")
+   {
+      auto testSettings = cvwizard::ModuleSettings::Settings{};
+      testSettings.MappingTooltipKey = 1;
+      testSettings.MappingCancelKey = 2;
+      testSettings.MappingKey = 3;
+      testSettings.ShowMappingTooltips = false;
+      
+      {
+         PluginSettings pluginSettings{};
+         pluginSettings.dumpSettings(testSettings);
+      }
+      
+      PluginSettings pluginSettingsLoader{};
+      pluginSettingsLoader.load();
+      
+      REQUIRE(pluginSettingsLoader.getCVWizardSettings() == testSettings);
    }
 }
 

@@ -4,7 +4,6 @@
 #include <logger.hpp>
 
 #include <fstream>
-#include <memory>
 
 namespace qrx {
 
@@ -13,7 +12,7 @@ PluginSettings::~PluginSettings()
    save();
 }
 
-void PluginSettings::load(const std::string& file)
+void PluginSettings::load(const std::string& file) noexcept
 {
    const auto jsonFile = rack::asset::user(file);
    INFO("Load %s plugin settings from '%s'", SLUG, jsonFile.c_str());
@@ -39,16 +38,23 @@ void PluginSettings::load(const std::string& file)
    }
 }
 
-void PluginSettings::save(const std::string& file) const
+void PluginSettings::save(const std::string& file) const noexcept
 {
    const auto jsonFile = rack::asset::user(file);
    INFO("Save %s plugin settings to '%s'", SLUG, jsonFile.c_str());
    
    auto json = std::unique_ptr<json_t>(json_object());
-   saveCVWizardSettings(*json);
+   const auto cvWizardSettingsJson = dumpCVWizardSettings();
+   json_object_set_new(json.get(), "CVWizard", cvWizardSettingsJson.get());
    
    std::ofstream settingsFile(jsonFile, std::ofstream::trunc);
    settingsFile << json_dumps(json.get(), JSON_ENCODE_ANY | JSON_INDENT(2));
+   settingsFile.close();
+   
+   if (settingsFile.fail())
+   {
+      WARN("saving '%s' has failed", jsonFile.c_str());
+   }
 }
 
 cvwizard::ModuleSettings::Settings PluginSettings::getCVWizardSettings()
@@ -64,6 +70,7 @@ void PluginSettings::dumpSettings(const cvwizard::ModuleSettings::Settings& sett
 void PluginSettings::loadCVWizardSettings(const json_t& json)
 {
    using namespace qrx::cvwizard;
+   
    const auto cvWizard = json_object_get(&json, "CVWizard");
    
    if (cvWizard)
@@ -91,7 +98,7 @@ void PluginSettings::loadCVWizardSettings(const json_t& json)
    }
 }
 
-void PluginSettings::saveCVWizardSettings(json_t& json) const
+std::unique_ptr<json_t> PluginSettings::dumpCVWizardSettings() const
 {
    using namespace qrx::cvwizard;
    
@@ -102,7 +109,7 @@ void PluginSettings::saveCVWizardSettings(json_t& json) const
    json_object_set_new(cvWizardSettingsJson.get(), MappingTooltipKey, json_integer(_cvWizardSettings.MappingTooltipKey));
    json_object_set_new(cvWizardSettingsJson.get(), ShowMappingTooltips, json_boolean(_cvWizardSettings.ShowMappingTooltips));
    
-   json_object_set_new(&json, "CVWizard", cvWizardSettingsJson.get());
+   return cvWizardSettingsJson;
 }
 
 }

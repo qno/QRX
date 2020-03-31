@@ -2,6 +2,7 @@
 
 #include <CVWizard/ModuleSettings.hpp>
 
+#include <memory>
 #include <string>
 
 struct json_t;
@@ -14,12 +15,10 @@ public:
    static constexpr char const* SLUG = "QRX";
    
    PluginSettings() = default;
-   ~PluginSettings() override;
-   PluginSettings(const PluginSettings&) = delete;
-   PluginSettings& operator= (const PluginSettings&) = delete;
+   ~PluginSettings() noexcept override;
   
-   void load(const std::string& file = std::string{SLUG} + ".json");
-   void save(const std::string& file = std::string{SLUG} + ".json") const;
+   void load(const std::string& file = std::string{SLUG} + ".json") noexcept;
+   void save(const std::string& file = std::string{SLUG} + ".json") const noexcept;
    
    cvwizard::ModuleSettings::Settings getCVWizardSettings() override;
    void dumpSettings(const cvwizard::ModuleSettings::Settings& settings) override;
@@ -27,9 +26,9 @@ public:
 private:
    
    void loadCVWizardSettings(const json_t& json);
-   void saveCVWizardSettings(json_t& json) const;
+   std::unique_ptr<json_t> dumpCVWizardSettings() const;
    
-   cvwizard::ModuleSettings::Settings _cvWizardSettings;
+   cvwizard::ModuleSettings::Settings _cvWizardSettings{};
 };
 
 }
