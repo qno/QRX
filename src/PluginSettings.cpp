@@ -7,7 +7,7 @@
 
 namespace qrx {
 
-PluginSettings::~PluginSettings()
+PluginSettings::~PluginSettings() noexcept
 {
    save();
 }
