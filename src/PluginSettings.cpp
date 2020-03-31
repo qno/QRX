@@ -35,6 +35,7 @@ void PluginSettings::load(const std::string& file)
    else
    {
       loadCVWizardSettings(*pluginSettings);
+      json_decref(pluginSettings.get());
    }
 }
 
@@ -56,29 +57,30 @@ void PluginSettings::dumpSettings(const cvwizard::ModuleSettings::Settings& sett
 
 void PluginSettings::loadCVWizardSettings(const json_t& json)
 {
+   using namespace qrx::cvwizard;
    const auto cvWizard = json_object_get(&json, "CVWizard");
    
    if (cvWizard)
    {
-      const auto showTooltip = json_object_get(cvWizard, "ShowMappingTooltips");
-      if (showTooltip)
-      {
-         _cvWizardSettings.ShowMappingTooltips = json_boolean_value(showTooltip);
-      }
-      const auto mappingKey = json_object_get(cvWizard, "MappingKey");
+      const auto mappingKey = json_object_get(cvWizard, MappingKey);
       if (mappingKey)
       {
          _cvWizardSettings.MappingKey = json_integer_value(mappingKey);
       }
-      const auto mappingTooltipKey = json_object_get(cvWizard, "MappingTooltipKey");
+      const auto mappingCancelKey = json_object_get(cvWizard, MappingCancelKey);
+      if (mappingCancelKey)
+      {
+         _cvWizardSettings.MappingCancelKey = json_integer_value(mappingCancelKey);
+      }
+      const auto mappingTooltipKey = json_object_get(cvWizard, MappingTooltipKey);
       if (mappingTooltipKey)
       {
          _cvWizardSettings.MappingTooltipKey = json_integer_value(mappingTooltipKey);
       }
-      const auto mappingCancelKey = json_object_get(cvWizard, "MappingCancelKey");
-      if (mappingCancelKey)
+      const auto showMappingTooltips = json_object_get(cvWizard, ShowMappingTooltips);
+      if (showMappingTooltips)
       {
-         _cvWizardSettings.MappingCancelKey = json_integer_value(mappingCancelKey);
+         _cvWizardSettings.ShowMappingTooltips = json_boolean_value(showMappingTooltips);
       }
    }
 }

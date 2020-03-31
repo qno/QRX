@@ -5,11 +5,16 @@ namespace cvwizard {
 
 class ModuleSettings
 {
-private:
+protected:
    // correspond to GLFW_KEY values
    static constexpr int KEY_M   = 77;
    static constexpr int KEY_T   = 84;
    static constexpr int KEY_ESC = 256;
+   
+   static constexpr char const* MappingKey          = "MappingKey";
+   static constexpr char const* MappingCancelKey    = "MappingCancelKey";
+   static constexpr char const* MappingTooltipKey   = "MappingTooltipKey";
+   static constexpr char const* ShowMappingTooltips = "ShowMappingTooltips";
 
 public:
    
