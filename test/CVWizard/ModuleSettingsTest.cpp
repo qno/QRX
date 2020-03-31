@@ -19,7 +19,7 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
    auto settings = ModuleSettings::Settings{};
    
    When(Method(pluginSettingsMock, getCVWizardSettings)).AlwaysReturn(settings);
-   When(Method(pluginSettingsMock,dumpSettings).Using(_)).AlwaysReturn();
+   When(Method(pluginSettingsMock, dumpSettings).Using(_)).AlwaysReturn();
    
    auto& m = pluginSettingsMock.get();
    

@@ -5,6 +5,7 @@
 #include <CVWizard/CVWizardModule.hpp>
 
 #include <catch2/catch.hpp>
+#include <fakeit.hpp>
 
 using namespace qrx::cvwizard;
 
@@ -40,6 +41,29 @@ TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
    }
    
    //REQUIRE(json_dumps(jsonResult.get(), JSON_ENCODE_ANY) == "1");
+}
+
+TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
+{
+   using namespace fakeit;
+   using namespace qrx::cvwizard;
+   
+   auto defaultSettings = ModuleSettings::Settings{};
+   
+   auto pluginSettingsMock = Mock<ModuleSettings>();
+   
+   When(Method(pluginSettingsMock, getCVWizardSettings)).AlwaysReturn(defaultSettings);
+   When(Method(pluginSettingsMock, dumpSettings).Using(_)).AlwaysReturn();
+   
+   // shared_ptr of mock -  https://github.com/eranpeer/FakeIt/issues/60
+   auto pluginSettingsMockPtr = std::shared_ptr<ModuleSettings>(&pluginSettingsMock(), [](...) {});
+   
+   SECTION("ensure get settings returns added settings")
+   {
+      auto cvWizard = CVWizardModule{};
+      cvWizard.addSettings(pluginSettingsMockPtr);
+      REQUIRE(cvWizard.getSettings().getCVWizardSettings() == defaultSettings);
+   }
 }
 
 #pragma GCC diagnostic pop
