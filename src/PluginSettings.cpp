@@ -35,7 +35,6 @@ void PluginSettings::load(const std::string& file)
    else
    {
       loadCVWizardSettings(*pluginSettings);
-      json_decref(pluginSettings.get());
    }
 }
 
