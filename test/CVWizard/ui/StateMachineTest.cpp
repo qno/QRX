@@ -23,13 +23,13 @@ class MySM : public tinyfsm::Fsm<MySM>
 {
 public:
    
-   MySM() { };
-   virtual ~MySM() { };
+   MySM() = default;
+   virtual ~MySM() = default;
    
    /* default reaction for unhandled events */
-   void react(tinyfsm::Event const &) { };
+   void react(const tinyfsm::Event&) { };
    
-   virtual void react(MyToggleEvent const&);
+   virtual void react(const MyToggleEvent&) = 0;
    
    virtual void entry() { };  /* entry actions in some states */
    void         exit()  { };  /* no exit actions */
@@ -40,6 +40,8 @@ class MyOffState;
 class MyOnState : public MySM
 {
 public:
+   MyOnState() = default;
+   virtual ~MyOnState() = default;
    void entry() override { std::cout << "* MyState is ON" << std::endl; };
    void react(const MyToggleEvent&) override { transit<MyOffState>(); };
 };
@@ -47,6 +49,8 @@ public:
 class MyOffState : public MySM
 {
 public:
+   MyOffState() = default;
+   virtual ~MyOffState() = default;
    void entry() override { std::cout << "* MyState is OFF" << std::endl; };
    void react(const MyToggleEvent&) override { transit<MyOnState>(); };
 };
