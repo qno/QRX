@@ -22,6 +22,10 @@ public:
 class MySM : public tinyfsm::Fsm<MySM>
 {
 public:
+   
+   MySM() = default;
+   ~MySM() = default;
+   
    /* default reaction for unhandled events */
    void react(tinyfsm::Event const &) { };
    
