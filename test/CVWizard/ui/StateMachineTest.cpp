@@ -41,7 +41,7 @@ class MyOnState : public MySM
 {
 public:
    MyOnState() = default;
-   virtual ~MyOnState() = default;
+   ~MyOnState() override = default;
    void entry() override { std::cout << "* MyState is ON" << std::endl; };
    void react(const MyToggleEvent&) override { transit<MyOffState>(); };
 };
@@ -50,7 +50,7 @@ class MyOffState : public MySM
 {
 public:
    MyOffState() = default;
-   virtual ~MyOffState() = default;
+   ~MyOffState() override = default;
    void entry() override { std::cout << "* MyState is OFF" << std::endl; };
    void react(const MyToggleEvent&) override { transit<MyOnState>(); };
 };
