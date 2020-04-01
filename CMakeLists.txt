@@ -6,6 +6,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment ver
 set(PLUGIN_NAME QRX)
 
 project(VCVRack${PLUGIN_NAME}Plugin)
+
+include(thirdparty/tinyfsm/TinyFSM.cmake)
 include(thirdparty/fakeit/FakeIt.cmake)
 include(CTest)
 
