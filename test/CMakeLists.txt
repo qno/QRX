@@ -1,7 +1,6 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
 find_package(Catch2 REQUIRED)
-include(FakeIt/FakeIt.cmake)
 
 set(UT_EXE PluginUnittests)
 
@@ -22,11 +21,14 @@ add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${UT_EXE} CatchMain.cpp ${TESTS_SOURCES} ${SOURCES})
-target_include_directories(${UT_EXE} PRIVATE ${PROJECT_SOURCE_DIR}/include include)
+target_include_directories(${UT_EXE} PRIVATE include ${PROJECT_SOURCE_DIR}/include)
 target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
-                                     PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation ${CONAN_LIBS_JANSSON} FakeIt Catch2::Catch2)
+  PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
+target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
+  ${CONAN_LIBS_JANSSON}
+  FakeIt
+  Catch2::Catch2)
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
