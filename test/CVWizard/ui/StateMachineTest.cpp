@@ -23,8 +23,8 @@ class MySM : public tinyfsm::Fsm<MySM>
 {
 public:
    
-   MySM() = default;
-   ~MySM() = default;
+   MySM() { };
+   virtual ~MySM() { };
    
    /* default reaction for unhandled events */
    void react(tinyfsm::Event const &) { };
@@ -39,16 +39,19 @@ class MyOffState;
 
 class MyOnState : public MySM
 {
+public:
    void entry() override { std::cout << "* MyState is ON" << std::endl; };
-   void react(MyToggleEvent const &) override { transit<MyOffState>(); };
+   void react(const MyToggleEvent&) override { transit<MyOffState>(); };
 };
 
 class MyOffState : public MySM
 {
+public:
    void entry() override { std::cout << "* MyState is OFF" << std::endl; };
-   void react(MyToggleEvent const &) override { transit<MyOnState>(); };
+   void react(const MyToggleEvent&) override { transit<MyOnState>(); };
 };
 }
+
 FSM_INITIAL_STATE(x::MySM, x::MyOffState);
 
 using namespace qrx::cvwizard::ui;
