@@ -9,13 +9,15 @@ set(SOURCES ${SRC}/QRXPlugin.cpp
             ${SRC}/PluginSettings.cpp
             ${SRC}/CVWizard/CVWizard.cpp
             ${SRC}/CVWizard/CVWizardModule.cpp
-            ${SRC}/CVWizard/CVWizardWidget.cpp)
+            ${SRC}/CVWizard/CVWizardWidget.cpp
+            ${SRC}/CVWizard/ui/StateMachine.cpp)
 
 set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   CVWizard/CVWizardTest.cpp
-                  CVWizard/ModuleSettingsTest.cpp)
+                  CVWizard/ModuleSettingsTest.cpp
+                  CVWizard/ui/StateMachineTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
