@@ -56,13 +56,14 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
    When(Method(pluginSettingsMock, dumpSettings).Using(_)).AlwaysReturn();
    
    // shared_ptr of mock -  https://github.com/eranpeer/FakeIt/issues/60
-   auto pluginSettingsMockPtr = std::shared_ptr<ModuleSettings>(&pluginSettingsMock(), [](...) {});
+   auto pluginSettings = std::shared_ptr<ModuleSettings>(&pluginSettingsMock(), [](...) {});
    
    SECTION("ensure get settings returns added settings")
    {
       auto cvWizard = CVWizardModule{};
-      cvWizard.addSettings(pluginSettingsMockPtr);
-      REQUIRE(cvWizard.getSettings().getCVWizardSettings() == defaultSettings);
+      cvWizard.addSettings(pluginSettings);
+      REQUIRE(cvWizard.getSettings());
+      REQUIRE(cvWizard.getSettings()->getCVWizardSettings() == defaultSettings);
    }
 }
 

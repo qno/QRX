@@ -45,7 +45,7 @@ public:
    
    void addSettings(std::shared_ptr<ModuleSettings> settings);
    
-   ModuleSettings& getSettings() const;
+   std::shared_ptr<ModuleSettings> getSettings() const;
    
 private:
    std::shared_ptr<ModuleSettings> _settings;

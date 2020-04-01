@@ -50,9 +50,9 @@ void CVWizardModule::addSettings(std::shared_ptr<ModuleSettings> settings)
    _settings = settings;
 }
 
-ModuleSettings& CVWizardModule::getSettings() const
+std::shared_ptr<ModuleSettings> CVWizardModule::getSettings() const
 {
-   return *_settings;
+   return _settings;
 }
 
 }
