@@ -52,6 +52,8 @@ public:
    
 private:
    
+   void determineMasterModuleStatus();
+   
    static std::atomic_bool _isRackPluginMasterModule;
    bool _isRackMasterModule = false;
    std::shared_ptr<ModuleSettings> _settings;

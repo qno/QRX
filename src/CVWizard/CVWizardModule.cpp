@@ -1,5 +1,6 @@
 #include <CVWizard/CVWizardModule.hpp>
 #include <PluginSettings.hpp>
+#include <utility>
 
 using namespace rack;
 
@@ -23,17 +24,7 @@ CVWizardModule::CVWizardModule()
    , _settings{addPluginSettings()}
 #endif
 {
-   if (!_isRackPluginMasterModule)
-   {
-      INFO("ctr CVWizardModule #%d becomes master module", this);
-      _isRackPluginMasterModule = true;
-      _isRackMasterModule = true;
-   }
-   else
-   {
-      INFO("ctr CVWizardModule #%d doesn't become master module", this);
-   }
-   
+   determineMasterModuleStatus();
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 }
 
@@ -52,18 +43,7 @@ bool CVWizardModule::isMasterModule() const
 
 void CVWizardModule::process(const ProcessArgs& args)
 {
-   if (_isRackMasterModule)
-   {
-      // do processing stuff here
-   }
-   else
-   {
-      if (!_isRackPluginMasterModule)
-      {
-         _isRackPluginMasterModule = true;
-         _isRackMasterModule = true;
-      }
-   }
+   determineMasterModuleStatus();
 }
 
 json_t* CVWizardModule::dataToJson()
@@ -84,12 +64,22 @@ void CVWizardModule::dataFromJson(json_t* root)
 
 void CVWizardModule::addSettings(std::shared_ptr<ModuleSettings> settings)
 {
-   _settings = settings;
+   _settings = std::move(settings);
 }
 
 std::shared_ptr<ModuleSettings> CVWizardModule::getSettings() const
 {
    return _settings;
+}
+
+void CVWizardModule::determineMasterModuleStatus()
+{
+   if (!_isRackPluginMasterModule)
+   {
+      DEBUG("CVWizardModule (#%d) instance becomes master module", this);
+      _isRackPluginMasterModule = true;
+      _isRackMasterModule = true;
+   }
 }
 
 }
