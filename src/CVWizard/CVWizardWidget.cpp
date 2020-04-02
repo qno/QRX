@@ -23,7 +23,7 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
 
 void CVWizardWidget::step()
 {
-   /* this crashes Rack app ! 
+   /* this crashes Rack app !
    if (!_module->isMasterModule())
    {
       ModuleWidget::step();
