@@ -11,7 +11,7 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    assert(_module);
    assert(_appWindow);
    assert(_glfwWindow);
-   
+   INFO("ctr CVWizardWidget #%d", this);
    setModule(_module);
    setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
    

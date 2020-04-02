@@ -15,18 +15,55 @@ std::shared_ptr<qrx::cvwizard::ModuleSettings> addPluginSettings()
 namespace qrx {
 namespace cvwizard {
 
+std::atomic_bool CVWizardModule::_isRackPluginMasterModule{false};
+
 CVWizardModule::CVWizardModule()
    : Module()
 #ifndef QRX_UNITTESTS
    , _settings{addPluginSettings()}
 #endif
 {
+   if (!_isRackPluginMasterModule)
+   {
+      INFO("ctr CVWizardModule #%d becomes master module", this);
+      _isRackPluginMasterModule = true;
+      _isRackMasterModule = true;
+   }
+   else
+   {
+      INFO("ctr CVWizardModule #%d doesn't become master module", this);
+   }
+   
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+}
+
+CVWizardModule::~CVWizardModule() noexcept
+{
+   if (_isRackMasterModule)
+   {
+      _isRackPluginMasterModule = false;
+   }
+}
+
+bool CVWizardModule::isMasterModule() const
+{
+   return _isRackMasterModule;
 }
 
 void CVWizardModule::process(const ProcessArgs& args)
 {
-
+   if (_isRackMasterModule)
+   {
+      // do processing stuff here
+   }
+   else
+   {
+      if (!_isRackPluginMasterModule)
+      {
+         _isRackPluginMasterModule = true;
+         _isRackMasterModule = true;
+      }
+   }
 }
 
 json_t* CVWizardModule::dataToJson()

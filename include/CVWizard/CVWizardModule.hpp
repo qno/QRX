@@ -3,6 +3,7 @@
 #include <QRXPlugin.hpp>
 #include <CVWizard/ModuleSettings.hpp>
 
+#include <atomic>
 #include <memory>
 
 namespace qrx {
@@ -35,7 +36,9 @@ public:
    };
    
    CVWizardModule();
-   ~CVWizardModule() override = default;
+   ~CVWizardModule() noexcept override;
+   
+   bool isMasterModule() const;
    
    void process(const ProcessArgs& args) override;
    
@@ -48,6 +51,9 @@ public:
    std::shared_ptr<ModuleSettings> getSettings() const;
    
 private:
+   
+   static std::atomic_bool _isRackPluginMasterModule;
+   bool _isRackMasterModule = false;
    std::shared_ptr<ModuleSettings> _settings;
 };
 

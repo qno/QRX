@@ -14,6 +14,36 @@ TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
    REQUIRE(std::string{CVWizardModule::SLUG} == std::string{"CVWizard"});
 }
 
+TEST_CASE("CVWizard Rack master module", "[cvwizard] [module]")
+{
+   SECTION("ensure that only first CVWizard instance becomes master module")
+   {
+      auto module1 = CVWizardModule{};
+      auto module2 = CVWizardModule{};
+      auto module3 = CVWizardModule{};
+    
+      REQUIRE(module1.isMasterModule());
+      REQUIRE(!module2.isMasterModule());
+      REQUIRE(!module3.isMasterModule());
+   }
+   
+   SECTION("ensure that if master module deleted the next module becomes master")
+   {
+      auto module1 = std::make_unique<CVWizardModule>();
+      auto module2 = std::make_unique<CVWizardModule>();
+      auto module3 = std::make_unique<CVWizardModule>();
+   
+      const auto args = rack::engine::Module::ProcessArgs{};
+      module1 = nullptr;
+      module2->process(args);
+      module3->process(args);
+      
+      REQUIRE(!module1);
+      REQUIRE(module2->isMasterModule());
+      REQUIRE(!module3->isMasterModule());
+   }
+}
+
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
    CVWizardModule cvWizard;
