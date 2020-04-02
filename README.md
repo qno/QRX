@@ -38,7 +38,7 @@
     [options]
     [build_requires]
     mingw_installer/1.0@conan/stable
-    msys2_installer/latest@bincrafters/stable
+    msys2/20190524
     [env]
     ```
 * Add the following conan remotes:
