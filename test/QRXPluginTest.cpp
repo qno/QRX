@@ -3,7 +3,7 @@
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
 #include <QRXPlugin.hpp>
-#include <CVWizard/CVWizardModule.hpp>
+#include <cvwizard/CVWizardModule.hpp>
 
 #include <catch2/catch.hpp>
 

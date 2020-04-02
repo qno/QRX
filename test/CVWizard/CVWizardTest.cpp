@@ -2,7 +2,7 @@
 #pragma GCC diagnostic ignored "-Wsuggest-override"
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
-#include <CVWizard/CVWizardModule.hpp>
+#include <cvwizard/CVWizardModule.hpp>
 
 #include <catch2/catch.hpp>
 #include <fakeit.hpp>

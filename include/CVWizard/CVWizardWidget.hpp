@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QRXPlugin.hpp>
-#include <CVWizard/CVWizardModule.hpp>
+#include <cvwizard/CVWizardModule.hpp>
 
 namespace qrx {
 namespace cvwizard {

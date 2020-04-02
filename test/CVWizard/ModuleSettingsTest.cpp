@@ -2,7 +2,7 @@
 #pragma GCC diagnostic ignored "-Wsuggest-override"
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 
-#include <CVWizard/ModuleSettings.hpp>
+#include <cvwizard/ModuleSettings.hpp>
 #include <GLFW/glfw3.h>
 
 #include <catch2/catch.hpp>

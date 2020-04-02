@@ -48,11 +48,6 @@ else ()
   endif ()
 endif ()
 
-file(GLOB_RECURSE HEADERS include/*.hpp)
-file(GLOB_RECURSE CVWIZARD_HEADERS include/CVWizard/*.hpp)
-source_group("Header Files" FILES ${HEADERS})
-source_group("CVWizard Header Files" FILES ${CVWIZARD_HEADERS})
-
 add_subdirectory(src)
 add_subdirectory(test)
 

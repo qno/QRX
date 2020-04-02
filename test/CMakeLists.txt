@@ -7,17 +7,16 @@ set(UT_EXE PluginUnittests)
 set(SRC ${PROJECT_SOURCE_DIR}/src)
 set(SOURCES ${SRC}/QRXPlugin.cpp
             ${SRC}/PluginSettings.cpp
-            ${SRC}/CVWizard/CVWizard.cpp
-            ${SRC}/CVWizard/CVWizardModule.cpp
-            ${SRC}/CVWizard/CVWizardWidget.cpp
-            ${SRC}/CVWizard/ui/StateMachine.cpp)
+            ${SRC}/cvwizard/CVWizard.cpp
+            ${SRC}/cvwizard/CVWizardModule.cpp
+            ${SRC}/cvwizard/CVWizardWidget.cpp)
 
 set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
-                  CVWizard/CVWizardTest.cpp
-                  CVWizard/ModuleSettingsTest.cpp
-                  CVWizard/ui/StateMachineTest.cpp)
+                  cvwizard/CVWizardTest.cpp
+                  cvwizard/ModuleSettingsTest.cpp
+                  cvwizard/ui/StateMachineTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})

@@ -1,4 +1,4 @@
-#include <CVWizard/CVWizardModule.hpp>
+#include <cvwizard/CVWizardModule.hpp>
 #include <PluginSettings.hpp>
 #include <utility>
 

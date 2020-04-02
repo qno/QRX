@@ -1,4 +1,4 @@
-#include <CVWizard/CVWizardWidget.hpp>
+#include <cvwizard/CVWizardWidget.hpp>
 
 using namespace rack;
 

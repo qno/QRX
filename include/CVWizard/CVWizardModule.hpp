@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QRXPlugin.hpp>
-#include <CVWizard/ModuleSettings.hpp>
+#include <cvwizard/ModuleSettings.hpp>
 
 #include <atomic>
 #include <memory>

@@ -1,5 +1,5 @@
-#include <CVWizard/CVWizardModule.hpp>
-#include <CVWizard/CVWizardWidget.hpp>
+#include <cvwizard/CVWizardModule.hpp>
+#include <cvwizard/CVWizardWidget.hpp>
 #include <PluginSettings.hpp>
 using namespace qrx::cvwizard;
 
