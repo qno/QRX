@@ -21,8 +21,8 @@
 ## Building the plugin
 
 * Install and setup the [Conan C++ package manager](https://docs.conan.io/en/latest/installation.html) for your build platform
-* On Windows create a [Conan profile](https://docs.conan.io/en/latest/reference/profiles.html) for MinGW, called e.g. `mingw`
-  * ```
+* On Windows create a [Conan profile](https://docs.conan.io/en/latest/reference/profiles.html) for MinGW under `<USER HOME>/.conan/profiles`, called e.g. `mingw`
+    ```
     [settings]
     os=Windows
     os_build=Windows
