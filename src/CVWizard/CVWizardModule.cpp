@@ -33,6 +33,7 @@ CVWizardModule::~CVWizardModule() noexcept
    if (_isRackMasterModule)
    {
       _isRackPluginMasterModule = false;
+      DEBUG("CVWizardModule (#%d) removed as master module instance", this);
    }
 }
 
