@@ -21,6 +21,7 @@
 ## Building the plugin
 
 * Install and setup the [Conan C++ package manager](https://docs.conan.io/en/latest/installation.html) for your build platform
+* ***Note:*** On the Windows platform there is no need to have the MinGW toolchain installed. It will be completely handled by Conan!
 * On Windows create a [Conan profile](https://docs.conan.io/en/latest/reference/profiles.html) for MinGW under `<USER HOME>/.conan/profiles`, called e.g. `mingw`
     ```
     [settings]
