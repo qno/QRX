@@ -23,6 +23,11 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
 
 void CVWizardWidget::step()
 {
+   if (!_module->isMasterModule())
+   {
+      return;
+   }
+   
    if (!m_mappingModeActive)
    {
       if (GLFW_MOD_CONTROL == (_appWindow->getMods() & GLFW_MOD_CONTROL))
