@@ -2,7 +2,7 @@
 
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
-#include <cvwizard/CVWizardController.hpp>
+#include <cvwizard/controller/CVWizardController.hpp>
 
 namespace qrx {
 namespace cvwizard {
@@ -35,7 +35,7 @@ private:
    rack::Window* _appWindow = nullptr;
    GLFWwindow* _glfwWindow  = nullptr;
    
-   CVWizardController _controller;
+   controller::CVWizardController _controller;
   
    bool m_mappingModeActive = false;
 };

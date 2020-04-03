@@ -13,6 +13,9 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    assert(_glfwWindow);
    INFO("ctr CVWizardWidget #%d", this);
    setModule(_module);
+   
+   _controller.start();
+   
    setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
    
    addChild(createWidget<WizScrew>(Vec(RACK_GRID_WIDTH, 0)));
@@ -29,8 +32,6 @@ void CVWizardWidget::step()
       ModuleWidget::step();
       return;
    }*/
-   
-   _controller.process();
    
    if (!m_mappingModeActive)
    {

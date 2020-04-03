@@ -10,13 +10,13 @@ set(SOURCES ${SRC}/QRXPlugin.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
             ${SRC}/cvwizard/CVWizardWidget.cpp
-            ${SRC}/cvwizard/CVWizardController.cpp)
+            ${SRC}/cvwizard/controller/CVWizardController.cpp)
 
 set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardTest.cpp
-                  cvwizard/CVWizardControllerTest.cpp
+                  cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/sm/keyboard/KeyboardTest.cpp)
 
