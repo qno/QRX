@@ -55,7 +55,18 @@ void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
 }
 
 namespace logger {
-void log(Level, const char*, int, const char*, ...) { }
+void log(Level, const char* file, int line, const char* msg, ...)
+{
+   va_list args1;
+   va_start(args1, msg);
+   va_list args2;
+   va_copy(args2, args1);
+   std::vector<char> buf(1+std::vsnprintf(nullptr, 0, msg, args1));
+   va_end(args1);
+   std::vsnprintf(buf.data(), buf.size(), msg, args2);
+   va_end(args2);
+   std::cout << "FakeRack Logger [" << file << ":" << line << "] " << buf.data() << std::endl;
+}
 }
 
 namespace asset {
