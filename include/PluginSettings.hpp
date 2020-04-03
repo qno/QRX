@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CVWizard/ModuleSettings.hpp>
+#include <cvwizard/ModuleSettings.hpp>
 
 #include <memory>
 #include <string>
