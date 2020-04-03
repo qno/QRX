@@ -30,6 +30,8 @@ void CVWizardWidget::step()
       return;
    }*/
    
+   _controller.process();
+   
    if (!m_mappingModeActive)
    {
       if (GLFW_MOD_CONTROL == (_appWindow->getMods() & GLFW_MOD_CONTROL))
