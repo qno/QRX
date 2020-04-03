@@ -55,8 +55,14 @@ void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
 }
 
 namespace logger {
-void log(Level, const char* file, int line, const char* msg, ...)
+void log(Level level, const char* file, int line, const char* msg, ...)
 {
+   static constexpr const char* const levelLabels[] = {
+      "debug",
+      "info",
+      "warn",
+      "fatal"
+   };
    va_list args1;
    va_start(args1, msg);
    va_list args2;
@@ -65,7 +71,7 @@ void log(Level, const char* file, int line, const char* msg, ...)
    va_end(args1);
    std::vsnprintf(buf.data(), buf.size(), msg, args2);
    va_end(args2);
-   std::cout << "FakeRack Logger [" << file << ":" << line << "] " << buf.data() << std::endl;
+   std::cout << "[FakeRackSDK (" << levelLabels[level] << ") " << file << ":" << line << "] " << buf.data() << std::endl;
 }
 }
 
