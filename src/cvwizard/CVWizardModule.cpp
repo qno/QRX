@@ -20,12 +20,15 @@ std::atomic_bool CVWizardModule::_isRackPluginMasterModule{false};
 
 CVWizardModule::CVWizardModule()
    : Module()
+   , controller::KeyboardEventsProviding()
 #ifndef QRX_UNITTESTS
    , _settings{addPluginSettings()}
 #endif
 {
    determineMasterModuleStatus();
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+   _controller.setKeyboardEventsProvider(this);
+   _controller.start();
 }
 
 CVWizardModule::~CVWizardModule() noexcept
@@ -81,6 +84,26 @@ void CVWizardModule::determineMasterModuleStatus()
       _isRackPluginMasterModule = true;
       _isRackMasterModule = true;
    }
+}
+
+bool CVWizardModule::isControlKeyPressed() const
+{
+   return (GLFW_MOD_CONTROL == (APP->window->getMods() & GLFW_MOD_CONTROL));
+}
+
+bool CVWizardModule::isMappingKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingKey));
+}
+
+bool CVWizardModule::isMappingCancelKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingCancelKey));
+}
+
+bool CVWizardModule::isTooltipKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingTooltipKey));
 }
 
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cvwizard/controller/KeyboardEventsProviding.hpp>
+
 #include <thread>
 
 namespace qrx {
@@ -15,6 +17,8 @@ public:
    
    void start() noexcept;
    void stop() noexcept;
+   
+   void setKeyboardEventsProvider(KeyboardEventsProviding* provider);
 
 private:
    
@@ -24,6 +28,7 @@ private:
    
    bool _isMappingModeEnabled = false;
    bool _isStopped            = false;
+   KeyboardEventsProviding* _keyboardEventsProvider;
 };
 
 }

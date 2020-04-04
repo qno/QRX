@@ -3,6 +3,9 @@
 #include <QRXPlugin.hpp>
 #include <cvwizard/ModuleSettings.hpp>
 
+#include <cvwizard/controller/CVWizardController.hpp>
+#include <cvwizard/controller/KeyboardEventsProviding.hpp>
+
 #include <atomic>
 #include <memory>
 
@@ -10,6 +13,8 @@ namespace qrx {
 namespace cvwizard {
 
 class CVWizardModule : public rack::engine::Module
+                     , public controller::KeyboardEventsProviding
+   
 {
 public:
    
@@ -52,7 +57,14 @@ public:
    
 private:
    
+   bool isControlKeyPressed () const override;
+   bool isMappingKeyPressed () const override;
+   bool isMappingCancelKeyPressed () const override;
+   bool isTooltipKeyPressed () const override;
+   
    void determineMasterModuleStatus();
+   
+   controller::CVWizardController _controller;
    
    static std::atomic_bool _isRackPluginMasterModule;
    bool _isRackMasterModule = false;

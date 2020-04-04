@@ -29,6 +29,11 @@ void CVWizardController::stop() noexcept
    _controllerThread.join();
 }
 
+void CVWizardController::setKeyboardEventsProvider(KeyboardEventsProviding* provider)
+{
+   _keyboardEventsProvider = provider;
+}
+
 void CVWizardController::run() noexcept
 {
    INFO("CVWizardController thread is running");

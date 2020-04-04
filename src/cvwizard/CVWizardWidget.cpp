@@ -14,8 +14,6 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    INFO("ctr CVWizardWidget #%d", this);
    setModule(_module);
    
-   _controller.start();
-   
    setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
    
    addChild(createWidget<WizScrew>(Vec(RACK_GRID_WIDTH, 0)));
