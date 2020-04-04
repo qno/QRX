@@ -13,7 +13,10 @@ CVWizardController::CVWizardController()
 
 CVWizardController::~CVWizardController() noexcept
 {
-   stop();
+   if(!_isStopped)
+   {
+      stop();
+   }
 }
 
 void CVWizardController::start() noexcept
