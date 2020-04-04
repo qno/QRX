@@ -10,8 +10,12 @@ using namespace qrx::cvwizard::controller;
 
 TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 {
-   CVWizardController::instance().start();
-   std::this_thread::sleep_for(std::chrono::seconds(20));
+   REQUIRE(&CVWizardController::instance() != nullptr);
+   
+   SECTION("start throws if KeyboardEventsProvider is not set")
+   {
+      REQUIRE_THROWS_AS(CVWizardController::instance().start(), CVWizardController::KeyboardEventsProviderNotSetException);
+   }
 }
 
 #pragma GCC diagnostic pop

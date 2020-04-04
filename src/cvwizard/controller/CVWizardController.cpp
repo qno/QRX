@@ -26,8 +26,13 @@ CVWizardController& CVWizardController::instance()
    return instance;
 }
 
-void CVWizardController::start() noexcept
+void CVWizardController::start()
 {
+   if (nullptr == _keyboardEventsProvider)
+   {
+      throw KeyboardEventsProviderNotSetException{};
+   }
+   
    INFO("start CVWizardController now ...");
    _controllerThread = std::thread{[this] { run(); }};
 }
@@ -51,7 +56,7 @@ void CVWizardController::run() noexcept
    while (!_isStopped)
    {
       INFO("took a round now ...");
-      std::this_thread::sleep_for(std::chrono::seconds(5));
+      std::this_thread::sleep_for(std::chrono::seconds(1));
    }
    
    INFO("exit CVWizardController thread");

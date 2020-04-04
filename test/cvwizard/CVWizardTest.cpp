@@ -18,9 +18,9 @@ TEST_CASE("CVWizard Rack master module", "[cvwizard] [module]")
 {
    SECTION("ensure that only first CVWizard instance becomes master module")
    {
-      CVWizardModule module1{};
-      CVWizardModule module2{};
-      CVWizardModule module3{};
+      CVWizardModule module1;
+      CVWizardModule module2;
+      CVWizardModule module3;
     
       REQUIRE(module1.isMasterModule());
       REQUIRE(!module2.isMasterModule());
@@ -90,7 +90,7 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
    
    SECTION("ensure get settings returns added settings")
    {
-      CVWizardModule cvWizard{};
+      CVWizardModule cvWizard;
       cvWizard.addSettings(pluginSettings);
       REQUIRE(cvWizard.getSettings());
       REQUIRE(cvWizard.getSettings()->getCVWizardSettings() == defaultSettings);
