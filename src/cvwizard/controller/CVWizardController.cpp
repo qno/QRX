@@ -41,7 +41,10 @@ void CVWizardController::stop() noexcept
 {
    INFO("stop CVWizardController now ...");
    _isStopped = true;
-   _controllerThread.join();
+   if (_controllerThread.joinable())
+   {
+      _controllerThread.join();
+   }
 }
 
 void CVWizardController::setKeyboardEventsProvider(KeyboardEventsProviding* provider)
