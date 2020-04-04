@@ -6,12 +6,8 @@ namespace qrx {
 namespace cvwizard {
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
-   : ModuleWidget(), _module(module), _appWindow(APP->window), _glfwWindow(_appWindow->win)
+   : ModuleWidget(), _module(module), _appWindow(APP->window)
 {
-   assert(_module);
-   assert(_appWindow);
-   assert(_glfwWindow);
-   INFO("ctr CVWizardWidget #%d", this);
    setModule(_module);
    
    setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
@@ -24,39 +20,13 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
 
 void CVWizardWidget::step()
 {
-   /* this crashes Rack app !
-   if (!_module->isMasterModule())
+   if (_module && _module->isMasterModule())
    {
-      ModuleWidget::step();
-      return;
-   }*/
-   
-   if (!m_mappingModeActive)
-   {
-      if (GLFW_MOD_CONTROL == (_appWindow->getMods() & GLFW_MOD_CONTROL))
+      if (!APP->event->heldKeys.empty())
       {
-         
-         const auto x = glfwGetKey(_glfwWindow, GLFW_KEY_M);
-         
-         if (GLFW_PRESS == x)
-         {
-            INFO("key CTRL-M pressed");
-            m_mappingModeActive = true;
-         }
+         _module->handleKeyboardInput();
       }
    }
-   else
-   {
-      INFO("Mapping mode is active");
-      const auto e = glfwGetKey(_glfwWindow, GLFW_KEY_ESCAPE);
-      
-      if (GLFW_PRESS == e)
-      {
-         m_mappingModeActive = false;
-         INFO("Mapping mode is deactived");
-      }
-   }
-   
    ModuleWidget::step();
 }
 

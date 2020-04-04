@@ -55,6 +55,8 @@ public:
    
    std::shared_ptr<ModuleSettings> getSettings() const;
    
+   void handleKeyboardInput() const;
+   
 private:
    
    bool isControlKeyPressed () const override;
@@ -66,8 +68,8 @@ private:
    
    static controller::CVWizardController& _controller;
    
-   static std::atomic_bool _isRackPluginMasterModule;
-   bool _isRackMasterModule = false;
+   static std::atomic_bool s_isRackPluginMasterModule;
+   bool                    _isRackMasterModule = false;
    std::shared_ptr<ModuleSettings> _settings;
 };
 

@@ -7,7 +7,10 @@ namespace cvwizard {
 namespace sm {
 namespace keyboard {
 
-struct ControlKeyEvent : public tinyfsm::Event
+struct ControlKeyPressedEvent : public tinyfsm::Event
+{ };
+
+struct ControlKeyReleasedEvent : public tinyfsm::Event
 { };
 
 struct MappingKeyEvent : public tinyfsm::Event

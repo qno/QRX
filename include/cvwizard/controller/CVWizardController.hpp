@@ -32,6 +32,8 @@ public:
    void stop() noexcept;
    
    void setKeyboardEventsProvider(KeyboardEventsProviding* provider);
+   
+   void handleKeyboardInput();
 
 private:
    

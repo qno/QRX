@@ -11,8 +11,9 @@ using namespace qrx::cvwizard::sm::keyboard;
 TEST_CASE("Keyboard statemachine", "[keyboard] [statemachine]")
 {
    Keyboard::start();
-   auto ctrlPressedEvent = ControlKeyEvent{};
-   Keyboard::dispatch(ctrlPressedEvent);
+   Keyboard::dispatch(ControlKeyPressedEvent{});
+   Keyboard::dispatch(MappingKeyEvent{});
+   Keyboard::dispatch(MappingCancelKeyEvent{});
 }
 
 #pragma GCC diagnostic pop

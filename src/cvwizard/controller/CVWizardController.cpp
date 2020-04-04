@@ -1,4 +1,5 @@
 #include <cvwizard/controller/CVWizardController.hpp>
+#include <cvwizard/sm/keyboard/Keyboard.hpp>
 
 #include <logger.hpp>
 
@@ -28,19 +29,21 @@ CVWizardController& CVWizardController::instance()
 
 void CVWizardController::start()
 {
+   DEBUG("start CVWizardController");
    if (nullptr == _keyboardEventsProvider)
    {
       throw KeyboardEventsProviderNotSetException{};
    }
-   
-   INFO("start CVWizardController now ...");
+   sm::keyboard::Keyboard::start();
+   _isStopped = false;
    _controllerThread = std::thread{[this] { run(); }};
 }
 
 void CVWizardController::stop() noexcept
 {
-   INFO("stop CVWizardController now ...");
+   DEBUG("stop CVWizardController");
    _isStopped = true;
+   sm::keyboard::Keyboard::reset();
    if (_controllerThread.joinable())
    {
       _controllerThread.join();
@@ -54,15 +57,45 @@ void CVWizardController::setKeyboardEventsProvider(KeyboardEventsProviding* prov
 
 void CVWizardController::run() noexcept
 {
-   INFO("CVWizardController thread is running");
+   DEBUG("enter CVWizardController thread #%d", std::this_thread::get_id());
    
    while (!_isStopped)
    {
+      handleKeyboardInput();
       INFO("took a round now ...");
       std::this_thread::sleep_for(std::chrono::seconds(1));
    }
    
-   INFO("exit CVWizardController thread");
+   DEBUG("exit CVWizardController thread #%d", std::this_thread::get_id());
+}
+
+void CVWizardController::handleKeyboardInput()
+{
+   if (_keyboardEventsProvider)
+   {
+      if (_keyboardEventsProvider->isControlKeyPressed())
+      {
+         sm::keyboard::Keyboard::dispatch(sm::keyboard::ControlKeyPressedEvent{});
+      }
+      else
+      {
+         sm::keyboard::Keyboard::dispatch(sm::keyboard::ControlKeyReleasedEvent{});
+      }
+   
+      if (_keyboardEventsProvider->isMappingKeyPressed())
+      {
+         sm::keyboard::Keyboard::dispatch(sm::keyboard::MappingKeyEvent{});
+      }
+   
+      if (_keyboardEventsProvider->isMappingCancelKeyPressed())
+      {
+         sm::keyboard::Keyboard::dispatch(sm::keyboard::MappingCancelKeyEvent{});
+      }
+   }
+   else
+   {
+      FATAL("KeyboardEventsProvider is nullptr");
+   }
 }
 
 }

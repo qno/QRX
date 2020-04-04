@@ -32,9 +32,6 @@ private:
   
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
-   GLFWwindow* _glfwWindow  = nullptr;
-  
-   bool m_mappingModeActive = false;
 };
 
 }
