@@ -61,7 +61,6 @@ void CVWizardController::run() noexcept
    
    while (!_isStopped)
    {
-      handleKeyboardInput();
       INFO("took a round now ...");
       std::this_thread::sleep_for(std::chrono::seconds(1));
    }
