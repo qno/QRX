@@ -7,6 +7,7 @@ namespace cvwizard {
 namespace controller {
 
 CVWizardController::CVWizardController()
+: _keyboardEventsProvider(nullptr)
 {
 
 }
@@ -17,6 +18,12 @@ CVWizardController::~CVWizardController() noexcept
    {
       stop();
    }
+}
+
+CVWizardController& CVWizardController::instance()
+{
+   static CVWizardController instance;
+   return instance;
 }
 
 void CVWizardController::start() noexcept

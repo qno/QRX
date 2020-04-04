@@ -10,9 +10,7 @@ using namespace qrx::cvwizard::controller;
 
 TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 {
-   CVWizardController controller{};
-   controller.start();
-   
+   CVWizardController::instance().start();
    std::this_thread::sleep_for(std::chrono::seconds(20));
 }
 

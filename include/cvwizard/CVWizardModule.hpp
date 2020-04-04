@@ -64,7 +64,7 @@ private:
    
    void determineMasterModuleStatus();
    
-   controller::CVWizardController _controller;
+   static controller::CVWizardController& _controller;
    
    static std::atomic_bool _isRackPluginMasterModule;
    bool _isRackMasterModule = false;

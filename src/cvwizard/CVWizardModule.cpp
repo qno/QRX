@@ -17,24 +17,23 @@ namespace qrx {
 namespace cvwizard {
 
 std::atomic_bool CVWizardModule::_isRackPluginMasterModule{false};
+controller::CVWizardController& CVWizardModule::_controller = controller::CVWizardController::instance();
 
 CVWizardModule::CVWizardModule()
-   : Module()
-   , controller::KeyboardEventsProviding()
+ : Module()
 #ifndef QRX_UNITTESTS
    , _settings{addPluginSettings()}
 #endif
 {
    determineMasterModuleStatus();
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-   _controller.setKeyboardEventsProvider(this);
-   _controller.start();
 }
 
 CVWizardModule::~CVWizardModule() noexcept
 {
    if (_isRackMasterModule)
    {
+      _controller.stop();
       _isRackPluginMasterModule = false;
       DEBUG("CVWizardModule (#%d) removed as master module instance", this);
    }
@@ -83,6 +82,8 @@ void CVWizardModule::determineMasterModuleStatus()
       DEBUG("CVWizardModule (#%d) instance becomes master module", this);
       _isRackPluginMasterModule = true;
       _isRackMasterModule = true;
+      _controller.setKeyboardEventsProvider(this);
+      _controller.start();
    }
 }
 

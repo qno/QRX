@@ -12,7 +12,8 @@ class CVWizardController
 {
 public:
    
-   CVWizardController();
+   static CVWizardController& instance();
+   
    virtual ~CVWizardController() noexcept;
    
    void start() noexcept;
@@ -21,6 +22,8 @@ public:
    void setKeyboardEventsProvider(KeyboardEventsProviding* provider);
 
 private:
+   
+   CVWizardController();
    
    void run() noexcept;
    
