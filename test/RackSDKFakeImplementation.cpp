@@ -3,6 +3,7 @@
 extern "C" {
 
 int glfwGetKey(GLFWwindow*, int) { return {}; }
+const char* glfwGetKeyName(int, int) { return{}; }
 
 NVGcolor nvgRGB(unsigned char, unsigned char, unsigned char) { return {}; }
 NVGcolor nvgRGBf(float, float, float){ return {}; }

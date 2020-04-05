@@ -1,5 +1,7 @@
 #include <cvwizard/CVWizardWidget.hpp>
 
+#include <locale>
+
 using namespace rack;
 
 namespace qrx {
@@ -38,7 +40,17 @@ void CVWizardWidget::draw(const DrawArgs& args)
 void CVWizardWidget::onEnter(const rack::event::Enter& e)
 {
    _tooltip = new rack::ui::Tooltip{};
-   _tooltip->text = std::string{"this is a CVWizard main widget tooltip"};
+   const auto mappingKey = glfwGetKeyName(_module->getSettings()->getCVWizardSettings().MappingKey, 0);
+   std::locale locale;
+   auto text = std::stringstream{};
+   text << "Press '";
+#ifdef ARCH_MAC
+   text << "CMD"
+#else
+   text << "CTRL";
+#endif
+   text << "-" << std::toupper(*mappingKey, locale) << "' to activate Mapping mode";
+   _tooltip->text = text.str();
    APP->scene->addChild(_tooltip);
 }
 
