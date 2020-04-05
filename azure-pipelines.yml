@@ -134,14 +134,12 @@ stages:
             cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja -DENABLE_COVERAGE=On ..
             cmake --build . --target install
             $(deactivate-env)
-            cd ..
           displayName: compile
         - script: |
             cd build
             $(activate-env)
             ctest -T Test -VV --output-on-failure --no-compress-output
             $(deactivate-env)
-            cd ..
           failOnStderr: true
           displayName: run unit tests
         - script: |
@@ -150,7 +148,6 @@ stages:
             $(activate-env)
             gcovr -o coverage.xml -x -v -p --exclude-throw-branches --exclude-unreachable-branches -r ../src .
             $(deactivate-env)
-            cd ..
           displayName: gcovr
         - task: PublishTestResults@2
           inputs:
@@ -173,7 +170,6 @@ stages:
             $(create-dist)
             cd ..
             $(deactivate-env)
-            cd ..
           displayName: create dist
         - task: PublishPipelineArtifact@1
           inputs:
@@ -186,7 +182,6 @@ stages:
             make
             cd build
             $(deactivate-env)
-            cd ..
           displayName: Rack Makefile build
 
   - stage: publish
