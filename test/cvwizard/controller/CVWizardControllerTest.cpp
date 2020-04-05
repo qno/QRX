@@ -10,10 +10,9 @@ using namespace qrx::cvwizard::controller;
 
 TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 {
-   REQUIRE(&CVWizardController::instance() != nullptr);
-   
    SECTION("start throws if KeyboardEventsProvider is not set")
    {
+      CVWizardController::instance().setKeyboardEventsProvider(nullptr);
       REQUIRE_THROWS_AS(CVWizardController::instance().start(), CVWizardController::KeyboardEventsProviderNotSetException);
    }
 }
