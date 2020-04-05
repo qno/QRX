@@ -171,7 +171,9 @@ stages:
             path: $(System.DefaultWorkingDirectory)/build/dist
             artifact: $(artifact)
         - script: |
-            build/$(activate-env)
+            cd build
+            $(activate-env)
+            cd ..
             make
           displayName: Rack Makefile build
 
