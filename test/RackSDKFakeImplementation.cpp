@@ -78,6 +78,7 @@ void log(Level level, const char* file, int line, const char* msg, ...)
 namespace asset {
 std::string plugin(plugin::Plugin*, std::string) { return{}; }
 std::string user(std::string s) { return std::string{TOSTRING(QRX_UNITTESTS_ASSET_DIR)} + "/" + s; }
+std::string system(std::string) { return{}; }
 }
 
 namespace engine {
@@ -97,6 +98,12 @@ math::Rect Widget::getViewport(math::Rect) { return{}; }
 
 void Widget::draw(const Widget::DrawArgs&) { }
 void Widget::addChild(Widget*) { }
+void Widget::removeChild(rack::widget::Widget*) { }
+}
+
+namespace ui {
+void Tooltip::step() { }
+void Tooltip::draw(const DrawArgs&) { }
 }
 
 }
