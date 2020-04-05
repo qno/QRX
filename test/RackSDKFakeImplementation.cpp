@@ -85,6 +85,7 @@ namespace engine {
 Module::Module() { }
 Module::~Module() { }
 void Module::config(int, int, int, int) { }
+json_t* Module::toJson() { return{}; }
 }
 
 namespace widget {

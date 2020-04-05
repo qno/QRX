@@ -47,7 +47,7 @@ TEST_CASE("CVWizardModule Rack master module", "[cvwizard] [module]")
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
    CVWizardModule cvWizardModule;
-   auto jsonResult = std::unique_ptr<json_t>(cvWizardModule.dataToJson());
+   auto           jsonResult = std::unique_ptr<json_t>(cvWizardModule.dataToJson());
    REQUIRE(jsonResult != nullptr);
    
    SECTION("json result type is JSON_OBJECT")
@@ -69,8 +69,20 @@ TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
       REQUIRE(jsonParam3 != nullptr);
       REQUIRE(json_boolean_value(jsonParam3) == true);
    }
-   
-   //REQUIRE(json_dumps(jsonResult.get(), JSON_ENCODE_ANY) == "1");
+}
+
+TEST_CASE("CVWizardModule Rack master module dataToJson", "[cvwizard] [module]")
+{
+   SECTION("ensure that only Rack master module dumps json")
+   {
+      CVWizardModule masterModule;
+      CVWizardModule module2;
+      CVWizardModule module3;
+      
+      REQUIRE(masterModule.dataToJson());
+      REQUIRE(module2.dataToJson() == nullptr);
+      REQUIRE(module3.dataToJson() == nullptr);
+   }
 }
 
 TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
