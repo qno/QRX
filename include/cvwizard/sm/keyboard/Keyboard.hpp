@@ -49,6 +49,7 @@ public:
    void entry() override { DEBUG("* ControlKey pressed"); };
    void react(const MappingKeyEvent& e) override { transit<MappingModeActive>(); };
    void react(const ControlKeyReleasedEvent& e) override { transit<Idle>(); };
+   void react(const ControlKeyPressedEvent& e) override { transit<ControlKeyPressed>(); };
 };
 
 class ControlKeyReleased : public Keyboard
