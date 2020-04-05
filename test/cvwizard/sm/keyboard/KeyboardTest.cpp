@@ -8,6 +8,8 @@
 
 using namespace qrx::cvwizard::sm::keyboard;
 
+FSM_INITIAL_STATE(Keyboard, Idle);
+
 TEST_CASE("Keyboard statemachine", "[keyboard] [statemachine]")
 {
    Keyboard::start();

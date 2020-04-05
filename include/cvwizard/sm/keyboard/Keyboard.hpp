@@ -82,5 +82,7 @@ public:
 }
 }
 
+#ifndef QRX_UNITTESTS
 using namespace qrx::cvwizard::sm::keyboard;
 FSM_INITIAL_STATE(Keyboard, Idle);
+#endif
