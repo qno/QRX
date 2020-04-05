@@ -45,7 +45,7 @@ void CVWizardWidget::onEnter(const rack::event::Enter& e)
    auto text = std::stringstream{};
    text << "Press '";
 #ifdef ARCH_MAC
-   text << "CMD"
+   text << "CMD";
 #else
    text << "CTRL";
 #endif
