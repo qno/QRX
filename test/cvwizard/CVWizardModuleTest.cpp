@@ -9,14 +9,14 @@
 
 using namespace qrx::cvwizard;
 
-TEST_CASE("CVWizard SLUG", "[cvwizard] [module]")
+TEST_CASE("CVWizardModule SLUG", "[cvwizard] [module]")
 {
    REQUIRE(std::string{CVWizardModule::SLUG} == std::string{"CVWizard"});
 }
 
-TEST_CASE("CVWizard Rack master module", "[cvwizard] [module]")
+TEST_CASE("CVWizardModule Rack master module", "[cvwizard] [module]")
 {
-   SECTION("ensure that only first CVWizard instance becomes master module")
+   SECTION("ensure that only first CVWizardModule instance becomes master module")
    {
       CVWizardModule module1;
       CVWizardModule module2;
@@ -46,8 +46,8 @@ TEST_CASE("CVWizard Rack master module", "[cvwizard] [module]")
 
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
-   CVWizardModule cvWizard;
-   auto jsonResult = std::unique_ptr<json_t>(cvWizard.dataToJson());
+   CVWizardModule cvWizardModule;
+   auto jsonResult = std::unique_ptr<json_t>(cvWizardModule.dataToJson());
    REQUIRE(jsonResult != nullptr);
    
    SECTION("json result type is JSON_OBJECT")
@@ -90,10 +90,10 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
    
    SECTION("ensure get settings returns added settings")
    {
-      CVWizardModule cvWizard;
-      cvWizard.addSettings(pluginSettings);
-      REQUIRE(cvWizard.getSettings());
-      REQUIRE(cvWizard.getSettings()->getCVWizardSettings() == defaultSettings);
+      CVWizardModule cvWizardModule;
+      cvWizardModule.addSettings(pluginSettings);
+      REQUIRE(cvWizardModule.getSettings());
+      REQUIRE(cvWizardModule.getSettings()->getCVWizardSettings() == defaultSettings);
    }
 }
 
