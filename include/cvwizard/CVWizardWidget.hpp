@@ -24,10 +24,11 @@ public:
    void onHover(const rack::event::Hover& e) override;
 
 private:
-  
-   rack::ui::Tooltip* _tooltip = nullptr;
+   
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
+   
+   static rack::Tooltip* _tooltip;
 };
 
 }

@@ -1,11 +1,12 @@
 #include <cvwizard/CVWizardWidget.hpp>
-
-#include <locale>
+#include <cvwizard/ui/Tooltip.hpp>
 
 using namespace rack;
 
 namespace qrx {
 namespace cvwizard {
+
+rack::Tooltip* CVWizardWidget::_tooltip = nullptr;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    : ModuleWidget(), _module(module), _appWindow(APP->window)
@@ -40,17 +41,7 @@ void CVWizardWidget::draw(const DrawArgs& args)
 void CVWizardWidget::onEnter(const rack::event::Enter& e)
 {
    _tooltip = new rack::ui::Tooltip{};
-   const auto mappingKey = glfwGetKeyName(_module->getSettings()->getCVWizardSettings().MappingKey, 0);
-   std::locale locale;
-   auto text = std::stringstream{};
-   text << "Press '";
-#ifdef ARCH_MAC
-   text << "CMD";
-#else
-   text << "CTRL";
-#endif
-   text << "-" << std::toupper(*mappingKey, locale) << "' to activate Mapping mode";
-   _tooltip->text = text.str();
+   _tooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
    APP->scene->addChild(_tooltip);
 }
 
@@ -60,7 +51,6 @@ void CVWizardWidget::onLeave(const rack::event::Leave& e)
    {
       APP->scene->removeChild(_tooltip);
       delete _tooltip;
-      _tooltip = nullptr;
    }
 }
 

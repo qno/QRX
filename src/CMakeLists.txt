@@ -3,7 +3,8 @@ set(SOURCES QRXPlugin.cpp
             cvwizard/CVWizard.cpp
             cvwizard/CVWizardModule.cpp
             cvwizard/CVWizardWidget.cpp
-            cvwizard/controller/CVWizardController.cpp)
+            cvwizard/controller/CVWizardController.cpp
+            cvwizard/ui/Tooltip.cpp)
 
 add_library(${LIB_NAME} MODULE ${SOURCES})
 
