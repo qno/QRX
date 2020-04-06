@@ -33,6 +33,7 @@ target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
 target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
   pthread
   TinyFSM
+  SigSlot
   ${CONAN_LIBS_JANSSON}
   FakeIt
   Catch2::Catch2)
