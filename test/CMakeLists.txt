@@ -20,7 +20,8 @@ set(TESTS_SOURCES QRXPluginTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/sm/keyboard/KeyboardTest.cpp
-                  cvwizard/ui/TooltipTest.cpp)
+                  cvwizard/ui/TooltipTest.cpp
+                  SignalSlotTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
