@@ -8,15 +8,7 @@ namespace cvwizard {
 namespace ui {
 
 namespace {
-
-#ifdef ARCH_MAC
-static constexpr char const* MOD_KEY = "Cmd";
-#else
-static constexpr char const* MOD_KEY = "Ctrl";
-#endif
-
 std::locale locale;
-
 }
 
 char Tooltip::_mappingKey = 0;
