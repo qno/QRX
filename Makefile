@@ -6,10 +6,6 @@ FLAGS +=
 CFLAGS +=
 CXXFLAGS += -Iinclude -Ithirdparty/tinyfsm/include -Ithirdparty/sigslot/include
 
-CXXFLAGS := $(filter-out -std=c++11,$(CXXFLAGS))
-CXXFLAGS += -std=c++14
-
-
 # Careful about linking to shared libraries, since you can't assume much about the user's environment and library search path.
 # Static libraries are fine, but they should be added to this plugin's build system.
 LDFLAGS +=
@@ -23,6 +19,7 @@ endif
 SOURCES += $(wildcard src/*.cpp)
 SOURCES += $(wildcard src/cvwizard/*.cpp)
 SOURCES += $(wildcard src/cvwizard/controller/*.cpp)
+SOURCES += $(wildcard src/cvwizard/sm/keyboard/*.cpp)
 SOURCES += $(wildcard src/cvwizard/ui/*.cpp)
 
 # Add files to the ZIP package when running `make dist`
@@ -32,3 +29,6 @@ DISTRIBUTABLES += $(wildcard LICENSE*)
 
 # Include the Rack plugin Makefile framework
 include $(RACK_DIR)/plugin.mk
+
+CXXFLAGS := $(filter-out -std=c++11,$(CXXFLAGS))
+CXXFLAGS += -std=c++14
