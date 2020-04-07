@@ -5,7 +5,8 @@ namespace cvwizard {
 namespace sm {
 namespace keyboard {
 
-sigslot::signal<> Keyboard::_signal;
+sigslot::signal<> Keyboard::_mappingActiveSignal;
+sigslot::signal<> Keyboard::_idleSignal;
 
 }
 }

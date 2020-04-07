@@ -8,6 +8,7 @@ namespace qrx {
 namespace cvwizard {
 
 rack::Tooltip* CVWizardWidget::_tooltip = nullptr;
+rack::Tooltip* CVWizardWidget::_modeTooltip = nullptr;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    : ModuleWidget(), _module(module), _appWindow(APP->window)
@@ -23,14 +24,22 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    
    if (_module)
    {
-      _connection = sm::keyboard::Keyboard::connect(std::bind(&CVWizardWidget::onMappingModeActive, this));
+      _mappingActiveConnection = sm::keyboard::Keyboard::connectActive(std::bind(&CVWizardWidget::onMappingModeActive, this));
+      _idleConnection = sm::keyboard::Keyboard::connectIdle(std::bind(&CVWizardWidget::onIdle, this));
    }
 }
 
 CVWizardWidget::~CVWizardWidget()
 {
-   if (_connection.connected())
-      _connection.disconnect();
+   if (_mappingActiveConnection.connected())
+   {
+      _mappingActiveConnection.disconnect();
+   }
+   
+   if (_idleConnection.connected())
+   {
+      _idleConnection.disconnect();
+   }
 }
 
 void CVWizardWidget::step()
@@ -75,6 +84,25 @@ void CVWizardWidget::onHover(const rack::event::Hover& e)
 void CVWizardWidget::onMappingModeActive()
 {
    INFO("onMappingModeActive Widget #%d", this);
+   if (_module->isMasterModule())
+   {
+      _modeTooltip = new rack::ui::Tooltip{};
+      _modeTooltip->text = "Click on a Input!";
+      APP->scene->addChild(_modeTooltip);
+   }
+}
+
+void CVWizardWidget::onIdle()
+{
+   INFO("onIdle Widget #%d", this);
+   if (_module->isMasterModule())
+   {
+      if (_modeTooltip)
+      {
+         APP->scene->removeChild(_modeTooltip);
+         delete _modeTooltip;
+      }
+   }
 }
 
 }

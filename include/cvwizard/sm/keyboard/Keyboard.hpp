@@ -28,14 +28,19 @@ public:
    virtual void entry() { };  /* entry actions in some states */
    void         exit()  { };  /* no exit actions */
    
-   static sigslot::connection connect(std::function<void()> callback)
+   static sigslot::connection connectActive(std::function<void()> callback)
    {
-      return _signal.connect(callback);
+      return _mappingActiveSignal.connect(callback);
+   }
+   
+   static sigslot::connection connectIdle(std::function<void()> callback)
+   {
+      return _idleSignal.connect(callback);
    }
    
 protected:
-   static sigslot::signal<> _signal;
-   
+   static sigslot::signal<> _mappingActiveSignal;
+   static sigslot::signal<> _idleSignal;
 };
 
 class ControlKeyPressed;
@@ -48,7 +53,7 @@ class Idle : public Keyboard
 public:
    Idle() = default;
    ~Idle() override = default;
-   void entry() override { DEBUG("* idle state"); };
+   void entry() override { DEBUG("* idle state"); _idleSignal(); };
    void react(const ControlKeyPressedEvent& e) override { transit<ControlKeyPressed>(); };
 };
 
@@ -77,7 +82,7 @@ class MappingModeActive : public Keyboard
 public:
    MappingModeActive() = default;
    ~MappingModeActive() override = default;
-   void entry() override { DEBUG("* MappingModeActive"); _signal(); };
+   void entry() override { DEBUG("* MappingModeActive"); _mappingActiveSignal(); };
    void react(const MappingCancelKeyEvent& e) override { transit<Idle>(); };
 };
 

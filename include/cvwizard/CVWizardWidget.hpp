@@ -28,13 +28,16 @@ public:
 private:
    
    void onMappingModeActive();
+   void onIdle();
    
-   sigslot::connection _connection;
+   sigslot::connection _mappingActiveConnection;
+   sigslot::connection _idleConnection;
    
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
    
    static rack::Tooltip* _tooltip;
+   static rack::Tooltip* _modeTooltip;
 };
 
 }
