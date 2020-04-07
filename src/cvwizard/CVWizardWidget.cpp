@@ -87,7 +87,7 @@ void CVWizardWidget::onMappingModeActive()
    if (_module->isMasterModule())
    {
       _modeTooltip = new rack::ui::Tooltip{};
-      _modeTooltip->text = "Click on a Input!";
+      _modeTooltip->text = "Mapping Mode is active (Press 'Esc' to cancel).\nClick on a Input!";
       APP->scene->addChild(_modeTooltip);
    }
 }
