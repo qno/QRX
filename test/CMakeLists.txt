@@ -10,6 +10,7 @@ set(SOURCES ${SRC}/QRXPlugin.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
             ${SRC}/cvwizard/CVWizardWidget.cpp
+            ${SRC}/cvwizard/sm/keyboard/Keyboard.cpp
             ${SRC}/cvwizard/controller/CVWizardController.cpp
             ${SRC}/cvwizard/ui/Tooltip.cpp)
 

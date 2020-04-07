@@ -68,4 +68,3 @@ TEST_CASE("SignalSlot playground", "[xxx]")
    
    ctrl.publish();
 }
-

@@ -3,6 +3,7 @@ set(SOURCES QRXPlugin.cpp
             cvwizard/CVWizard.cpp
             cvwizard/CVWizardModule.cpp
             cvwizard/CVWizardWidget.cpp
+            cvwizard/sm/keyboard/Keyboard.cpp
             cvwizard/controller/CVWizardController.cpp
             cvwizard/ui/Tooltip.cpp)
 

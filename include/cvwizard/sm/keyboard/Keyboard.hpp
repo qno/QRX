@@ -2,8 +2,11 @@
 
 #include <cvwizard/sm/keyboard/KeyboardEvents.hpp>
 #include <tinyfsm.hpp>
+#include <sigslot/signal.hpp>
 
 #include <logger.hpp>
+
+#include <functional>
 
 namespace qrx {
 namespace cvwizard {
@@ -24,6 +27,14 @@ public:
    
    virtual void entry() { };  /* entry actions in some states */
    void         exit()  { };  /* no exit actions */
+   
+   static sigslot::connection connect(std::function<void()> callback)
+   {
+      return _signal.connect(callback);
+   }
+   
+protected:
+   static sigslot::signal<> _signal;
    
 };
 
@@ -66,7 +77,7 @@ class MappingModeActive : public Keyboard
 public:
    MappingModeActive() = default;
    ~MappingModeActive() override = default;
-   void entry() override { DEBUG("* MappingModeActive"); };
+   void entry() override { DEBUG("* MappingModeActive"); _signal(); };
    void react(const MappingCancelKeyEvent& e) override { transit<Idle>(); };
 };
 
@@ -83,7 +94,3 @@ public:
 }
 }
 
-#ifndef QRX_UNITTESTS
-using namespace qrx::cvwizard::sm::keyboard;
-FSM_INITIAL_STATE(Keyboard, Idle);
-#endif

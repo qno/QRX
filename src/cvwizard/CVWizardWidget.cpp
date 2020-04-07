@@ -1,5 +1,6 @@
 #include <cvwizard/CVWizardWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
+#include <cvwizard/sm/keyboard/Keyboard.hpp>
 
 using namespace rack;
 
@@ -19,6 +20,17 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
    addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
    addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+   
+   if (_module)
+   {
+      _connection = sm::keyboard::Keyboard::connect(std::bind(&CVWizardWidget::onMappingModeActive, this));
+   }
+}
+
+CVWizardWidget::~CVWizardWidget()
+{
+   if (_connection.connected())
+      _connection.disconnect();
 }
 
 void CVWizardWidget::step()
@@ -60,6 +72,10 @@ void CVWizardWidget::onHover(const rack::event::Hover& e)
    e.consume(this);
 }
 
+void CVWizardWidget::onMappingModeActive()
+{
+   INFO("onMappingModeActive Widget #%d", this);
+}
 
 }
 }
