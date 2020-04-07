@@ -22,7 +22,8 @@ set(TESTS_SOURCES QRXPluginTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/sm/keyboard/KeyboardTest.cpp
                   cvwizard/ui/TooltipTest.cpp
-                  SignalSlotTest.cpp)
+                  SignalSlotTest.cpp
+                  SmlTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
@@ -35,6 +36,7 @@ target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
 target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
   pthread
   TinyFSM
+  SML
   SigSlot
   ${CONAN_LIBS_JANSSON}
   FakeIt
