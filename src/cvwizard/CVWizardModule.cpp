@@ -29,17 +29,19 @@ CVWizardModule::CVWizardModule()
    , _settings{addPluginSettings()}
 #endif
 {
+   DEBUG("CVWizardModule ctr (#0x%0x)", this);
    determineMasterModuleStatus();
    config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 }
 
 CVWizardModule::~CVWizardModule() noexcept
 {
+   DEBUG("CVWizardModule dtr (#0x%0x)", this);
    if (_isRackMasterModule)
    {
       _controller.stop();
       s_isRackPluginMasterModule = false;
-      DEBUG("CVWizardModule (#%d) removed as master module instance", this);
+      DEBUG("CVWizardModule (#%0x) removed as master module instance", this);
    }
 }
 
@@ -87,7 +89,7 @@ void CVWizardModule::determineMasterModuleStatus()
    {
       if (!s_isRackPluginMasterModule)
       {
-         DEBUG("CVWizardModule (#%d) instance becomes master module", this);
+         DEBUG("CVWizardModule (#0x%0x) instance becomes master module", this);
          s_isRackPluginMasterModule = true;
          _isRackMasterModule        = true;
          _controller.setKeyboardEventsProvider(this);

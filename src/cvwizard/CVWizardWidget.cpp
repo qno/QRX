@@ -13,6 +13,7 @@ rack::Tooltip* CVWizardWidget::_modeTooltip = nullptr;
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    : ModuleWidget(), _module(module), _appWindow(APP->window)
 {
+   DEBUG("CVWizardWidget ctr (#0x%0x)", this);
    setModule(_module);
    
    setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
@@ -26,11 +27,13 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    {
       _mappingActiveConnection = sm::keyboard::Keyboard::connectActive(std::bind(&CVWizardWidget::onMappingModeActive, this));
       _idleConnection = sm::keyboard::Keyboard::connectIdle(std::bind(&CVWizardWidget::onIdle, this));
+      onIdle();
    }
 }
 
 CVWizardWidget::~CVWizardWidget()
 {
+   DEBUG("CVWizardWidget dtr (#0x%0x)", this);
    if (_mappingActiveConnection.connected())
    {
       _mappingActiveConnection.disconnect();
@@ -39,6 +42,11 @@ CVWizardWidget::~CVWizardWidget()
    if (_idleConnection.connected())
    {
       _idleConnection.disconnect();
+   }
+   
+   if (_module)
+   {
+      onIdle();
    }
 }
 
@@ -61,6 +69,7 @@ void CVWizardWidget::draw(const DrawArgs& args)
 
 void CVWizardWidget::onEnter(const rack::event::Enter& e)
 {
+   DEBUG("onEnter Widget #0x%0x", this);
    _tooltip = new rack::ui::Tooltip{};
    _tooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
    APP->scene->addChild(_tooltip);
@@ -68,39 +77,43 @@ void CVWizardWidget::onEnter(const rack::event::Enter& e)
 
 void CVWizardWidget::onLeave(const rack::event::Leave& e)
 {
+   DEBUG("onLeave Widget #0x%0x", this);
    if (_tooltip)
    {
       APP->scene->removeChild(_tooltip);
       delete _tooltip;
+      _tooltip = nullptr;
    }
 }
 
 void CVWizardWidget::onHover(const rack::event::Hover& e)
 {
+   DEBUG("onHover Widget #0x%0x", this);
    rack::ModuleWidget::onHover(e);
    e.consume(this);
 }
 
 void CVWizardWidget::onMappingModeActive()
 {
-   INFO("onMappingModeActive Widget #%d", this);
+   DEBUG("onMappingModeActive Widget #0x%0x", this);
    if (_module->isMasterModule())
    {
       _modeTooltip = new rack::ui::Tooltip{};
-      _modeTooltip->text = "Mapping Mode is active (Press 'Esc' to cancel).\nClick on a Input!";
+      _modeTooltip->text = "Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!";
       APP->scene->addChild(_modeTooltip);
    }
 }
 
 void CVWizardWidget::onIdle()
 {
-   INFO("onIdle Widget #%d", this);
+   DEBUG("onIdle Widget #0x%0x", this);
    if (_module->isMasterModule())
    {
       if (_modeTooltip)
       {
          APP->scene->removeChild(_modeTooltip);
          delete _modeTooltip;
+         _modeTooltip = nullptr;
       }
    }
 }
