@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/ui/Tooltip.hpp>
 
 #include <catch2/catch.hpp>
@@ -26,5 +22,3 @@ TEST_CASE("Tooltip", "[ui] [tooltip]")
       REQUIRE(Tooltip::getStartMappingText('q') == tooltipText.str());
    }
 }
-
-#pragma GCC diagnostic pop

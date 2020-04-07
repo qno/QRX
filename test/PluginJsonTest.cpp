@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/CVWizardModule.hpp>
 #include <PluginSettings.hpp>
 
@@ -131,5 +127,3 @@ TEST_CASE("plugin.json", "[plugin] [json]")
       }
    }
 }
-
-#pragma GCC diagnostic pop

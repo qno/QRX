@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
 
@@ -19,5 +15,3 @@ TEST_CASE("create QRXPlugin", "[plugin]")
       REQUIRE(model->slug == std::string{qrx::cvwizard::CVWizardModule::SLUG});
    }
 }
-
-#pragma GCC diagnostic pop

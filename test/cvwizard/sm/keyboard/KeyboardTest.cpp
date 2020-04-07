@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/sm/keyboard/Keyboard.hpp>
 
 #include <catch2/catch.hpp>
@@ -25,5 +21,3 @@ TEST_CASE("Keyboard statemachine", "[keyboard] [statemachine]")
    Keyboard::dispatch(MappingCancelKeyEvent{});
    REQUIRE(Keyboard::is_in_state<Idle>());
 }
-
-#pragma GCC diagnostic pop

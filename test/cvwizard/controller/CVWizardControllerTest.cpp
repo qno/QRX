@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/controller/CVWizardController.hpp>
 
 #include <catch2/catch.hpp>
@@ -16,5 +12,3 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
       REQUIRE_THROWS_AS(CVWizardController::instance().start(), CVWizardController::KeyboardEventsProviderNotSetException);
    }
 }
-
-#pragma GCC diagnostic pop

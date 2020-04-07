@@ -1,11 +1,6 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <PluginSettings.hpp>
 
 #include <catch2/catch.hpp>
-
 
 using namespace qrx;
 
@@ -126,5 +121,3 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       REQUIRE(pluginSettingsLoader.getCVWizardSettings() == testSettings);
    }
 }
-
-#pragma GCC diagnostic pop

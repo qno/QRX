@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/ModuleSettings.hpp>
 #include <GLFW/glfw3.h>
 
@@ -33,4 +29,3 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
    }
 }
 
-#pragma GCC diagnostic pop

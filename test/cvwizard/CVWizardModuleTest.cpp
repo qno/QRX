@@ -1,7 +1,3 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-override"
-#pragma GCC diagnostic ignored "-Wcast-function-type"
-
 #include <cvwizard/CVWizardModule.hpp>
 
 #include <catch2/catch.hpp>
@@ -108,5 +104,3 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
       REQUIRE(cvWizardModule.getSettings()->getCVWizardSettings() == defaultSettings);
    }
 }
-
-#pragma GCC diagnostic pop
