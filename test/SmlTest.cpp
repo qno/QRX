@@ -23,7 +23,7 @@ const auto removeTooltip = [] (WidgetControllable& w) { w.removeTooltip(); };
 
 class Idle;
 
-struct KeyboardSM {
+struct WidgetSM {
    auto operator()() const {
       return sml::make_transition_table(
          *sml::state<Idle> + sml::event<HoverEvent> [ifTooltipEnabled] / showTooltip = sml::state<Idle>,
@@ -49,22 +49,33 @@ struct Widget : public WidgetControllable
       return _showTooltips == true;
    }
    
+   void onHover()
+   {
+      _sm->process_event(HoverEvent{});
+   }
+   
+   void onLeave()
+   {
+      _sm->process_event(LeaveEvent{});
+   }
+   
+   Widget()
+   {
+      WidgetControllable& wc{*this};
+      _sm = new sml::sm<WidgetSM>{wc};
+   }
+   
    bool _showTooltips = false;
+   
+private:
+   sml::sm<WidgetSM>* _sm;
 };
 
 
 TEST_CASE("Sml playground", "[xxx]")
 {
    Widget w{};
-   WidgetControllable& wc{w};
-
-   sml::sm<KeyboardSM> sm{wc};
-   
-   auto he = HoverEvent{};
-   auto le = LeaveEvent{};
-   sm.process_event(he);
-   
    w._showTooltips = true;
-   sm.process_event(he);
-   sm.process_event(le);
+   w.onHover();
+   w.onLeave();
 }
