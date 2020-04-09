@@ -62,13 +62,13 @@ struct Widget : public WidgetControllable
    Widget()
    {
       WidgetControllable& wc{*this};
-      _sm = new sml::sm<WidgetSM>{wc};
+      _sm = std::make_unique<sml::sm<WidgetSM>>(wc);
    }
    
    bool _showTooltips = false;
    
 private:
-   sml::sm<WidgetSM>* _sm;
+   std::unique_ptr<sml::sm<WidgetSM>> _sm;
 };
 
 
