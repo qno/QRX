@@ -22,7 +22,6 @@ set(TESTS_SOURCES QRXPluginTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/sm/keyboard/KeyboardTest.cpp
                   cvwizard/ui/TooltipTest.cpp
-                  SignalSlotTest.cpp
                   SmlTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
