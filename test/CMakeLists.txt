@@ -10,19 +10,14 @@ set(SOURCES ${SRC}/QRXPlugin.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
             ${SRC}/cvwizard/CVWizardWidget.cpp
-            ${SRC}/cvwizard/sm/keyboard/Keyboard.cpp
-            ${SRC}/cvwizard/controller/CVWizardController.cpp
             ${SRC}/cvwizard/ui/Tooltip.cpp)
 
 set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
-                  cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
-                  cvwizard/sm/keyboard/KeyboardTest.cpp
-                  cvwizard/ui/TooltipTest.cpp
-                  SmlTest.cpp)
+                  cvwizard/ui/TooltipTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
 target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
@@ -34,7 +29,6 @@ target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
   PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
 target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
   pthread
-  TinyFSM
   SML
   SigSlot
   ${CONAN_LIBS_JANSSON}

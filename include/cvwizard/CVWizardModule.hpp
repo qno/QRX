@@ -3,18 +3,13 @@
 #include <QRXPlugin.hpp>
 #include <cvwizard/ModuleSettings.hpp>
 
-#include <cvwizard/controller/CVWizardController.hpp>
-#include <cvwizard/controller/KeyboardEventsProviding.hpp>
-
 #include <atomic>
 #include <memory>
 
 namespace qrx {
 namespace cvwizard {
 
-class CVWizardModule : public rack::engine::Module
-                     , public controller::KeyboardEventsProviding
-   
+class CVWizardModule final : public rack::engine::Module
 {
 public:
    
@@ -43,30 +38,21 @@ public:
    CVWizardModule();
    ~CVWizardModule() noexcept override;
    
-   bool isMasterModule() const;
-   
    void process(const ProcessArgs& args) override;
    
    json_t* dataToJson() override;
    
    void dataFromJson(json_t* root) override;
    
+   bool isMasterModule() const;
+   
    void addSettings(std::shared_ptr<ModuleSettings> settings);
    
    std::shared_ptr<ModuleSettings> getSettings() const;
    
-   void handleKeyboardInput() const;
-   
 private:
    
-   bool isControlKeyPressed () const override;
-   bool isMappingKeyPressed () const override;
-   bool isMappingCancelKeyPressed () const override;
-   bool isTooltipKeyPressed () const override;
-   
    void determineMasterModuleStatus();
-   
-   static controller::CVWizardController& _controller;
    
    static std::atomic_bool s_isRackPluginMasterModule;
    bool                    _isRackMasterModule = false;

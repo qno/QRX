@@ -4,7 +4,7 @@ RACK_DIR ?= ../..
 # FLAGS will be passed to both the C and C++ compiler
 FLAGS +=
 CFLAGS +=
-CXXFLAGS += -Iinclude -Ithirdparty/tinyfsm/include -Ithirdparty/sml/include -Ithirdparty/sigslot/include
+CXXFLAGS += -Iinclude -Ithirdparty/sml/include -Ithirdparty/sigslot/include
 
 # Careful about linking to shared libraries, since you can't assume much about the user's environment and library search path.
 # Static libraries are fine, but they should be added to this plugin's build system.
@@ -18,8 +18,6 @@ endif
 # Add .cpp files to the build
 SOURCES += $(wildcard src/*.cpp)
 SOURCES += $(wildcard src/cvwizard/*.cpp)
-SOURCES += $(wildcard src/cvwizard/controller/*.cpp)
-SOURCES += $(wildcard src/cvwizard/sm/keyboard/*.cpp)
 SOURCES += $(wildcard src/cvwizard/ui/*.cpp)
 
 # Add files to the ZIP package when running `make dist`

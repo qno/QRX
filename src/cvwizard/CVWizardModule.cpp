@@ -3,6 +3,7 @@
 
 #include <mutex>
 #include <utility>
+#include <cvwizard/controller/CVWizardController.hpp>
 
 using namespace rack;
 
@@ -19,9 +20,7 @@ namespace qrx {
 namespace cvwizard {
 
 static std::mutex s_MasterModuleStatusMutex;
-
 std::atomic_bool CVWizardModule::s_isRackPluginMasterModule{false};
-controller::CVWizardController& CVWizardModule::_controller = controller::CVWizardController::instance();
 
 CVWizardModule::CVWizardModule()
  : Module()
@@ -39,7 +38,6 @@ CVWizardModule::~CVWizardModule() noexcept
    DEBUG("CVWizardModule dtr (#0x%0x)", this);
    if (_isRackMasterModule)
    {
-      _controller.stop();
       s_isRackPluginMasterModule = false;
       DEBUG("CVWizardModule (#%0x) removed as master module instance", this);
    }
@@ -92,36 +90,9 @@ void CVWizardModule::determineMasterModuleStatus()
          DEBUG("CVWizardModule (#0x%0x) instance becomes master module", this);
          s_isRackPluginMasterModule = true;
          _isRackMasterModule        = true;
-         _controller.setKeyboardEventsProvider(this);
-         _controller.start();
       }
       s_MasterModuleStatusMutex.unlock();
    }
-}
-
-void CVWizardModule::handleKeyboardInput() const
-{
-   _controller.handleKeyboardInput();
-}
-
-bool CVWizardModule::isControlKeyPressed() const
-{
-   return (RACK_MOD_CTRL  == (APP->window->getMods() & RACK_MOD_CTRL));
-}
-
-bool CVWizardModule::isMappingKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingKey));
-}
-
-bool CVWizardModule::isMappingCancelKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingCancelKey));
-}
-
-bool CVWizardModule::isTooltipKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(APP->window->win, _settings->getCVWizardSettings().MappingTooltipKey));
 }
 
 }

@@ -7,7 +7,6 @@ set(PLUGIN_NAME QRX)
 
 project(VCVRack${PLUGIN_NAME}Plugin)
 
-include(thirdparty/tinyfsm/TinyFSM.cmake)
 include(thirdparty/sml/SML.cmake)
 include(thirdparty/sigslot/SigSlot.cmake)
 include(thirdparty/fakeit/FakeIt.cmake)

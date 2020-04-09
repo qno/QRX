@@ -2,42 +2,51 @@
 
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
+#include <cvwizard/controller/CVWizardController.hpp>
+#include <cvwizard/controller/CVWizardControllable.hpp>
 
-#include <sigslot/signal.hpp>
+#include <memory>
 
 namespace qrx {
 namespace cvwizard {
 
-
-class CVWizardWidget : public rack::ModuleWidget
+class CVWizardWidget final : public rack::ModuleWidget
+                           , public controller::CVWizardControllable
 {
 public:
   
    explicit CVWizardWidget(CVWizardModule* module);
   
    ~CVWizardWidget() override;
-  
+
+private:
+   
    void step() override;
-  
    void draw(const DrawArgs& args) override;
    
    void onEnter(const rack::event::Enter& e) override;
    void onLeave(const rack::event::Leave& e) override;
    void onHover(const rack::event::Hover& e) override;
-
-private:
    
-   void onMappingModeActive();
-   void onIdle();
+   void showWidgetTooltip() override;
+   void removeWidgetTooltip() override;
+   void showTooltip() override;
+   void removeTooltip() override;
+   bool isShowTooltipsEnabled() const override;
+   void toogleTooltip() override ;
    
-   sigslot::connection _mappingActiveConnection;
-   sigslot::connection _idleConnection;
+   bool isControlKeyPressed () const override;
+   bool isMappingKeyPressed () const override;
+   bool isMappingCancelKeyPressed () const override;
+   bool isTooltipKeyPressed () const override;
+   
+   std::unique_ptr<sml::sm<controller::CVWizardControllerSM>> _controller;
    
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
    
-   static rack::Tooltip* _tooltip;
-   static rack::Tooltip* _modeTooltip;
+   std::unique_ptr<rack::ui::Tooltip> _widgetTooltip = nullptr;
+   static std::unique_ptr<rack::ui::Tooltip> s_tooltip;
 };
 
 }

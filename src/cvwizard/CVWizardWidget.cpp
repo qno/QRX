@@ -1,14 +1,12 @@
 #include <cvwizard/CVWizardWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
-#include <cvwizard/sm/keyboard/Keyboard.hpp>
 
 using namespace rack;
 
 namespace qrx {
 namespace cvwizard {
 
-rack::Tooltip* CVWizardWidget::_tooltip = nullptr;
-rack::Tooltip* CVWizardWidget::_modeTooltip = nullptr;
+std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    : ModuleWidget(), _module(module), _appWindow(APP->window)
@@ -23,31 +21,15 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
    addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
    
-   if (_module)
-   {
-      _mappingActiveConnection = sm::keyboard::Keyboard::connectActive(std::bind(&CVWizardWidget::onMappingModeActive, this));
-      _idleConnection = sm::keyboard::Keyboard::connectIdle(std::bind(&CVWizardWidget::onIdle, this));
-      onIdle();
-   }
+   controller::CVWizardControllable& c{*this};
+   _controller = std::make_unique<sml::sm<controller::CVWizardControllerSM>>(c);
 }
 
 CVWizardWidget::~CVWizardWidget()
 {
    DEBUG("CVWizardWidget dtr (#0x%0x)", this);
-   if (_mappingActiveConnection.connected())
-   {
-      _mappingActiveConnection.disconnect();
-   }
-   
-   if (_idleConnection.connected())
-   {
-      _idleConnection.disconnect();
-   }
-   
-   if (_module)
-   {
-      onIdle();
-   }
+   removeWidgetTooltip();
+   removeTooltip();
 }
 
 void CVWizardWidget::step()
@@ -56,7 +38,7 @@ void CVWizardWidget::step()
    {
       if (!APP->event->heldKeys.empty())
       {
-         _module->handleKeyboardInput();
+         _controller->process_event(controller::event::OnKeyPressed{});
       }
    }
    ModuleWidget::step();
@@ -70,52 +52,92 @@ void CVWizardWidget::draw(const DrawArgs& args)
 void CVWizardWidget::onEnter(const rack::event::Enter& e)
 {
    DEBUG("onEnter Widget #0x%0x", this);
-   _tooltip = new rack::ui::Tooltip{};
-   _tooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
-   APP->scene->addChild(_tooltip);
+   _controller->process_event(controller::event::OnEnter{});
 }
 
 void CVWizardWidget::onLeave(const rack::event::Leave& e)
 {
    DEBUG("onLeave Widget #0x%0x", this);
-   if (_tooltip)
-   {
-      APP->scene->removeChild(_tooltip);
-      delete _tooltip;
-      _tooltip = nullptr;
-   }
+   _controller->process_event(controller::event::OnLeave{});
 }
 
 void CVWizardWidget::onHover(const rack::event::Hover& e)
 {
-   DEBUG("onHover Widget #0x%0x", this);
    rack::ModuleWidget::onHover(e);
    e.consume(this);
 }
 
-void CVWizardWidget::onMappingModeActive()
+void CVWizardWidget::showWidgetTooltip()
 {
-   DEBUG("onMappingModeActive Widget #0x%0x", this);
-   if (_module->isMasterModule())
+   DEBUG("showWidgetTooltip Widget #0x%0x", this);
+   _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
+   _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
+   APP->scene->addChild(_widgetTooltip.get());
+}
+
+void CVWizardWidget::removeWidgetTooltip()
+{
+   DEBUG("removeWidgetTooltip Widget #0x%0x", this);
+   if (_widgetTooltip)
    {
-      _modeTooltip = new rack::ui::Tooltip{};
-      _modeTooltip->text = "Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!";
-      APP->scene->addChild(_modeTooltip);
+      APP->scene->removeChild(_widgetTooltip.get());
+      _widgetTooltip = nullptr;
    }
 }
 
-void CVWizardWidget::onIdle()
+void CVWizardWidget::showTooltip()
 {
-   DEBUG("onIdle Widget #0x%0x", this);
-   if (_module->isMasterModule())
+   DEBUG("showTooltip Widget #0x%0x", this);
+   if (_module && _module->isMasterModule())
    {
-      if (_modeTooltip)
+      removeWidgetTooltip();
+      s_tooltip = std::make_unique<rack::ui::Tooltip>();
+      s_tooltip->text = "Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!";
+      APP->scene->addChild(s_tooltip.get());
+   }
+}
+
+void CVWizardWidget::removeTooltip()
+{
+   DEBUG("removeTooltip Widget #0x%0x", this);
+   if (_module && _module->isMasterModule())
+   {
+      if (s_tooltip)
       {
-         APP->scene->removeChild(_modeTooltip);
-         delete _modeTooltip;
-         _modeTooltip = nullptr;
+         APP->scene->removeChild(s_tooltip.get());
+         s_tooltip = nullptr;
       }
    }
+}
+
+bool CVWizardWidget::isShowTooltipsEnabled() const
+{
+   return _module->getSettings()->getCVWizardSettings().ShowMappingTooltips;
+}
+
+void CVWizardWidget::toogleTooltip()
+{
+   DEBUG("toogleTooltip Widget #0x%0x", this);
+}
+
+bool CVWizardWidget::isControlKeyPressed() const
+{
+   return (RACK_MOD_CTRL  == (APP->window->getMods() & RACK_MOD_CTRL));
+}
+
+bool CVWizardWidget::isMappingKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingKey));
+}
+
+bool CVWizardWidget::isMappingCancelKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingCancelKey));
+}
+
+bool CVWizardWidget::isTooltipKeyPressed() const
+{
+   return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingTooltipKey));
 }
 
 }
