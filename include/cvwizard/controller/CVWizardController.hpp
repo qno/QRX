@@ -43,7 +43,7 @@ class CtrlKeyPressed;
 class MappingModeActive;
 }
 
-class CVWizardControllerSM
+class CVWizardController
 {
 public:
    auto operator()() const

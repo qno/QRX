@@ -39,7 +39,7 @@ private:
    bool isMappingCancelKeyPressed () const override;
    bool isTooltipKeyPressed () const override;
    
-   std::unique_ptr<sml::sm<controller::CVWizardControllerSM>> _controller;
+   std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
    
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;

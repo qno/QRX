@@ -22,7 +22,7 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
    
    controller::CVWizardControllable& c{*this};
-   _controller = std::make_unique<sml::sm<controller::CVWizardControllerSM>>(c);
+   _controller = std::make_unique<sml::sm<controller::CVWizardController>>(c);
 }
 
 CVWizardWidget::~CVWizardWidget()
