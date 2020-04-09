@@ -2,8 +2,6 @@
 #include <PluginSettings.hpp>
 
 #include <mutex>
-#include <utility>
-#include <cvwizard/controller/CVWizardController.hpp>
 
 using namespace rack;
 

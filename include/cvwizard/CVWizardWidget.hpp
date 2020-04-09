@@ -3,7 +3,6 @@
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
 #include <cvwizard/controller/CVWizardController.hpp>
-#include <cvwizard/controller/CVWizardControllable.hpp>
 
 #include <memory>
 
