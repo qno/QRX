@@ -17,6 +17,7 @@ set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
+                  cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
