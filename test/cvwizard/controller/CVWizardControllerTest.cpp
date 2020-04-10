@@ -6,27 +6,7 @@
 using namespace qrx::cvwizard::controller;
 using namespace fakeit;
 
-TEST_CASE("CI test case", "[ubuntu linker error]")
-{
-   Mock<CVWizardControllable> controllableMock;
-   When(Method(controllableMock, showWidgetTooltip));
-   When(Method(controllableMock, removeWidgetTooltip));
-   When(Method(controllableMock, showTooltip));
-   When(Method(controllableMock, removeTooltip));
-   When(Method(controllableMock, isShowTooltipsEnabled)).AlwaysReturn(true);
-   When(Method(controllableMock, toogleTooltip));
-   
-   When(Method(controllableMock, isControlKeyPressed)).Return(false);
-   When(Method(controllableMock, isMappingKeyPressed)).AlwaysReturn(false);
-   When(Method(controllableMock, isMappingCancelKeyPressed)).AlwaysReturn(false);
-   When(Method(controllableMock, isTooltipKeyPressed)).AlwaysReturn(false);
-   
-   auto& m = controllableMock.get();
-   sml::sm<CVWizardController> controller{m};
-   REQUIRE(controller.is(sml::state<state::Idle>));
-}
-
-/*Mock<CVWizardControllable> controllableMock;
+Mock<CVWizardControllable> controllableMock;
 
 TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 {
@@ -81,4 +61,4 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 //      REQUIRE(controller3.is(sml::state<state::MappingModeActive>));
 //      Verify(Method(controllableMock, showTooltip));
 //   }
-}*/
+}
