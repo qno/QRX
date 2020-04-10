@@ -38,7 +38,7 @@ target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
-  target_compile_options(${UT_EXE} PRIVATE "--coverage" "-g")
+  target_compile_options(${UT_EXE} PRIVATE "--coverage")
   #target_link_options(${UT_EXE} PRIVATE "--coverage") # only possible since CMake 3.13
   set_target_properties(${UT_EXE} PROPERTIES LINK_FLAGS "--coverage")
 endif ()
