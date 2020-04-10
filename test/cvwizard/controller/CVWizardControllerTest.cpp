@@ -6,59 +6,56 @@
 using namespace qrx::cvwizard::controller;
 using namespace fakeit;
 
-Mock<CVWizardControllable> controllableMock;
-
 TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
 {
-   When(Method(controllableMock, showWidgetTooltip));
-   When(Method(controllableMock, removeWidgetTooltip));
-   When(Method(controllableMock, showTooltip));
-   When(Method(controllableMock, removeTooltip));
-   When(Method(controllableMock, isShowTooltipsEnabled)).AlwaysReturn(true);
-   When(Method(controllableMock, toogleTooltip));
+   Mock<CVWizardControllable> controllableMock;
    
-   When(Method(controllableMock, isControlKeyPressed)).Return(false);
-   When(Method(controllableMock, isMappingKeyPressed)).AlwaysReturn(false);
+   When(Method(controllableMock, showWidgetTooltip)).AlwaysReturn();
+   When(Method(controllableMock, removeWidgetTooltip)).AlwaysReturn();
+   When(Method(controllableMock, showTooltip)).AlwaysReturn();
+   When(Method(controllableMock, removeTooltip)).AlwaysReturn();
+   When(Method(controllableMock, isShowTooltipsEnabled)).AlwaysReturn(true);
+   When(Method(controllableMock, toogleTooltip)).AlwaysReturn();
+   
+   When(Method(controllableMock, isControlKeyPressed)).AlwaysReturn(true);
+   When(Method(controllableMock, isMappingKeyPressed)).AlwaysReturn(true);
    When(Method(controllableMock, isMappingCancelKeyPressed)).AlwaysReturn(false);
    When(Method(controllableMock, isTooltipKeyPressed)).AlwaysReturn(false);
    
-   SECTION("ensure state CtrlKeyPressed if Ctrl Key was pressed")
+   auto& m = controllableMock.get();
+   
+   SECTION("ensure initial state")
    {
+      sml::sm<CVWizardController> controller{m};
+      REQUIRE(controller.is(sml::state<state::Idle>));
+      VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();
-      auto& m = controllableMock.get();
-      sml::sm<CVWizardController> controller1{m};
-      REQUIRE(controller1.is(sml::state<state::Idle>));
    }
    
    SECTION("ensure controller is in state CtrlKeyPressed if Ctrl Key was pressed")
    {
-      controllableMock.Reset();
-      When(Method(controllableMock, isControlKeyPressed)).Return(true);
-   
-      auto& m = controllableMock.get();
-      sml::sm<CVWizardController> controller2{m};
+      sml::sm<CVWizardController> controller{m};
       
       const auto e = event::OnKeyPressed{};
-      controller2.process_event(e);
-      REQUIRE(controller2.is(sml::state<state::CtrlKeyPressed>));
+      controller.process_event(e);
+      REQUIRE(controller.is(sml::state<state::CtrlKeyPressed>));
+      Verify(Method(controllableMock, isControlKeyPressed));
+      controllableMock.Reset();
    }
    
-//   SECTION("ensure controller is in state MappingModeActive if Ctrl-M was pressed")
-//   {
-//      controllableMock.Reset();
-//      When(Method(controllableMock, isControlKeyPressed)).Return(true);
-//      When(Method(controllableMock, isMappingKeyPressed)).Return(true);
-//      When(Method(controllableMock, showTooltip));
-//
-//      auto& m = controllableMock.get();
-//      sml::sm<CVWizardController> controller3{m};
-//
-//      const auto e = event::OnKeyPressed{};
-//      controller3.process_event(e);
-//      REQUIRE(controller3.is(sml::state<state::CtrlKeyPressed>));
-//
-//      controller3.process_event(e);
-//      REQUIRE(controller3.is(sml::state<state::MappingModeActive>));
-//      Verify(Method(controllableMock, showTooltip));
-//   }
+   SECTION("ensure controller is in state MappingModeActive if Ctrl-M was pressed")
+   {
+      sml::sm<CVWizardController> controller{m};
+
+      const auto e = event::OnKeyPressed{};
+      controller.process_event(e);
+      REQUIRE(controller.is(sml::state<state::CtrlKeyPressed>));
+      Verify(Method(controllableMock, isControlKeyPressed));
+
+      controller.process_event(e);
+      REQUIRE(controller.is(sml::state<state::MappingModeActive>));
+      Verify(Method(controllableMock, isMappingKeyPressed));
+      Verify(Method(controllableMock, showTooltip));
+      controllableMock.Reset();
+   }
 }
