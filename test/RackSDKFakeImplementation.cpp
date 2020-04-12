@@ -71,6 +71,17 @@ void ParamWidget::onDoubleClick(const event::DoubleClick&) { }
 void ParamWidget::onEnter(const event::Enter&) { }
 void ParamWidget::onLeave(const event::Leave&) { }
 
+void PortWidget::step() { }
+void PortWidget::draw(const DrawArgs&) { }
+void PortWidget::PortWidget::onButton(const event::Button&) { }
+void PortWidget::onEnter(const event::Enter&) { }
+void PortWidget::onLeave(const event::Leave&) { }
+void PortWidget::onDragStart(const event::DragStart&) { }
+void PortWidget::onDragEnd(const event::DragEnd&) { }
+void PortWidget::onDragDrop(const event::DragDrop&) { }
+void PortWidget::onDragEnter(const event::DragEnter&) { }
+void PortWidget::onDragLeave(const event::DragLeave&) { }
+
 SvgScrew::SvgScrew() { }
 void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
 }
