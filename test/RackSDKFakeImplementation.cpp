@@ -73,7 +73,7 @@ void ParamWidget::onLeave(const event::Leave&) { }
 
 void PortWidget::step() { }
 void PortWidget::draw(const DrawArgs&) { }
-void PortWidget::PortWidget::onButton(const event::Button&) { }
+void PortWidget::onButton(const event::Button&) { }
 void PortWidget::onEnter(const event::Enter&) { }
 void PortWidget::onLeave(const event::Leave&) { }
 void PortWidget::onDragStart(const event::DragStart&) { }
