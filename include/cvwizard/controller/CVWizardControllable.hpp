@@ -18,6 +18,8 @@ public:
    virtual bool isMappingKeyPressed() const = 0;
    virtual bool isMappingCancelKeyPressed() const = 0;
    virtual bool isTooltipKeyPressed() const = 0;
+   
+   virtual void handleHoveredWidget() = 0;
 };
 
 }

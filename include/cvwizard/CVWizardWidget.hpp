@@ -2,6 +2,7 @@
 
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
+#include <cvwizard/model/CVWizardModel.hpp>
 #include <cvwizard/controller/CVWizardController.hpp>
 
 #include <memory>
@@ -39,10 +40,13 @@ private:
    bool isMappingCancelKeyPressed () const override;
    bool isTooltipKeyPressed () const override;
    
-   std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
+   void handleHoveredWidget() override;
    
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
+   
+   std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
+   static model::CVWizardModel _model;
    
    std::unique_ptr<rack::ui::Tooltip> _widgetTooltip = nullptr;
    static std::unique_ptr<rack::ui::Tooltip> s_tooltip;

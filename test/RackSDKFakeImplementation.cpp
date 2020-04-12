@@ -9,6 +9,15 @@ NVGcolor nvgRGB(unsigned char, unsigned char, unsigned char) { return {}; }
 NVGcolor nvgRGBf(float, float, float){ return {}; }
 NVGcolor nvgRGBAf(float, float, float, float) { return {}; }
 NVGcolor nvgRGBA(unsigned char, unsigned char, unsigned char, unsigned char) { return {}; }
+
+void nvgLineTo(NVGcontext*, float, float) { }
+void nvgMoveTo(NVGcontext*, float, float) { }
+void nvgLineCap(NVGcontext*, int) { }
+void nvgLineJoin(NVGcontext*, int) { }
+void nvgStrokeWidth(NVGcontext*, float) { }
+void nvgStrokeColor(NVGcontext*, NVGcolor) { }
+void nvgBeginPath(NVGcontext*) { }
+void nvgStroke(NVGcontext*) { }
 }
 
 namespace rack {

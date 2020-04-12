@@ -17,6 +17,8 @@ namespace event {
 struct OnEnter{};
 struct OnLeave{};
 struct OnKeyPressed{};
+struct OnWidgetHovered{};
+struct OnWidgetSelected{};
 }
 
 namespace guard {
@@ -35,6 +37,8 @@ const auto showTooltip   = [](CVWizardControllable& c) { c.showTooltip(); };
 const auto removeTooltip = [](CVWizardControllable& c) { c.removeTooltip(); };
 
 const auto toogleTooltip = [](CVWizardControllable& c) { c.toogleTooltip(); };
+
+const auto handleHoveredWidget = [](CVWizardControllable& c) { c.handleHoveredWidget(); };
 }
 
 namespace state {
@@ -54,7 +58,8 @@ public:
  sml::state<state::Idle> + sml::event<event::OnLeave> [guard::isTooltipsEnabled] / action::removeWidgetTooltip = sml::state<state::Idle>,
  sml::state<state::Idle> + sml::event<event::OnKeyPressed> [guard::isCtrlKeyPressed] = sml::state<state::CtrlKeyPressed>,
  sml::state<state::CtrlKeyPressed> + sml::event<event::OnKeyPressed> [guard::isMappingKeyPressed] / action::showTooltip = sml::state<state::MappingModeActive>,
- sml::state<state::MappingModeActive> + sml::event<event::OnKeyPressed> [guard::isMappingCancelKeyPressed] / action::removeTooltip = sml::state<state::Idle>
+ sml::state<state::MappingModeActive> + sml::event<event::OnKeyPressed> [guard::isMappingCancelKeyPressed] / action::removeTooltip = sml::state<state::Idle>,
+ sml::state<state::MappingModeActive> + sml::event<event::OnWidgetHovered> / action::handleHoveredWidget = sml::state<state::MappingModeActive>
       );
       // clang-format on
    }

@@ -1,4 +1,5 @@
 #include <cvwizard/CVWizardWidget.hpp>
+#include <cvwizard/ui/OnHoverWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
 
 using namespace rack;
@@ -6,6 +7,7 @@ using namespace rack;
 namespace qrx {
 namespace cvwizard {
 
+model::CVWizardModel CVWizardWidget::_model;
 std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
@@ -39,6 +41,11 @@ void CVWizardWidget::step()
       if (!APP->event->heldKeys.empty())
       {
          _controller->process_event(controller::event::OnKeyPressed{});
+      }
+      
+      if (APP->event->getHoveredWidget())
+      {
+         _controller->process_event(controller::event::OnWidgetHovered{});
       }
    }
    ModuleWidget::step();
@@ -139,6 +146,29 @@ bool CVWizardWidget::isTooltipKeyPressed() const
 {
    return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingTooltipKey));
 }
+
+void CVWizardWidget::handleHoveredWidget()
+{
+   auto hovered = APP->event->getHoveredWidget();
+   
+   if (_model.hoveredWidget != hovered)
+   {
+      if (_model.hoveredWidget && _model.onHoverWidget)
+      {
+         _model.hoveredWidget->removeChild(_model.onHoverWidget);
+         delete _model.onHoverWidget;
+         _model.onHoverWidget = nullptr;
+      }
+      if (auto&& mw = dynamic_cast<rack::ParamWidget*>(hovered))
+      {
+         DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
+         _model.hoveredWidget = hovered;
+         _model.onHoverWidget = new ui::OnHoverWidget{mw};
+         hovered->addChild(_model.onHoverWidget);
+      }
+   }
+}
+
 
 }
 }
