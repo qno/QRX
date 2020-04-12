@@ -18,17 +18,13 @@ public:
    {
       TransparentWidget::draw(args);
       auto vg = args.vg;
-      nvgLineCap(vg, NVG_BUTT);
-      nvgLineJoin(vg, NVG_BEVEL);
-      nvgStrokeWidth(vg, 3.0f);
-      nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
+      const auto v = box.size.x / 2.f;
       nvgBeginPath(vg);
-      nvgLineTo(vg, box.pos.x + box.size.x, box.pos.y + box.size.y);
-      nvgMoveTo(vg, 0, 0);
-      nvgLineTo(vg, box.size.x, box.size.y);
-      nvgMoveTo(vg, box.size.x, 0);
-      nvgLineTo(vg, 0, box.size.y);
-      nvgStroke(vg);
+      nvgCircle(vg, v, v, v + 3.f);
+      nvgCircle(vg, v, v, v);
+      nvgPathWinding(vg, NVG_HOLE);
+      nvgFillColor(vg, nvgRGBA(255, 0, 0, 200));
+      nvgFill(vg);
    }
 
 private:

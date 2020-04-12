@@ -18,6 +18,10 @@ void nvgStrokeWidth(NVGcontext*, float) { }
 void nvgStrokeColor(NVGcontext*, NVGcolor) { }
 void nvgBeginPath(NVGcontext*) { }
 void nvgStroke(NVGcontext*) { }
+void nvgCircle(NVGcontext*, float, float, float) { }
+void nvgPathWinding(NVGcontext*, int) { }
+void nvgFillColor(NVGcontext*, NVGcolor) { }
+void nvgFill(NVGcontext*) { }
 }
 
 namespace rack {

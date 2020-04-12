@@ -159,16 +159,18 @@ void CVWizardWidget::handleHoveredWidget()
          delete _model.onHoverWidget;
          _model.onHoverWidget = nullptr;
       }
-      if (auto&& mw = dynamic_cast<rack::ParamWidget*>(hovered))
+      if (auto&& p = dynamic_cast<rack::PortWidget*>(hovered))
       {
-         DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
-         _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::OnHoverWidget{mw};
-         hovered->addChild(_model.onHoverWidget);
+         if (rack::PortWidget::INPUT == p->type)
+         {
+            DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
+            _model.hoveredWidget = hovered;
+            _model.onHoverWidget = new ui::OnHoverWidget{p};
+            hovered->addChild(_model.onHoverWidget);
+         }
       }
    }
 }
-
 
 }
 }
