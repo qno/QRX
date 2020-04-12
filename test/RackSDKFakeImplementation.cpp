@@ -60,6 +60,13 @@ void ModuleWidget::onDragMove(const event::DragMove&) { }
 json_t*  ModuleWidget::toJson() { return{}; }
 void ModuleWidget::fromJson(json_t*) { }
 
+void ParamWidget::step() { }
+void ParamWidget::draw(const DrawArgs&) { }
+void ParamWidget::onButton(const event::Button&) { }
+void ParamWidget::onDoubleClick(const event::DoubleClick&) { }
+void ParamWidget::onEnter(const event::Enter&) { }
+void ParamWidget::onLeave(const event::Leave&) { }
+
 SvgScrew::SvgScrew() { }
 void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
 }
