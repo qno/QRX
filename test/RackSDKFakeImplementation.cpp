@@ -71,6 +71,8 @@ void ParamWidget::onDoubleClick(const event::DoubleClick&) { }
 void ParamWidget::onEnter(const event::Enter&) { }
 void ParamWidget::onLeave(const event::Leave&) { }
 
+PortWidget::PortWidget() { }
+PortWidget::~PortWidget() { }
 void PortWidget::step() { }
 void PortWidget::draw(const DrawArgs&) { }
 void PortWidget::onButton(const event::Button&) { }

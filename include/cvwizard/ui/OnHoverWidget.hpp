@@ -1,5 +1,7 @@
 #pragma once
 
+#include <widget/TransparentWidget.hpp>
+
 namespace qrx {
 namespace cvwizard {
 namespace ui {
