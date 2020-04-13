@@ -35,7 +35,16 @@ public:
       const auto seconds = std::chrono::duration_cast<std::chrono::duration<float>>(elapsed).count();
    
       const auto x = (seconds * AlphaSpeed);
-      _alpha = static_cast<unsigned char>((1.f + std::sin(x))/2.f * 255.f);
+      const auto alpha = ((1.f + std::sin(x))/2.f * 255.f);
+      
+      if (alpha < 75.f)
+      {
+         _alpha = 75;
+      }
+      else
+      {
+         _alpha = static_cast<unsigned char>((1.f + std::sin(x))/2.f * 255.f);
+      }
    }
    
    void draw(const DrawArgs& args) override
