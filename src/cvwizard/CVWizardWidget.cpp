@@ -155,7 +155,6 @@ void CVWizardWidget::handleHoveredWidget()
    {
       if (_model.hoveredWidget && _model.onHoverWidget)
       {
-         _model.hoveredWidget->removeChild(_model.onHoverWidget);
          delete _model.onHoverWidget;
          _model.onHoverWidget = nullptr;
       }
