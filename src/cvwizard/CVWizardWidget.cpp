@@ -147,6 +147,19 @@ bool CVWizardWidget::isTooltipKeyPressed() const
    return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingTooltipKey));
 }
 
+rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) const
+{
+   rack::PortWidget* result = nullptr;
+   if (auto&& p = dynamic_cast<rack::PortWidget*>(widget))
+   {
+      if (rack::PortWidget::INPUT == p->type)
+      {
+         result = p;
+      }
+   }
+   return result;
+}
+
 void CVWizardWidget::handleHoveredWidget()
 {
    auto hovered = APP->event->getHoveredWidget();
@@ -158,15 +171,16 @@ void CVWizardWidget::handleHoveredWidget()
          delete _model.onHoverWidget;
          _model.onHoverWidget = nullptr;
       }
-      if (auto&& p = dynamic_cast<rack::PortWidget*>(hovered))
+      if (auto&& inputPortWidget = getIfIsInputPortWidget(hovered))
       {
-         if (rack::PortWidget::INPUT == p->type)
-         {
-            DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
-            _model.hoveredWidget = hovered;
-            _model.onHoverWidget = new ui::OnHoverWidget{p};
-            hovered->addChild(_model.onHoverWidget);
-         }
+         DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
+         _model.hoveredWidget = hovered;
+         _model.onHoverWidget = new ui::OnHoverWidget{inputPortWidget};
+         hovered->addChild(_model.onHoverWidget);
+      }
+      else
+      {
+         _model.hoveredWidget = nullptr;
       }
    }
 }
