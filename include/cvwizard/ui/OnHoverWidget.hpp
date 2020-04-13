@@ -3,6 +3,7 @@
 #include <widget/TransparentWidget.hpp>
 
 #include <chrono>
+#include <cmath>
 
 namespace qrx {
 namespace cvwizard {
@@ -26,15 +27,19 @@ public:
       }
    }
    
-   void draw(const DrawArgs& args) override
+   void step() override
    {
       // https://stackoverflow.com/questions/14391327/how-to-get-duration-as-int-millis-and-float-seconds-from-chrono
+      // https://gafferongames.com/post/fix_your_timestep
       const auto elapsed = std::chrono::steady_clock::now() - _start;
       const auto seconds = std::chrono::duration_cast<std::chrono::duration<float>>(elapsed).count();
-      
-      constexpr auto alphaSpeed = 200.f;
-      const auto alpha = static_cast<char>((seconds*alphaSpeed))%255;
-      
+   
+      const auto x = (seconds * AlphaSpeed);
+      _alpha = static_cast<unsigned char>((1.f + std::sin(x))/2.f * 255.f);
+   }
+   
+   void draw(const DrawArgs& args) override
+   {
       TransparentWidget::draw(args);
       auto vg = args.vg;
       const auto v = box.size.x / 2.f;
@@ -42,11 +47,15 @@ public:
       nvgCircle(vg, v, v, v + 3.f);
       nvgCircle(vg, v, v, v);
       nvgPathWinding(vg, NVG_HOLE);
-      nvgFillColor(vg, nvgRGBA(255, 0, 0, alpha));
+      nvgFillColor(vg, nvgRGBA(255, 0, 0, _alpha));
       nvgFill(vg);
    }
 
 private:
+   
+   static constexpr float AlphaSpeed = 2.f;
+   unsigned char _alpha = 0;
+   
    Widget* _hoveredWidget = nullptr;
    const std::chrono::time_point<std::chrono::steady_clock> _start = std::chrono::steady_clock::now();
 };
