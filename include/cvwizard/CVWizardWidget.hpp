@@ -42,6 +42,8 @@ private:
    
    void handleHoveredWidget() override;
    
+   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
+   
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
    
