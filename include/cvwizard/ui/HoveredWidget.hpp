@@ -9,17 +9,17 @@ namespace qrx {
 namespace cvwizard {
 namespace ui {
 
-class OnHoverWidget final : public rack::TransparentWidget
+class HoveredWidget final : public rack::TransparentWidget
 {
 public:
    
-   OnHoverWidget(rack::Widget* w)
+   HoveredWidget(rack::Widget* w)
       : _hoveredWidget{w}
    {
       box.size = _hoveredWidget->box.size;
    }
    
-   ~OnHoverWidget()
+   ~HoveredWidget()
    {
       if (_hoveredWidget)
       {
