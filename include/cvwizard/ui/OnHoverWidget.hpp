@@ -13,7 +13,7 @@ class OnHoverWidget final : public rack::TransparentWidget
 {
 public:
    
-   OnHoverWidget(Widget* w)
+   OnHoverWidget(rack::Widget* w)
       : _hoveredWidget{w}
    {
       box.size = _hoveredWidget->box.size;
@@ -65,7 +65,7 @@ private:
    static constexpr float AlphaSpeed = 2.f;
    unsigned char _alpha = 0;
    
-   Widget* _hoveredWidget = nullptr;
+   rack::Widget* _hoveredWidget = nullptr;
    const std::chrono::time_point<std::chrono::steady_clock> _start = std::chrono::steady_clock::now();
 };
 
