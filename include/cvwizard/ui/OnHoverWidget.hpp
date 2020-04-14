@@ -43,7 +43,7 @@ public:
       }
       else
       {
-         _alpha = static_cast<unsigned char>((1.f + std::sin(x))/2.f * 255.f);
+         _alpha = static_cast<unsigned char>(alpha);
       }
    }
    
