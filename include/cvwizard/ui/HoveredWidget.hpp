@@ -51,13 +51,34 @@ public:
    {
       TransparentWidget::draw(args);
       auto vg = args.vg;
-      const auto v = box.size.x / 2.f;
-      nvgBeginPath(vg);
-      nvgCircle(vg, v, v, v + 3.f);
-      nvgCircle(vg, v, v, v);
-      nvgPathWinding(vg, NVG_HOLE);
-      nvgFillColor(vg, nvgRGBA(255, 0, 0, _alpha));
-      nvgFill(vg);
+      
+      if (std::abs(box.size.x - box.size.y) < 5.f)
+      {
+         const auto v = box.size.x / 2.f;
+         nvgBeginPath(vg);
+         nvgCircle(vg, v, v, v + 3.f);
+         nvgCircle(vg, v, v, v);
+         nvgPathWinding(vg, NVG_HOLE);
+         nvgFillColor(vg, nvgRGBA(255, 0, 0, _alpha));
+         nvgFill(vg);
+      }
+      else
+      {
+         nvgLineCap(vg, NVG_ROUND);
+         nvgLineJoin(vg, NVG_BEVEL);
+         nvgStrokeWidth(vg, 3.f);
+         nvgStrokeColor(vg, nvgRGBA(255, 0, 0, _alpha));
+         nvgBeginPath(vg);
+         nvgMoveTo(vg, 0, 0);
+         nvgLineTo(vg, box.size.x, 0);
+         nvgMoveTo(vg, box.size.x, 0);
+         nvgLineTo(vg, box.size.x, box.size.y);
+         nvgMoveTo(vg, box.size.x, box.size.y);
+         nvgLineTo(vg, 0, box.size.y);
+         nvgMoveTo(vg, 0, box.size.y);
+         nvgLineTo(vg, 0, 0);
+         nvgStroke(vg);
+      }
    }
 
 private:
