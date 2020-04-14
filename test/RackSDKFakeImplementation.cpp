@@ -22,6 +22,12 @@ void nvgCircle(NVGcontext*, float, float, float) { }
 void nvgPathWinding(NVGcontext*, int) { }
 void nvgFillColor(NVGcontext*, NVGcolor) { }
 void nvgFill(NVGcontext*) { }
+void nvgRect(NVGcontext*, float, float, float, float) { }
+void nvgTranslate(NVGcontext*, float, float) { }
+void nvgRotate(NVGcontext*, float) { }
+void nvgArc(NVGcontext*, float , float , float, float, float, int) { }
+void nvgArcTo(NVGcontext*, float, float, float, float, float) { }
+void nvgClosePath(NVGcontext*) { }
 }
 
 namespace rack {
