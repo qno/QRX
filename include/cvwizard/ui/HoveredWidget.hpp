@@ -66,7 +66,7 @@ public:
       {
          nvgLineCap(vg, NVG_ROUND);
          nvgLineJoin(vg, NVG_BEVEL);
-         nvgStrokeWidth(vg, 3.f);
+         nvgStrokeWidth(vg, 5.f);
          nvgStrokeColor(vg, nvgRGBA(255, 0, 0, _alpha));
          nvgBeginPath(vg);
          nvgMoveTo(vg, 0, 0);

@@ -41,8 +41,23 @@ private:
    bool isTooltipKeyPressed () const override;
    
    void handleHoveredWidget() override;
+   void addHoveredModuleWidget() override;
+   void clearHoveredModuleWidget() override;
    
+   bool isModuleWidgetHovered () const override;
+   bool isNotSameModuleWidgetHovered () const override;
+   bool isModuleWidgetSelected () const override;
+   bool isParamWidgetHovered () const override;
+   bool isParamWidgetSelected () const override;
+   bool isInputPortWidgetHovered () const override;
+   bool isInputPortWidgetSelected () const override;
+   
+   void addSelectedParamWidget()override;
+   void addSelectedPortWidget() override;
+   
+   rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
    rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
+   rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
    
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;

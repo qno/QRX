@@ -1,5 +1,6 @@
 #include <cvwizard/CVWizardWidget.hpp>
-#include <cvwizard/ui/OnHoverWidget.hpp>
+#include <cvwizard/ui/HoveredWidget.hpp>
+#include <cvwizard/ui/CVIndicatorWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
 
 using namespace rack;
@@ -46,6 +47,11 @@ void CVWizardWidget::step()
       if (APP->event->getHoveredWidget())
       {
          _controller->process_event(controller::event::OnWidgetHovered{});
+      }
+   
+      if (APP->event->getSelectedWidget())
+      {
+         _controller->process_event(controller::event::OnWidgetSelected{});
       }
    }
    ModuleWidget::step();
@@ -147,6 +153,55 @@ bool CVWizardWidget::isTooltipKeyPressed() const
    return (GLFW_PRESS == glfwGetKey(APP->window->win, _module->getSettings()->getCVWizardSettings().MappingTooltipKey));
 }
 
+bool CVWizardWidget::isModuleWidgetHovered () const
+{
+   return nullptr != getIfIsModuleWidget(APP->event->getHoveredWidget());
+}
+
+bool CVWizardWidget::isModuleWidgetSelected () const
+{
+   return nullptr != getIfIsModuleWidget(APP->event->getSelectedWidget());
+}
+
+bool CVWizardWidget::isParamWidgetHovered () const
+{
+   return nullptr != getIfIsParamWidget(APP->event->getHoveredWidget());
+}
+
+bool CVWizardWidget::isParamWidgetSelected () const
+{
+   return nullptr != getIfIsParamWidget(APP->event->getSelectedWidget());
+}
+
+bool CVWizardWidget::isInputPortWidgetHovered () const
+{
+   return nullptr != getIfIsInputPortWidget(APP->event->getHoveredWidget());
+}
+
+bool CVWizardWidget::isInputPortWidgetSelected () const
+{
+   return nullptr != getIfIsInputPortWidget(APP->event->getSelectedWidget());
+}
+
+void CVWizardWidget::addSelectedParamWidget()
+{
+   _model.paramWidget = getIfIsParamWidget(APP->event->getSelectedWidget());
+   DEBUG("addSelectedParamWidget #0x%0x", _model.paramWidget);
+   _model.selectedParamWidget = new ui::CVIndicatorWidget{_model.paramWidget, _model.portWidget->module, _model.portWidget->portId};
+   _model.paramWidget->addChild(_model.selectedParamWidget);
+}
+
+void CVWizardWidget::addSelectedPortWidget()
+{
+   _model.portWidget = getIfIsInputPortWidget(APP->event->getSelectedWidget());
+   DEBUG("addSelectedPortWidget #0x%0x", _model.portWidget);
+}
+
+rack::ModuleWidget* CVWizardWidget::getIfIsModuleWidget(rack::Widget* widget) const
+{
+   return dynamic_cast<rack::ModuleWidget*>(widget);
+}
+
 rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) const
 {
    rack::PortWidget* result = nullptr;
@@ -155,6 +210,19 @@ rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) c
       if (rack::PortWidget::INPUT == p->type)
       {
          result = p;
+      }
+   }
+   return result;
+}
+
+rack::ParamWidget* CVWizardWidget::getIfIsParamWidget(rack::Widget* widget) const
+{
+   rack::ParamWidget* result = nullptr;
+   if (auto&& paramWidget = dynamic_cast<rack::ParamWidget*>(widget))
+   {
+      if (dynamic_cast<rack::Knob*>(paramWidget))
+      {
+         result = paramWidget;
       }
    }
    return result;
@@ -173,9 +241,16 @@ void CVWizardWidget::handleHoveredWidget()
       }
       if (auto&& inputPortWidget = getIfIsInputPortWidget(hovered))
       {
-         DEBUG("handleHoveredWidget Widget #0x%0x", hovered);
+         DEBUG("handleHovered input port widget #0x%0x", hovered);
          _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::OnHoverWidget{inputPortWidget};
+         _model.onHoverWidget = new ui::HoveredWidget{inputPortWidget};
+         hovered->addChild(_model.onHoverWidget);
+      }
+      else if (auto&& paramWidget = getIfIsParamWidget(hovered))
+      {
+         DEBUG("handleHovered param widget #0x%0x", hovered);
+         _model.hoveredWidget = hovered;
+         _model.onHoverWidget = new ui::HoveredWidget{paramWidget};
          hovered->addChild(_model.onHoverWidget);
       }
       else
@@ -183,6 +258,63 @@ void CVWizardWidget::handleHoveredWidget()
          _model.hoveredWidget = nullptr;
       }
    }
+}
+
+bool CVWizardWidget::isNotSameModuleWidgetHovered () const
+{
+   bool result = false;
+   const auto hovered = APP->event->getHoveredWidget();
+   
+   DEBUG("isNotSameModuleWidgetHovered hovered widget #0x%0x", hovered);
+   DEBUG("isNotSameModuleWidgetHovered _model.hoveredModuleWidget widget #0x%0x", _model.hoveredModuleWidget);
+   if (_model.hoveredModuleWidget && _model.hoveredModuleWidget != hovered)
+   {
+//      DEBUG("isNotSameModuleWidgetHovered _model.hoveredModuleWidget != hovered");
+//      if (auto&& parent = hovered->parent)
+//      {
+//         DEBUG("isNotSameModuleWidgetHovered hovered->parent widget #0x%0x", hovered->parent);
+//         while (parent && parent != _model.hoveredModuleWidget)
+//         {
+//            if (parent == _model.hoveredModuleWidget)
+//            {
+//               DEBUG("parent == _model.hoveredModuleWidget - break");
+//               result = true;
+//               break;
+//            }
+//            else
+//            {
+//               DEBUG("isNotSameModuleWidgetHovered parent->parent widget #0x%0x", parent->parent);
+//               parent = parent->parent;
+//            }
+//         }
+//      }
+   }
+   
+   return result;
+}
+
+
+void CVWizardWidget::addHoveredModuleWidget()
+{
+   auto hovered = APP->event->getHoveredWidget();
+   if (auto&& moduleWidget = getIfIsModuleWidget(hovered))
+   {
+      DEBUG("addHoveredModuleWidget #0x%0x", hovered);
+      _model.hoveredModuleWidget = hovered;
+      _model.onHoverModuleWidget = new ui::HoveredWidget{moduleWidget};
+      hovered->addChild(_model.onHoverModuleWidget);
+   }
+}
+
+void CVWizardWidget::clearHoveredModuleWidget()
+{
+   DEBUG("clearHoveredModuleWidget #0x%0x", _model.hoveredModuleWidget);
+   if (_model.hoveredModuleWidget && _model.onHoverModuleWidget)
+   {
+      delete _model.onHoverModuleWidget;
+     _model.onHoverModuleWidget = nullptr;
+   }
+    _model.hoveredModuleWidget = nullptr;
 }
 
 }
