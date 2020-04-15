@@ -144,7 +144,7 @@ stages:
             $(prepare-env)
             cd build
             $(activate-env)
-            gcovr -o coverage.xml -x -v -p --exclude-throw-branches --exclude-unreachable-branches -f \.\./test/ -f .\.\/thirdparty/ -r .. .
+            gcovr -o coverage.xml -x -v -p --exclude-throw-branches --exclude-unreachable-branches -f \.\./src/ -f .\.\/include/ -r .. .
           displayName: gcovr
         - task: PublishTestResults@2
           inputs:
