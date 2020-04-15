@@ -92,6 +92,14 @@ void PortWidget::onDragLeave(const event::DragLeave&) { }
 
 SvgScrew::SvgScrew() { }
 void SvgScrew::setSvg(std::shared_ptr<rack::Svg>) { }
+
+void Knob::onHover(const event::Hover&) { }
+void Knob::onButton(const event::Button&) { }
+void Knob::onDragStart(const event::DragStart&) { }
+void Knob::onDragEnd(const event::DragEnd&) { }
+void Knob::onDragMove(const event::DragMove&) { }
+void Knob::reset() { }
+void Knob::randomize() { }
 }
 
 namespace logger {
