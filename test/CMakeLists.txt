@@ -6,6 +6,7 @@ set(UT_EXE PluginUnittests)
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
 set(SOURCES ${SRC}/QRXPlugin.cpp
+            ${SRC}/RackApp.cpp
             ${SRC}/PluginSettings.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp

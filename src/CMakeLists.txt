@@ -1,4 +1,5 @@
 set(SOURCES QRXPlugin.cpp
+            RackApp.cpp
             PluginSettings.cpp
             cvwizard/CVWizard.cpp
             cvwizard/CVWizardModule.cpp

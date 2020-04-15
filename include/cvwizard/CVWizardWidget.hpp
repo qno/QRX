@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QRXPlugin.hpp>
+#include <boundary/RackAppBoundary.hpp>
 #include <cvwizard/CVWizardModule.hpp>
 #include <cvwizard/model/CVWizardModel.hpp>
 #include <cvwizard/controller/CVWizardController.hpp>
@@ -18,6 +19,8 @@ public:
    explicit CVWizardWidget(CVWizardModule* module);
   
    ~CVWizardWidget() override;
+   
+   void setApp(const std::shared_ptr<boundary::RackAppBoundary>& app);
 
 private:
    
@@ -52,13 +55,14 @@ private:
    bool isInputPortWidgetHovered () const override;
    bool isInputPortWidgetSelected () const override;
    
-   void addSelectedParamWidget()override;
+   void addSelectedParamWidget() override;
    void addSelectedPortWidget() override;
    
    rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
    rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
    rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
    
+   std::shared_ptr<boundary::RackAppBoundary> _app = nullptr;
    CVWizardModule* _module  = nullptr;
    rack::Window* _appWindow = nullptr;
    
