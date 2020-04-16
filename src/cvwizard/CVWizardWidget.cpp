@@ -104,7 +104,7 @@ void CVWizardWidget::showWidgetTooltip()
    DEBUG("showWidgetTooltip Widget #0x%0x", this);
    _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
    _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
-   APP->scene->addChild(_widgetTooltip.get());
+   _app->getScene()->addChild(_widgetTooltip.get());
 }
 
 void CVWizardWidget::removeWidgetTooltip()
@@ -199,7 +199,7 @@ bool CVWizardWidget::isInputPortWidgetHovered () const
 
 bool CVWizardWidget::isInputPortWidgetSelected () const
 {
-   return nullptr != getIfIsInputPortWidget(APP->event->getSelectedWidget());
+   return nullptr != getIfIsInputPortWidget(_app->getEventState()->getSelectedWidget());
 }
 
 void CVWizardWidget::addSelectedParamWidget()
