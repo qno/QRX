@@ -13,13 +13,13 @@ class HoveredWidget final : public rack::TransparentWidget
 {
 public:
    
-   HoveredWidget(rack::Widget* w)
+   explicit HoveredWidget(rack::Widget* w)
       : _hoveredWidget{w}
    {
       box.size = _hoveredWidget->box.size;
    }
    
-   ~HoveredWidget()
+   ~HoveredWidget() override
    {
       if (_hoveredWidget)
       {
