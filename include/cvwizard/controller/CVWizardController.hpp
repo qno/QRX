@@ -34,7 +34,7 @@ const auto isMappingCancelKeyPressed = [](const CVWizardControllable& c) { retur
 const auto isTooltipKeyPressed = [](const CVWizardControllable& c) { return c.isTooltipKeyPressed(); };
 
 const auto isModuleWidgetHovered = [](const CVWizardControllable& c) { return c.isModuleWidgetHovered(); };
-const auto isNotSameModuleWidgetHovered = [](const CVWizardControllable& c) { return c.isNotSameModuleWidgetHovered(); };
+const auto isNotSameModuleWidgetHovered = [](const CVWizardControllable& c) { return !c.isSameModuleWidgetHovered(); };
 
 const auto isParamWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
 const auto isParamWidgetSelected = [](const CVWizardControllable& c) { return c.isParamWidgetSelected(); };

@@ -17,6 +17,7 @@ set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
+                  cvwizard/CVWizardWidgetTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ui/TooltipTest.cpp)

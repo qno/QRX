@@ -21,18 +21,23 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    , _app{rackApp}
 #endif
    , _module(module)
-   , _appWindow(_app->getWindow())
 {
    DEBUG("CVWizardWidget ctr (#0x%0x)", this);
    setModule(_module);
+   if (_app)
+   {
+      _appWindow = _app->getWindow();
+   }
    
-   setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
+   if (_appWindow)
+   {
+      setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
    
-   addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
-   addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-   addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-   addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-   
+      addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
+      addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+      addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+      addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+   }
    controller::CVWizardControllable& c{*this};
    _controller = std::make_unique<sml::sm<controller::CVWizardController>>(c);
 }
@@ -274,39 +279,35 @@ void CVWizardWidget::handleHoveredWidget()
    }
 }
 
-bool CVWizardWidget::isNotSameModuleWidgetHovered () const
+bool CVWizardWidget::isSameModuleWidgetHovered() const
 {
    bool result = false;
    const auto hovered = _app->getEventState()->getHoveredWidget();
    
-   DEBUG("isNotSameModuleWidgetHovered hovered widget #0x%0x", hovered);
-   DEBUG("isNotSameModuleWidgetHovered _model.hoveredModuleWidget widget #0x%0x", _model.hoveredModuleWidget);
-   if (_model.hoveredModuleWidget && _model.hoveredModuleWidget != hovered)
+   if (_model.hoveredModuleWidget == hovered)
    {
-//      DEBUG("isNotSameModuleWidgetHovered _model.hoveredModuleWidget != hovered");
-//      if (auto&& parent = hovered->parent)
-//      {
-//         DEBUG("isNotSameModuleWidgetHovered hovered->parent widget #0x%0x", hovered->parent);
-//         while (parent && parent != _model.hoveredModuleWidget)
-//         {
-//            if (parent == _model.hoveredModuleWidget)
-//            {
-//               DEBUG("parent == _model.hoveredModuleWidget - break");
-//               result = true;
-//               break;
-//            }
-//            else
-//            {
-//               DEBUG("isNotSameModuleWidgetHovered parent->parent widget #0x%0x", parent->parent);
-//               parent = parent->parent;
-//            }
-//         }
-//      }
+      result = true;
    }
-   
+   else
+   {
+      if (auto&& parent = hovered->parent)
+      {
+         while (parent)
+         {
+            if (parent == _model.hoveredModuleWidget)
+            {
+               result = true;
+               break;
+            }
+            else
+            {
+               parent = parent->parent;
+            }
+         }
+      }
+   }
    return result;
 }
-
 
 void CVWizardWidget::addHoveredModuleWidget()
 {

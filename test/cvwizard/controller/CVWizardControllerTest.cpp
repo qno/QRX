@@ -26,7 +26,7 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    When(Method(controllableMock, addHoveredModuleWidget)).AlwaysReturn();
    When(Method(controllableMock, clearHoveredModuleWidget)).AlwaysReturn();
    When(Method(controllableMock, isModuleWidgetHovered)).AlwaysReturn(false);
-   When(Method(controllableMock, isNotSameModuleWidgetHovered)).AlwaysReturn(false);
+   When(Method(controllableMock, isSameModuleWidgetHovered)).AlwaysReturn(false);
    When(Method(controllableMock, isModuleWidgetSelected)).AlwaysReturn(false);
    When(Method(controllableMock, isParamWidgetHovered)).AlwaysReturn(false);
    When(Method(controllableMock, isParamWidgetSelected)).AlwaysReturn(false);
@@ -119,11 +119,11 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    SECTION("ensure controller is in state MappingModeActive if not same module widget is hovered")
    {
       controller.set_current_states(sml::state<state::ModuleHovered>);
-      When(Method(controllableMock, isNotSameModuleWidgetHovered)).Return(true);
+      When(Method(controllableMock, isSameModuleWidgetHovered)).Return(false);
       
       controller.process_event(event::OnWidgetHovered{});
       REQUIRE(controller.is(sml::state<state::MappingModeActive>));
-      Verify(Method(controllableMock, isNotSameModuleWidgetHovered));
+      Verify(Method(controllableMock, isSameModuleWidgetHovered));
       Verify(Method(controllableMock, clearHoveredModuleWidget));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();

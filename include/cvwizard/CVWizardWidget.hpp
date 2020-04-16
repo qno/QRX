@@ -38,22 +38,29 @@ private:
    bool isShowTooltipsEnabled() const override;
    void toogleTooltip() override ;
    
-   bool isControlKeyPressed () const override;
-   bool isMappingKeyPressed () const override;
-   bool isMappingCancelKeyPressed () const override;
-   bool isTooltipKeyPressed () const override;
+   bool isControlKeyPressed() const override;
+   bool isMappingKeyPressed() const override;
+   bool isMappingCancelKeyPressed() const override;
+   bool isTooltipKeyPressed() const override;
    
    void handleHoveredWidget() override;
    void addHoveredModuleWidget() override;
    void clearHoveredModuleWidget() override;
    
-   bool isModuleWidgetHovered () const override;
-   bool isNotSameModuleWidgetHovered () const override;
-   bool isModuleWidgetSelected () const override;
-   bool isParamWidgetHovered () const override;
-   bool isParamWidgetSelected () const override;
-   bool isInputPortWidgetHovered () const override;
-   bool isInputPortWidgetSelected () const override;
+   bool isModuleWidgetHovered() const override;
+#ifdef QRX_UNITTESTS
+public:
+   model::CVWizardModel& getModel() const { return _model; }
+#endif
+   bool isSameModuleWidgetHovered() const override;
+#ifdef QRX_UNITTESTS
+private:
+#endif
+   bool isModuleWidgetSelected() const override;
+   bool isParamWidgetHovered() const override;
+   bool isParamWidgetSelected() const override;
+   bool isInputPortWidgetHovered() const override;
+   bool isInputPortWidgetSelected() const override;
    
    void addSelectedParamWidget() override;
    void addSelectedPortWidget() override;

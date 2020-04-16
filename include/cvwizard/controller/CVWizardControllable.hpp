@@ -23,13 +23,13 @@ public:
    virtual void addHoveredModuleWidget() = 0;
    virtual void clearHoveredModuleWidget() = 0;
    
-   virtual bool isModuleWidgetHovered () const = 0;
-   virtual bool isNotSameModuleWidgetHovered () const = 0;
-   virtual bool isModuleWidgetSelected () const = 0;
-   virtual bool isParamWidgetHovered () const = 0;
-   virtual bool isParamWidgetSelected () const = 0;
-   virtual bool isInputPortWidgetHovered () const = 0;
-   virtual bool isInputPortWidgetSelected () const = 0;
+   virtual bool isModuleWidgetHovered() const = 0;
+   virtual bool isSameModuleWidgetHovered() const = 0;
+   virtual bool isModuleWidgetSelected() const = 0;
+   virtual bool isParamWidgetHovered() const = 0;
+   virtual bool isParamWidgetSelected() const = 0;
+   virtual bool isInputPortWidgetHovered() const = 0;
+   virtual bool isInputPortWidgetSelected() const = 0;
    
    virtual void addSelectedParamWidget() = 0;
    virtual void addSelectedPortWidget() = 0;
