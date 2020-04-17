@@ -88,22 +88,22 @@ void CVWizard::toogleTooltip()
 
 bool CVWizard::isControlKeyPressed() const
 {
-   return (RACK_MOD_CTRL == (_appBoundary.getWindow()->getMods() & RACK_MOD_CTRL));
+   return _appBoundary.isModKeyPressed(RACK_MOD_CTRL);
 }
 
 bool CVWizard::isMappingKeyPressed() const
 {
-   return (GLFW_PRESS == glfwGetKey(_appBoundary.getWindow()->win, _settings->getSettings().MappingKey));
+   return _appBoundary.isKeyPressed(_settings->getSettings().MappingKey);
 }
 
 bool CVWizard::isMappingCancelKeyPressed() const
 {
-   return (GLFW_PRESS == glfwGetKey(_appBoundary.getWindow()->win, _settings->getSettings().MappingCancelKey));
+   return _appBoundary.isKeyPressed(_settings->getSettings().MappingCancelKey);
 }
 
 bool CVWizard::isTooltipKeyPressed() const
 {
-   return (GLFW_PRESS == glfwGetKey(_appBoundary.getWindow()->win, _settings->getSettings().MappingTooltipKey));
+   return _appBoundary.isKeyPressed(_settings->getSettings().MappingTooltipKey);
 }
 
 bool CVWizard::isModuleWidgetHovered () const

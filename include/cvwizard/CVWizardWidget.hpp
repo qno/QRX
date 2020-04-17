@@ -23,6 +23,8 @@ private:
    boundary::rack::State* getEventState() const override;
    boundary::rack::Scene* getScene() const override;
    boundary::rack::Window* getWindow() const override;
+   bool isKeyPressed(const int keyCode) const override;
+   bool isModKeyPressed(const int modKeyCode) const override;
    
    void step() override;
    void draw(const boundary::rack::widget::DrawArgs& args) override;

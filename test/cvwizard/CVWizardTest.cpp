@@ -14,6 +14,8 @@ TEST_CASE("CVWizard isSameModuleWidgetHovered", "[cvwizard]")
    When(Method(rackBoundaryMock, getEventState)).AlwaysReturn(nullptr);
    When(Method(rackBoundaryMock, getScene)).AlwaysReturn(nullptr);
    When(Method(rackBoundaryMock, getWindow)).AlwaysReturn(nullptr);
+   When(Method(rackBoundaryMock, isKeyPressed)).AlwaysReturn(false);
+   When(Method(rackBoundaryMock, isModKeyPressed)).AlwaysReturn(false);
    
    auto& m = rackBoundaryMock.get();
    

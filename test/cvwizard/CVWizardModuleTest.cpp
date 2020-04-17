@@ -43,7 +43,7 @@ TEST_CASE("CVWizardModule Rack master module", "[cvwizard] [module]")
 TEST_CASE("CVWizardModule dataToJson", "[cvwizard] [module]")
 {
    CVWizardModule cvWizardModule;
-   auto           jsonResult = std::unique_ptr<json_t>(cvWizardModule.dataToJson());
+   auto jsonResult = std::unique_ptr<json_t>(cvWizardModule.dataToJson());
    REQUIRE(jsonResult != nullptr);
    
    SECTION("json result type is JSON_OBJECT")

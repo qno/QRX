@@ -54,6 +54,16 @@ Window* CVWizardWidget::getWindow() const
    return ::rack::appGet()->window;
 }
 
+bool CVWizardWidget::isKeyPressed(const int keyCode) const
+{
+   return GLFW_PRESS == glfwGetKey(::rack::appGet()->window->win, keyCode);
+}
+
+bool CVWizardWidget::isModKeyPressed(const int modKeyCode) const
+{
+   return modKeyCode == (::rack::appGet()->window->getMods() & modKeyCode);
+}
+
 void CVWizardWidget::step()
 {
    if (_module && _module->isMasterModule())
