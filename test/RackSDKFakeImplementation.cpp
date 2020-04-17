@@ -1,9 +1,6 @@
 #include <rack.hpp>
 
 extern "C" {
-int glfwGetKey(GLFWwindow*, int) { return {}; }
-const char* glfwGetKeyName(int, int) { return{}; }
-
 NVGcolor nvgRGB(unsigned char, unsigned char, unsigned char) { return {}; }
 NVGcolor nvgRGBf(float, float, float){ return {}; }
 NVGcolor nvgRGBAf(float, float, float, float) { return {}; }
@@ -39,21 +36,9 @@ std::shared_ptr<Svg> Window::loadSvg(const std::string&) { return{}; }
 int Window::getMods() { return{}; }
 
 namespace plugin {
-Plugin::~Plugin()
-{ }
-void Plugin::addModel(Model* model)
-{ models.push_back(model); }
-Model* Plugin::getModel(std::string slug)
-{
-   for (auto m : models)
-   {
-      if (m->slug == slug)
-      {
-         return m;
-      }
-   }
-   return nullptr;
-}
+Plugin::~Plugin() { }
+void Plugin::addModel(Model*) { }
+Model* Plugin::getModel(std::string) { return{}; }
 }
 namespace app {
 ModuleWidget::ModuleWidget() { }
@@ -146,11 +131,6 @@ math::Rect Widget::getViewport(math::Rect) { return{}; }
 void Widget::draw(const Widget::DrawArgs&) { }
 void Widget::addChild(Widget*) { }
 void Widget::removeChild(rack::widget::Widget*) { }
-}
-
-namespace ui {
-void Tooltip::step() { }
-void Tooltip::draw(const DrawArgs&) { }
 }
 
 }

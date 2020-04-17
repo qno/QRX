@@ -7,7 +7,7 @@
 namespace qrx {
 namespace cvwizard {
 
-std::unique_ptr<boundary::rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
+std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
 
 using namespace boundary::rack;
 

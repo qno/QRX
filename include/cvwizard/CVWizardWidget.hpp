@@ -9,8 +9,10 @@
 namespace qrx {
 namespace cvwizard {
 
-class CVWizardWidget final : public boundary::rack::ModuleWidget
-                           , public boundary::rack::AppBoundary
+using namespace boundary;
+
+class CVWizardWidget final : public rack::ModuleWidget
+                           , public rack::AppBoundary
 {
 public:
   
@@ -20,18 +22,18 @@ public:
 
 private:
    
-   boundary::rack::State* getEventState() const override;
-   boundary::rack::Scene* getScene() const override;
-   boundary::rack::Window* getWindow() const override;
+   rack::State* getEventState() const override;
+   rack::Scene* getScene() const override;
+   rack::Window* getWindow() const override;
    bool isKeyPressed(const int keyCode) const override;
    bool isModKeyPressed(const int modKeyCode) const override;
    
    void step() override;
-   void draw(const boundary::rack::widget::DrawArgs& args) override;
+   void draw(const rack::widget::DrawArgs& args) override;
    
-   void onEnter(const boundary::rack::event::Enter& e) override;
-   void onLeave(const boundary::rack::event::Leave& e) override;
-   void onHover(const boundary::rack::event::Hover& e) override;
+   void onEnter(const rack::event::Enter& e) override;
+   void onLeave(const rack::event::Leave& e) override;
+   void onHover(const rack::event::Hover& e) override;
    
    void showWidgetTooltip();
    void removeWidgetTooltip();
@@ -42,8 +44,8 @@ private:
    CVWizard _cvWizard;
    CVWizardModule* _module  = nullptr;
    
-   std::unique_ptr<boundary::rack::ui::Tooltip> _widgetTooltip = nullptr;
-   static std::unique_ptr<boundary::rack::ui::Tooltip> s_tooltip;
+   std::unique_ptr<rack::ui::Tooltip> _widgetTooltip = nullptr;
+   static std::unique_ptr<rack::ui::Tooltip> s_tooltip;
 };
 
 }

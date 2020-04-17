@@ -5,16 +5,12 @@ find_package(Catch2 REQUIRED)
 set(UT_EXE PluginUnittests)
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
-set(SOURCES ${SRC}/QRXPlugin.cpp
-            ${SRC}/PluginSettings.cpp
-            ${SRC}/cvwizard/CVWizardRackModel.cpp
+set(SOURCES ${SRC}/PluginSettings.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
-            ${SRC}/cvwizard/CVWizardWidget.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/ui/Tooltip.cpp)
 
-set(TESTS_SOURCES QRXPluginTest.cpp
-                  PluginJsonTest.cpp
+set(TESTS_SOURCES PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
                   cvwizard/CVWizardTest.cpp
