@@ -10,11 +10,13 @@
 namespace qrx {
 namespace cvwizard {
 
+using namespace boundary;
+
 class CVWizard final : public controller::CVWizardControllable
 {
 public:
   
-   explicit CVWizard(const boundary::rack::AppBoundary& appBoundary);
+   explicit CVWizard(const rack::AppBoundary& appBoundary);
    ~CVWizard();
    
    void addSettings(const std::shared_ptr<ModuleSettings>& settings);
@@ -53,15 +55,15 @@ public:
    //void addSelectedParamWidget() override;
    //void addSelectedPortWidget() override;
    
-   boundary::rack::ModuleWidget* getIfIsModuleWidget(boundary::rack::Widget* widget) const;
-   //boundary::rack::PortWidget* getIfIsInputPortWidget(boundary::rackWidget* widget) const;
-   //boundary::rack::ParamWidget* getIfIsParamWidget(boundary::rackWidget* widget) const;
+   rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
+   //rack::PortWidget* getIfIsInputPortWidget(rackWidget* widget) const;
+   //rack::ParamWidget* getIfIsParamWidget(rackWidget* widget) const;
    
    model::CVWizardModel _model;
    
 private:
 
-   const boundary::rack::AppBoundary& _appBoundary;
+   const rack::AppBoundary& _appBoundary;
    std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
    std::shared_ptr<ModuleSettings> _settings;
 };
