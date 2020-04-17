@@ -6,18 +6,18 @@ set(UT_EXE PluginUnittests)
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
 set(SOURCES ${SRC}/QRXPlugin.cpp
-            ${SRC}/RackApp.cpp
             ${SRC}/PluginSettings.cpp
-            ${SRC}/cvwizard/CVWizard.cpp
+            ${SRC}/cvwizard/CVWizardRackModel.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
             ${SRC}/cvwizard/CVWizardWidget.cpp
+            ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/ui/Tooltip.cpp)
 
 set(TESTS_SOURCES QRXPluginTest.cpp
                   PluginJsonTest.cpp
                   PluginSettingsTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
-                  cvwizard/CVWizardWidgetTest.cpp
+                  cvwizard/CVWizardTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/ui/TooltipTest.cpp)

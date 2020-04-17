@@ -57,7 +57,7 @@ void PluginSettings::save(const std::string& file) const noexcept
    }
 }
 
-cvwizard::ModuleSettings::Settings PluginSettings::getCVWizardSettings()
+cvwizard::ModuleSettings::Settings PluginSettings::getSettings()
 {
    return _cvWizardSettings;
 }

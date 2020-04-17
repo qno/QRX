@@ -1,45 +1,35 @@
 #include <cvwizard/CVWizardWidget.hpp>
-#include <cvwizard/ui/HoveredWidget.hpp>
-#include <cvwizard/ui/CVIndicatorWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
+#include <QRXPlugin.hpp>
 
-using namespace rack;
-
-#ifndef QRX_UNITTESTS
-extern std::shared_ptr<qrx::boundary::RackAppBoundary> rackApp;
-#endif
+#include <rack.hpp>
 
 namespace qrx {
 namespace cvwizard {
 
-model::CVWizardModel CVWizardWidget::_model;
-std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
+std::unique_ptr<boundary::rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
+
+using namespace boundary::rack;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
-   : ModuleWidget()
-#ifndef QRX_UNITTESTS
-   , _app{rackApp}
-#endif
-   , _module(module)
+   : ModuleWidget{}
+   , AppBoundary{}
+   , _cvWizard{*this}
+   , _module{module}
 {
+   using namespace ::rack;
+   
    DEBUG("CVWizardWidget ctr (#0x%0x)", this);
+   
    setModule(_module);
-   if (_app)
-   {
-      _appWindow = _app->getWindow();
-   }
+   _cvWizard.addSettings(_module->getSettings());
+   
+   setPanel(::rack::appGet()->window->loadSvg(::rack::asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
 
-   if (_appWindow)
-   {
-      setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
-
-      addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
-      addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-      addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-      addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-   }
-   controller::CVWizardControllable& c{*this};
-   _controller = std::make_unique<sml::sm<controller::CVWizardController>>(c);
+   addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
+   addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+   addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+   addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 }
 
 CVWizardWidget::~CVWizardWidget()
@@ -47,55 +37,48 @@ CVWizardWidget::~CVWizardWidget()
    DEBUG("CVWizardWidget dtr (#0x%0x)", this);
    removeWidgetTooltip();
    removeTooltip();
-   if (_module && _module->isMasterModule())
-   {
-      clearHoveredModuleWidget();
-   }
 }
 
-void CVWizardWidget::setApp(const std::shared_ptr<boundary::RackAppBoundary>& app)
+State* CVWizardWidget::getEventState() const
 {
-   _app = app;
+   return ::rack::appGet()->event;
+}
+
+Scene* CVWizardWidget::getScene() const
+{
+   return ::rack::appGet()->scene;
+}
+
+Window* CVWizardWidget::getWindow() const
+{
+   return ::rack::appGet()->window;
 }
 
 void CVWizardWidget::step()
 {
    if (_module && _module->isMasterModule())
    {
-      if (!_app->getEventState()->heldKeys.empty())
-      {
-         _controller->process_event(controller::event::OnKeyPressed{});
-      }
-
-      if (_app->getEventState()->getHoveredWidget())
-      {
-         _controller->process_event(controller::event::OnWidgetHovered{});
-      }
-
-      if (_app->getEventState()->getSelectedWidget())
-      {
-         _controller->process_event(controller::event::OnWidgetSelected{});
-      }
+       _cvWizard.process();
    }
    ModuleWidget::step();
 }
 
-void CVWizardWidget::draw(const DrawArgs& args)
+void CVWizardWidget::draw(const widget::DrawArgs& args)
 {
    ModuleWidget::draw(args);
 }
 
-void CVWizardWidget::onEnter(const rack::event::Enter& e)
+void CVWizardWidget::onEnter(const event::Enter& e)
 {
-   _controller->process_event(controller::event::OnEnter{});
+   _cvWizard.onEnter();
 }
 
-void CVWizardWidget::onLeave(const rack::event::Leave& e)
+void CVWizardWidget::onLeave(const event::Leave& e)
 {
-   _controller->process_event(controller::event::OnLeave{});
+   _cvWizard.onLeave();
 }
 
-void CVWizardWidget::onHover(const rack::event::Hover& e)
+void CVWizardWidget::onHover(const event::Hover& e)
 {
    rack::ModuleWidget::onHover(e);
    e.consume(this);
@@ -105,8 +88,8 @@ void CVWizardWidget::showWidgetTooltip()
 {
    DEBUG("showWidgetTooltip Widget #0x%0x", this);
    _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
-   _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getCVWizardSettings().MappingKey);
-   _app->getScene()->addChild(_widgetTooltip.get());
+   _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getSettings().MappingKey);
+   ::rack::appGet()->scene->addChild(_widgetTooltip.get());
 }
 
 void CVWizardWidget::removeWidgetTooltip()
@@ -114,7 +97,7 @@ void CVWizardWidget::removeWidgetTooltip()
    DEBUG("removeWidgetTooltip Widget #0x%0x", this);
    if (_widgetTooltip)
    {
-      _app->getScene()->removeChild(_widgetTooltip.get());
+      ::rack::appGet()->scene->removeChild(_widgetTooltip.get());
       _widgetTooltip = nullptr;
    }
 }
@@ -127,7 +110,7 @@ void CVWizardWidget::showTooltip()
       removeWidgetTooltip();
       s_tooltip = std::make_unique<rack::ui::Tooltip>();
       s_tooltip->text = "Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!";
-      _app->getScene()->addChild(s_tooltip.get());
+      ::rack::appGet()->scene->addChild(s_tooltip.get());
    }
 }
 
@@ -138,7 +121,7 @@ void CVWizardWidget::removeTooltip()
    {
       if (s_tooltip)
       {
-         _app->getScene()->removeChild(s_tooltip.get());
+         ::rack::appGet()->scene->removeChild(s_tooltip.get());
          s_tooltip = nullptr;
       }
    }
@@ -146,194 +129,7 @@ void CVWizardWidget::removeTooltip()
 
 bool CVWizardWidget::isShowTooltipsEnabled() const
 {
-   return _module->getSettings()->getCVWizardSettings().ShowMappingTooltips;
-}
-
-void CVWizardWidget::toogleTooltip()
-{
-   DEBUG("toogleTooltip Widget #0x%0x", this);
-}
-
-bool CVWizardWidget::isControlKeyPressed() const
-{
-   return (RACK_MOD_CTRL  == (_app->getWindow()->getMods() & RACK_MOD_CTRL));
-}
-
-bool CVWizardWidget::isMappingKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(_app->getWindow()->win, _module->getSettings()->getCVWizardSettings().MappingKey));
-}
-
-bool CVWizardWidget::isMappingCancelKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(_app->getWindow()->win, _module->getSettings()->getCVWizardSettings().MappingCancelKey));
-}
-
-bool CVWizardWidget::isTooltipKeyPressed() const
-{
-   return (GLFW_PRESS == glfwGetKey(_app->getWindow()->win, _module->getSettings()->getCVWizardSettings().MappingTooltipKey));
-}
-
-bool CVWizardWidget::isModuleWidgetHovered () const
-{
-   return nullptr != getIfIsModuleWidget(_app->getEventState()->getHoveredWidget());
-}
-
-/*bool CVWizardWidget::isModuleWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsModuleWidget(_app->getEventState()->getSelectedWidget());
-}*/
-
-/*bool CVWizardWidget::isParamWidgetHovered () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsParamWidget(_app->getEventState()->getHoveredWidget());
-}*/
-
-/*bool CVWizardWidget::isParamWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsParamWidget(_app->getEventState()->getSelectedWidget());
-}*/
-
-/*bool CVWizardWidget::isInputPortWidgetHovered () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsInputPortWidget(_app->getEventState()->getHoveredWidget());
-}*/
-
-/*bool CVWizardWidget::isInputPortWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsInputPortWidget(_app->getEventState()->getSelectedWidget());
-}*/
-
-/*void CVWizardWidget::addSelectedParamWidget()
-{
-   DEBUG("entered %s", __FUNCTION__);
-   _model.paramWidget = getIfIsParamWidget(_app->getEventState()->getSelectedWidget());
-   DEBUG("addSelectedParamWidget #0x%0x", _model.paramWidget);
-   _model.selectedParamWidget = new ui::CVIndicatorWidget{_model.paramWidget, _model.portWidget->module, _model.portWidget->portId};
-   _model.paramWidget->addChild(_model.selectedParamWidget);
-}*/
-
-/*void CVWizardWidget::addSelectedPortWidget()
-{
-   DEBUG("entered %s", __FUNCTION__);
-   _model.portWidget = getIfIsInputPortWidget(_app->getEventState()->getSelectedWidget());
-   DEBUG("addSelectedPortWidget #0x%0x", _model.portWidget);
-}*/
-
-rack::ModuleWidget* CVWizardWidget::getIfIsModuleWidget(rack::Widget* widget) const
-{
-   return dynamic_cast<rack::ModuleWidget*>(widget);
-}
-
-/*rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) const
-{
-   rack::PortWidget* result = nullptr;
-   if (auto&& p = dynamic_cast<rack::PortWidget*>(widget))
-   {
-      if (rack::PortWidget::INPUT == p->type)
-      {
-         result = p;
-      }
-   }
-   return result;
-}*/
-
-/*rack::ParamWidget* CVWizardWidget::getIfIsParamWidget(rack::Widget* widget) const
-{
-   rack::ParamWidget* result = nullptr;
-   if (auto&& paramWidget = dynamic_cast<rack::ParamWidget*>(widget))
-   {
-      if (dynamic_cast<rack::Knob*>(paramWidget))
-      {
-         result = paramWidget;
-      }
-   }
-   return result;
-}*/
-
-/*void CVWizardWidget::handleHoveredWidget()
-{
-   auto hovered = _app->getEventState()->getHoveredWidget();
-
-   if (_model.hoveredWidget != hovered)
-   {
-      if (_model.hoveredWidget && _model.onHoverWidget)
-      {
-         delete _model.onHoverWidget;
-         _model.onHoverWidget = nullptr;
-      }
-      if (auto&& inputPortWidget = getIfIsInputPortWidget(hovered))
-      {
-         DEBUG("handleHovered input port widget #0x%0x", hovered);
-         _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::HoveredWidget{inputPortWidget};
-         hovered->addChild(_model.onHoverWidget);
-      }
-      else if (auto&& paramWidget = getIfIsParamWidget(hovered))
-      {
-         DEBUG("handleHovered param widget #0x%0x", hovered);
-         _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::HoveredWidget{paramWidget};
-         hovered->addChild(_model.onHoverWidget);
-      }
-      else
-      {
-         _model.hoveredWidget = nullptr;
-      }
-   }
-}*/
-
-bool CVWizardWidget::isSameModuleWidgetHovered() const
-{
-   bool result = false;
-   const auto hovered = _app->getEventState()->getHoveredWidget();
-
-   if (_model.hoveredModuleWidget == hovered)
-   {
-      result = true;
-      return true;
-   }
-   /*else  //THIS IS CAUSING THE CRASH!!!
-   {
-      if (auto&& parent = hovered->parent)
-      {
-         while (parent)
-         {
-            if (parent == _model.hoveredModuleWidget)
-            {
-               result = true;
-               break;
-            }
-            else
-            {
-               parent = parent->parent;
-            }
-         }
-      }
-   }*/
-   return result;
-}
-
-void CVWizardWidget::addHoveredModuleWidget()
-{
-   auto hovered = _app->getEventState()->getHoveredWidget();
-   if (auto&& moduleWidget = getIfIsModuleWidget(hovered))
-   {
-      _model.hoveredModuleWidget = hovered;
-      _model.onHoverModuleWidget = std::make_unique<ui::HoveredWidget>(moduleWidget);
-      moduleWidget->addChild(_model.onHoverModuleWidget.get());
-   }
-}
-
-void CVWizardWidget::clearHoveredModuleWidget()
-{
-   _model.onHoverModuleWidget = nullptr;
-   _model.hoveredModuleWidget = nullptr;
+   return _module->getSettings()->getSettings().ShowMappingTooltips;
 }
 
 }

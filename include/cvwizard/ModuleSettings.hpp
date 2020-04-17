@@ -39,7 +39,7 @@ public:
    ModuleSettings(const ModuleSettings&) = delete;
    ModuleSettings& operator=(const ModuleSettings&) = delete;
    
-   virtual Settings getCVWizardSettings() = 0;
+   virtual Settings getSettings() = 0;
    virtual void dumpSettings(const Settings& settings) = 0;
 };
 

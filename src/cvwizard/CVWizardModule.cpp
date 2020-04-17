@@ -3,8 +3,6 @@
 
 #include <mutex>
 
-using namespace rack;
-
 #ifndef QRX_UNITTESTS
 extern std::shared_ptr<qrx::PluginSettings> pluginSettings;
 
@@ -17,11 +15,13 @@ std::shared_ptr<qrx::cvwizard::ModuleSettings> addPluginSettings()
 namespace qrx {
 namespace cvwizard {
 
+using namespace boundary::rack;
+
 static std::mutex s_MasterModuleStatusMutex;
 std::atomic_bool CVWizardModule::s_isRackPluginMasterModule{false};
 
 CVWizardModule::CVWizardModule()
- : Module()
+ : Module{}
 #ifndef QRX_UNITTESTS
    , _settings{addPluginSettings()}
 #endif
@@ -46,7 +46,7 @@ bool CVWizardModule::isMasterModule() const
    return _isRackMasterModule;
 }
 
-void CVWizardModule::process(const ProcessArgs& args)
+void CVWizardModule::process(const engine::ProcessArgs& args)
 {
    determineMasterModuleStatus();
 }

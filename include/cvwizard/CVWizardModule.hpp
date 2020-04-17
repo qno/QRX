@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QRXPlugin.hpp>
+#include <boundary/rack/Types.hpp>
 #include <cvwizard/ModuleSettings.hpp>
 
 #include <atomic>
@@ -9,7 +9,9 @@
 namespace qrx {
 namespace cvwizard {
 
-class CVWizardModule final : public rack::engine::Module
+using namespace boundary;
+
+class CVWizardModule final : public rack::Module
 {
 public:
    
@@ -38,7 +40,7 @@ public:
    CVWizardModule();
    ~CVWizardModule() noexcept override;
    
-   void process(const ProcessArgs& args) override;
+   void process(const rack::engine::ProcessArgs& args) override;
    
    json_t* dataToJson() override;
    
@@ -55,7 +57,7 @@ private:
    void determineMasterModuleStatus();
    
    static std::atomic_bool s_isRackPluginMasterModule;
-   bool                    _isRackMasterModule = false;
+   bool _isRackMasterModule = false;
    std::shared_ptr<ModuleSettings> _settings;
 };
 

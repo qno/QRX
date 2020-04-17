@@ -1,9 +1,10 @@
 #pragma once
 
-#include <rack.hpp>
+#include <plugin/Plugin.hpp>
+#include <plugin/Model.hpp>
 
 // Declare the Plugin, defined in plugin.cpp
-extern rack::plugin::Plugin* pluginInstance;
+extern ::rack::plugin::Plugin* pluginInstance;
 
 // Declare each Model, defined in each module source file
-extern rack::Model* modelCVWizard;
+extern ::rack::plugin::Model* modelCVWizard;

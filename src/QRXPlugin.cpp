@@ -1,10 +1,11 @@
 #include <QRXPlugin.hpp>
 #include <PluginSettings.hpp>
+#include <plugin/callbacks.hpp>
 
-rack::plugin::Plugin* pluginInstance;
+::rack::plugin::Plugin* pluginInstance;
 extern std::shared_ptr<qrx::PluginSettings> pluginSettings;
 
-void init(rack::plugin::Plugin* p)
+void init(::rack::plugin::Plugin* p)
 {
    pluginInstance = p;
    

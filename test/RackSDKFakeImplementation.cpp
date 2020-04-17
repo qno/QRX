@@ -1,7 +1,6 @@
 #include <rack.hpp>
 
 extern "C" {
-
 int glfwGetKey(GLFWwindow*, int) { return {}; }
 const char* glfwGetKeyName(int, int) { return{}; }
 

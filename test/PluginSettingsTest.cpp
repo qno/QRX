@@ -15,10 +15,10 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
    {
       const auto defaultCVWizardSettings = cvwizard::ModuleSettings::Settings{};
       PluginSettings pluginSettings{};
-      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
+      REQUIRE(pluginSettings.getSettings() == defaultCVWizardSettings);
    }
    
-   SECTION("ensure that PluginSettings getCVWizardSettings returns dumped settings after dumpSettings called")
+   SECTION("ensure that PluginSettings getSettings returns dumped settings after dumpSettings called")
    {
       PluginSettings pluginSettings{};
       auto dumpedSettings = cvwizard::ModuleSettings::Settings{};
@@ -27,7 +27,7 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
       dumpedSettings.MappingCancelKey = 33;
       dumpedSettings.MappingTooltipKey = 44;
       pluginSettings.dumpSettings(dumpedSettings);
-      REQUIRE(pluginSettings.getCVWizardSettings() == dumpedSettings);
+      REQUIRE(pluginSettings.getSettings() == dumpedSettings);
    }
 }
 
@@ -39,29 +39,29 @@ TEST_CASE("load PluginSettings", "[plugin] [settings]")
    {
       PluginSettings pluginSettings{};
       pluginSettings.load("this-file-does-not-exist.json");
-      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
+      REQUIRE(pluginSettings.getSettings() == defaultCVWizardSettings);
    }
    
    SECTION("ensure PluginSettings returns settings from file with non default settings" )
    {
       PluginSettings pluginSettings{};
       pluginSettings.load("non-default-settings.json");
-      REQUIRE(!(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings));
+      REQUIRE(!(pluginSettings.getSettings() == defaultCVWizardSettings));
    }
    
    SECTION("ensure PluginSettings return default settings if corrupted settings file was loaded" )
    {
       PluginSettings pluginSettings{};
       pluginSettings.load("corrupted-settings.json");
-      REQUIRE(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings);
+      REQUIRE(pluginSettings.getSettings() == defaultCVWizardSettings);
    }
    
    SECTION("ensure PluginSettings get default settings attribute if file with corrupted settings attribute loaded" )
    {
       PluginSettings pluginSettings{};
       pluginSettings.load("corrupted-attribute.json");
-      REQUIRE(!(pluginSettings.getCVWizardSettings() == defaultCVWizardSettings));
-      REQUIRE(pluginSettings.getCVWizardSettings().MappingTooltipKey == defaultCVWizardSettings.MappingTooltipKey);
+      REQUIRE(!(pluginSettings.getSettings() == defaultCVWizardSettings));
+      REQUIRE(pluginSettings.getSettings().MappingTooltipKey == defaultCVWizardSettings.MappingTooltipKey);
    }
 }
 
@@ -79,7 +79,7 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       PluginSettings pluginSettingsLoader{};
       pluginSettingsLoader.load(savedSettingsFile);
       
-      REQUIRE(pluginSettingsLoader.getCVWizardSettings() == defaultCVWizardSettings);
+      REQUIRE(pluginSettingsLoader.getSettings() == defaultCVWizardSettings);
    }
    
    SECTION("ensure that PluginSettings save dumped settings to JSON file")
@@ -99,7 +99,7 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       PluginSettings pluginSettingsLoader{};
       pluginSettingsLoader.load(savedSettingsFile);
       
-      REQUIRE(pluginSettingsLoader.getCVWizardSettings() == settingsToDump);
+      REQUIRE(pluginSettingsLoader.getSettings() == settingsToDump);
    }
    
    SECTION("ensure that PluginSettings destructor calls save")
@@ -118,6 +118,6 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       PluginSettings pluginSettingsLoader{};
       pluginSettingsLoader.load();
       
-      REQUIRE(pluginSettingsLoader.getCVWizardSettings() == testSettings);
+      REQUIRE(pluginSettingsLoader.getSettings() == testSettings);
    }
 }

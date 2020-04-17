@@ -20,7 +20,7 @@ public:
    void load(const std::string& file = std::string{SLUG} + ".json") noexcept;
    void save(const std::string& file = std::string{SLUG} + ".json") const noexcept;
    
-   cvwizard::ModuleSettings::Settings getCVWizardSettings() override;
+   cvwizard::ModuleSettings::Settings getSettings() override;
    void dumpSettings(const cvwizard::ModuleSettings::Settings& settings) override;
    
 private:

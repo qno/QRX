@@ -1,6 +1,6 @@
 #pragma once
 
-#include <widget/TransparentWidget.hpp>
+#include <boundary/rack/Types.hpp>
 
 #include <chrono>
 #include <cmath>
@@ -9,11 +9,11 @@ namespace qrx {
 namespace cvwizard {
 namespace ui {
 
-class CVIndicatorWidget final : public rack::TransparentWidget
+class CVIndicatorWidget final : public boundary::rack::TransparentWidget
 {
 public:
    
-   CVIndicatorWidget(rack::Widget* w, rack::Module* module, int portId)
+   CVIndicatorWidget(boundary::rack::Widget* w, boundary::rack::Module* module, int portId)
       : _selectedParamWidget{w}
       , _module{module}
       , _portId{portId}
@@ -21,7 +21,7 @@ public:
       box.size = _selectedParamWidget->box.size;
    }
    
-   ~CVIndicatorWidget()
+   ~CVIndicatorWidget() override
    {
       if (_selectedParamWidget)
       {
@@ -33,9 +33,9 @@ public:
    {
    }
    
-   void draw(const DrawArgs& args) override
+   void draw(const boundary::rack::widget::DrawArgs& args) override
    {
-      TransparentWidget::draw(args);
+      boundary::rack::TransparentWidget::draw(args);
       auto* vg = args.vg;
       auto voltage = _module->inputs.at(_portId).getVoltage();
       auto c = box.size.x/2.f;
@@ -64,8 +64,8 @@ public:
 
 private:
    
-   rack::Widget* _selectedParamWidget = nullptr;
-   rack::Module* _module = nullptr;
+   boundary::rack::Widget* _selectedParamWidget = nullptr;
+   boundary::rack::Module* _module = nullptr;
    int _portId;
 };
 

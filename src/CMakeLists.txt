@@ -1,9 +1,9 @@
 set(SOURCES QRXPlugin.cpp
-            RackApp.cpp
             PluginSettings.cpp
-            cvwizard/CVWizard.cpp
+            cvwizard/CVWizardRackModel.cpp
             cvwizard/CVWizardModule.cpp
             cvwizard/CVWizardWidget.cpp
+            cvwizard/CVWizard.cpp
             cvwizard/ui/Tooltip.cpp)
 
 add_library(${LIB_NAME} MODULE ${SOURCES})

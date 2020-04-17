@@ -1,7 +1,5 @@
 #pragma once
 
-#include <app/ParamWidget.hpp>
-#include <app/PortWidget.hpp>
 #include <cvwizard/ui/HoveredWidget.hpp>
 #include <cvwizard/ui/CVIndicatorWidget.hpp>
 
@@ -19,11 +17,11 @@ public:
    {
    }
    
-   rack::widget::Widget* hoveredModuleWidget = nullptr;
+   boundary::rack::Widget* hoveredModuleWidget = nullptr;
    std::unique_ptr<ui::HoveredWidget> onHoverModuleWidget = nullptr;
    
-//   rack::app::ParamWidget* paramWidget = nullptr;
-//   rack::app::PortWidget* portWidget = nullptr;
+//   boundary::rack::ParamWidget* paramWidget = nullptr;
+//   boundary::rack::PortWidget* portWidget = nullptr;
 //   ui::CVIndicatorWidget* selectedParamWidget = nullptr;
 };
 

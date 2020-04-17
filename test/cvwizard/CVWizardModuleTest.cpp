@@ -29,7 +29,7 @@ TEST_CASE("CVWizardModule Rack master module", "[cvwizard] [module]")
       auto module2 = std::make_unique<CVWizardModule>();
       auto module3 = std::make_unique<CVWizardModule>();
    
-      const auto args = rack::engine::Module::ProcessArgs{};
+      const auto args = qrx::boundary::rack::engine::ProcessArgs{};
       module1 = nullptr;
       module2->process(args);
       module3->process(args);
@@ -90,7 +90,7 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
    
    auto pluginSettingsMock = Mock<ModuleSettings>();
    
-   When(Method(pluginSettingsMock, getCVWizardSettings)).AlwaysReturn(defaultSettings);
+   When(Method(pluginSettingsMock, getSettings)).AlwaysReturn(defaultSettings);
    When(Method(pluginSettingsMock, dumpSettings).Using(_)).AlwaysReturn();
    
    // obtain shared_ptr of mock -  https://github.com/eranpeer/FakeIt/issues/60
@@ -101,6 +101,6 @@ TEST_CASE("CVWizard settings", "[cvwizard] [settings]")
       CVWizardModule cvWizardModule;
       cvWizardModule.addSettings(pluginSettings);
       REQUIRE(cvWizardModule.getSettings());
-      REQUIRE(cvWizardModule.getSettings()->getCVWizardSettings() == defaultSettings);
+      REQUIRE(cvWizardModule.getSettings()->getSettings() == defaultSettings);
    }
 }

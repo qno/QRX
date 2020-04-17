@@ -1,6 +1,8 @@
 #include <QRXPlugin.hpp>
 #include <cvwizard/CVWizardModule.hpp>
 
+#include <plugin/callbacks.hpp>
+
 #include <catch2/catch.hpp>
 
 TEST_CASE("create QRXPlugin", "[plugin]")

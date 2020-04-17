@@ -14,14 +14,14 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
    
    auto settings = ModuleSettings::Settings{};
    
-   When(Method(pluginSettingsMock, getCVWizardSettings)).AlwaysReturn(settings);
+   When(Method(pluginSettingsMock, getSettings)).AlwaysReturn(settings);
    When(Method(pluginSettingsMock, dumpSettings).Using(_)).AlwaysReturn();
    
    auto& m = pluginSettingsMock.get();
    
    SECTION("ensure default settings")
    {
-      const auto defaultSettings = m.getCVWizardSettings();
+      const auto defaultSettings = m.getSettings();
       REQUIRE(defaultSettings.MappingKey == GLFW_KEY_M);
       REQUIRE(defaultSettings.MappingCancelKey == GLFW_KEY_ESCAPE);
       REQUIRE(defaultSettings.MappingTooltipKey == GLFW_KEY_T);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <widget/TransparentWidget.hpp>
+#include <boundary/rack/Types.hpp>
 
 #include <chrono>
 #include <cmath>
@@ -9,11 +9,11 @@ namespace qrx {
 namespace cvwizard {
 namespace ui {
 
-class HoveredWidget final : public rack::TransparentWidget
+class HoveredWidget final : public boundary::rack::TransparentWidget
 {
 public:
    
-   explicit HoveredWidget(rack::Widget* w)
+   explicit HoveredWidget(boundary::rack::Widget* w)
       : _hoveredWidget{w}
    {
       box.size = _hoveredWidget->box.size;
@@ -25,10 +25,6 @@ public:
       {
          _hoveredWidget->removeChild(this);
       }
-   }
-   
-   void onRemove(const rack::event::Remove& e) override
-   {
    }
    
    void step() override
@@ -51,9 +47,9 @@ public:
       }
    }
    
-   void draw(const DrawArgs& args) override
+   void draw(const boundary::rack::widget::DrawArgs& args) override
    {
-      TransparentWidget::draw(args);
+      boundary::rack::TransparentWidget::draw(args);
       auto vg = args.vg;
       
       if (std::abs(box.size.x - box.size.y) < 5.f)
@@ -90,7 +86,7 @@ private:
    static constexpr float AlphaSpeed = 2.f;
    unsigned char _alpha = 0;
    
-   rack::Widget* _hoveredWidget = nullptr;
+   boundary::rack::Widget* _hoveredWidget = nullptr;
    const std::chrono::time_point<std::chrono::steady_clock> _start = std::chrono::steady_clock::now();
 };
 
