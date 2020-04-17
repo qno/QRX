@@ -1,4 +1,5 @@
 #include <cvwizard/ui/Tooltip.hpp>
+#include <boundary/io/Keys.hpp>
 
 #include <locale>
 #include <sstream>
@@ -20,7 +21,7 @@ std::string Tooltip::getStartMappingText(const char mappingKey)
    {
       _mappingKey = mappingKey;
       auto text = std::stringstream{};
-      text << "Press '" << MOD_KEY;
+      text << "Press '" << boundary::io::keys::MOD_CTRL_NAME;
       text << "-" << std::toupper(mappingKey, locale) << "' to activate Mapping mode";
       _startMappingText = text.str();
    }

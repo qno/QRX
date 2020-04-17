@@ -13,8 +13,6 @@
 #include <ui/Tooltip.hpp>
 #include <logger.hpp>
 
-#define MOD_CTRL RACK_MOD_CTRL;
-
 namespace qrx {
 namespace boundary {
 namespace rack {

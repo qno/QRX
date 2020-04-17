@@ -1,16 +1,15 @@
 #pragma once
 
+#include <boundary/io/Keys.hpp>
+
 namespace qrx {
 namespace cvwizard {
+
+using namespace boundary;
 
 class ModuleSettings
 {
 protected:
-   // correspond to GLFW_KEY values
-   static constexpr int KEY_M   = 77;
-   static constexpr int KEY_T   = 84;
-   static constexpr int KEY_ESC = 256;
-   
    static constexpr char const* MappingKey          = "MappingKey";
    static constexpr char const* MappingCancelKey    = "MappingCancelKey";
    static constexpr char const* MappingTooltipKey   = "MappingTooltipKey";
@@ -20,9 +19,9 @@ public:
    
    struct Settings
    {
-      int  MappingKey          = KEY_M;
-      int  MappingCancelKey    = KEY_ESC;
-      int  MappingTooltipKey   = KEY_T;
+      int  MappingKey          = io::keys::M;
+      int  MappingCancelKey    = io::keys::ESCAPE;
+      int  MappingTooltipKey   = io::keys::T;
       bool ShowMappingTooltips = true;
       
       bool operator== (const Settings& other) const

@@ -2,6 +2,7 @@
 #include <cvwizard/ui/HoveredWidget.hpp>
 #include <cvwizard/ui/CVIndicatorWidget.hpp>
 #include <cvwizard/ui/Tooltip.hpp>
+#include <boundary/io/Keys.hpp>
 
 namespace qrx {
 namespace cvwizard {
@@ -88,7 +89,7 @@ void CVWizard::toogleTooltip()
 
 bool CVWizard::isControlKeyPressed() const
 {
-   return _appBoundary.isModKeyPressed(RACK_MOD_CTRL);
+   return _appBoundary.isModKeyPressed(io::keys::MOD_CTRL);
 }
 
 bool CVWizard::isMappingKeyPressed() const

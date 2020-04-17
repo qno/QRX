@@ -1,9 +1,8 @@
 #include <cvwizard/ModuleSettings.hpp>
-#include <GLFW/glfw3.h>
+#include <boundary/io/Keys.hpp>
 
 #include <catch2/catch.hpp>
 #include <fakeit.hpp>
-
 
 TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
 {
@@ -22,10 +21,9 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
    SECTION("ensure default settings")
    {
       const auto defaultSettings = m.getSettings();
-      REQUIRE(defaultSettings.MappingKey == GLFW_KEY_M);
-      REQUIRE(defaultSettings.MappingCancelKey == GLFW_KEY_ESCAPE);
-      REQUIRE(defaultSettings.MappingTooltipKey == GLFW_KEY_T);
+      REQUIRE(defaultSettings.MappingKey == qrx::boundary::io::keys::M);
+      REQUIRE(defaultSettings.MappingCancelKey == qrx::boundary::io::keys::ESCAPE);
+      REQUIRE(defaultSettings.MappingTooltipKey == qrx::boundary::io::keys::T);
       REQUIRE(defaultSettings.ShowMappingTooltips ==  true);
    }
 }
-
