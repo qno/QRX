@@ -5,6 +5,8 @@
 #include <cvwizard/ui/HoveredWidget.hpp>
 #include <cvwizard/ui/CVIndicatorWidget.hpp>
 
+#include <memory>
+
 namespace qrx {
 namespace cvwizard {
 namespace model {
@@ -15,21 +17,14 @@ public:
    
    ~CVWizardModel()
    {
-      if (onHoverWidget)
-      {
-         delete onHoverWidget;
-         onHoverWidget = nullptr;
-      }
    }
    
    rack::widget::Widget* hoveredModuleWidget = nullptr;
-   ui::HoveredWidget* onHoverModuleWidget = nullptr;
-   rack::widget::Widget* hoveredWidget = nullptr;
-   ui::HoveredWidget* onHoverWidget = nullptr;
+   std::unique_ptr<ui::HoveredWidget> onHoverModuleWidget = nullptr;
    
-   rack::app::ParamWidget* paramWidget = nullptr;
-   rack::app::PortWidget* portWidget          = nullptr;
-   ui::CVIndicatorWidget* selectedParamWidget = nullptr;
+//   rack::app::ParamWidget* paramWidget = nullptr;
+//   rack::app::PortWidget* portWidget = nullptr;
+//   ui::CVIndicatorWidget* selectedParamWidget = nullptr;
 };
 
 }

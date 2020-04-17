@@ -36,11 +36,11 @@ const auto isTooltipKeyPressed = [](const CVWizardControllable& c) { return c.is
 const auto isModuleWidgetHovered = [](const CVWizardControllable& c) { return c.isModuleWidgetHovered(); };
 const auto isNotSameModuleWidgetHovered = [](const CVWizardControllable& c) { return !c.isSameModuleWidgetHovered(); };
 
-const auto isParamWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
-const auto isParamWidgetSelected = [](const CVWizardControllable& c) { return c.isParamWidgetSelected(); };
+//const auto isParamWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
+//const auto isParamWidgetSelected = [](const CVWizardControllable& c) { return c.isParamWidgetSelected(); };
 
-const auto isInputPortWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
-const auto isInputPortWidgetSelected = [](const CVWizardControllable& c) { return c.isInputPortWidgetSelected(); };
+//const auto isInputPortWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
+//const auto isInputPortWidgetSelected = [](const CVWizardControllable& c) { return c.isInputPortWidgetSelected(); };
 }
 
 namespace action {
@@ -54,9 +54,9 @@ const auto toogleTooltip = [](CVWizardControllable& c) { c.toogleTooltip(); };
 
 const auto addHoveredModuleWidget = [](CVWizardControllable& c) { c.addHoveredModuleWidget(); };
 const auto clearHoveredModuleWidget = [](CVWizardControllable& c) { c.clearHoveredModuleWidget(); };
-const auto handleHoveredWidget = [](CVWizardControllable& c) { c.handleHoveredWidget(); };
-const auto addSelectedPortWidget = [](CVWizardControllable& c) { c.addSelectedPortWidget(); };
-const auto addSelectedParamWidget = [](CVWizardControllable& c) { c.addSelectedParamWidget(); };
+//const auto handleHoveredWidget = [](CVWizardControllable& c) { c.handleHoveredWidget(); };
+//const auto addSelectedPortWidget = [](CVWizardControllable& c) { c.addSelectedPortWidget(); };
+//const auto addSelectedParamWidget = [](CVWizardControllable& c) { c.addSelectedParamWidget(); };
 }
 
 namespace state {
@@ -87,7 +87,6 @@ public:
  sml::state<MappingModeActive> + sml::event<OnKeyPressed> [isMappingCancelKeyPressed] / removeTooltip = sml::state<Idle>,
  sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / addHoveredModuleWidget = sml::state<ModuleHovered>,
  sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / clearHoveredModuleWidget = sml::state<MappingModeActive>
-////sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / addHoveredModuleWidget = sml::state<ModuleHovered>
 // sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / handleHoveredWidget = sml::state<InputPortHovered>,
 // sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isInputPortWidgetSelected] / addSelectedPortWidget = sml::state<InputPortSelected>,
 // sml::state<InputPortSelected> + sml::event<OnWidgetSelected> [isParamWidgetHovered] / addSelectedParamWidget = sml::state<InputParamSelected>

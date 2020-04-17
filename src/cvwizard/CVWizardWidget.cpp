@@ -28,11 +28,11 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    {
       _appWindow = _app->getWindow();
    }
-   
+
    if (_appWindow)
    {
       setPanel(_appWindow->loadSvg(asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
-   
+
       addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
       addChild(createWidget<rack::ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
       addChild(createWidget<rack::ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
@@ -47,6 +47,10 @@ CVWizardWidget::~CVWizardWidget()
    DEBUG("CVWizardWidget dtr (#0x%0x)", this);
    removeWidgetTooltip();
    removeTooltip();
+   if (_module && _module->isMasterModule())
+   {
+      clearHoveredModuleWidget();
+   }
 }
 
 void CVWizardWidget::setApp(const std::shared_ptr<boundary::RackAppBoundary>& app)
@@ -62,12 +66,12 @@ void CVWizardWidget::step()
       {
          _controller->process_event(controller::event::OnKeyPressed{});
       }
-      
+
       if (_app->getEventState()->getHoveredWidget())
       {
          _controller->process_event(controller::event::OnWidgetHovered{});
       }
-   
+
       if (_app->getEventState()->getSelectedWidget())
       {
          _controller->process_event(controller::event::OnWidgetSelected{});
@@ -83,13 +87,11 @@ void CVWizardWidget::draw(const DrawArgs& args)
 
 void CVWizardWidget::onEnter(const rack::event::Enter& e)
 {
-   DEBUG("onEnter Widget #0x%0x", this);
    _controller->process_event(controller::event::OnEnter{});
 }
 
 void CVWizardWidget::onLeave(const rack::event::Leave& e)
 {
-   DEBUG("onLeave Widget #0x%0x", this);
    _controller->process_event(controller::event::OnLeave{});
 }
 
@@ -177,51 +179,58 @@ bool CVWizardWidget::isModuleWidgetHovered () const
    return nullptr != getIfIsModuleWidget(_app->getEventState()->getHoveredWidget());
 }
 
-bool CVWizardWidget::isModuleWidgetSelected () const
+/*bool CVWizardWidget::isModuleWidgetSelected () const
 {
+   DEBUG("entered %s", __FUNCTION__);
    return nullptr != getIfIsModuleWidget(_app->getEventState()->getSelectedWidget());
-}
+}*/
 
-bool CVWizardWidget::isParamWidgetHovered () const
+/*bool CVWizardWidget::isParamWidgetHovered () const
 {
+   DEBUG("entered %s", __FUNCTION__);
    return nullptr != getIfIsParamWidget(_app->getEventState()->getHoveredWidget());
-}
+}*/
 
-bool CVWizardWidget::isParamWidgetSelected () const
+/*bool CVWizardWidget::isParamWidgetSelected () const
 {
+   DEBUG("entered %s", __FUNCTION__);
    return nullptr != getIfIsParamWidget(_app->getEventState()->getSelectedWidget());
-}
+}*/
 
-bool CVWizardWidget::isInputPortWidgetHovered () const
+/*bool CVWizardWidget::isInputPortWidgetHovered () const
 {
+   DEBUG("entered %s", __FUNCTION__);
    return nullptr != getIfIsInputPortWidget(_app->getEventState()->getHoveredWidget());
-}
+}*/
 
-bool CVWizardWidget::isInputPortWidgetSelected () const
+/*bool CVWizardWidget::isInputPortWidgetSelected () const
 {
+   DEBUG("entered %s", __FUNCTION__);
    return nullptr != getIfIsInputPortWidget(_app->getEventState()->getSelectedWidget());
-}
+}*/
 
-void CVWizardWidget::addSelectedParamWidget()
+/*void CVWizardWidget::addSelectedParamWidget()
 {
+   DEBUG("entered %s", __FUNCTION__);
    _model.paramWidget = getIfIsParamWidget(_app->getEventState()->getSelectedWidget());
    DEBUG("addSelectedParamWidget #0x%0x", _model.paramWidget);
    _model.selectedParamWidget = new ui::CVIndicatorWidget{_model.paramWidget, _model.portWidget->module, _model.portWidget->portId};
    _model.paramWidget->addChild(_model.selectedParamWidget);
-}
+}*/
 
-void CVWizardWidget::addSelectedPortWidget()
+/*void CVWizardWidget::addSelectedPortWidget()
 {
+   DEBUG("entered %s", __FUNCTION__);
    _model.portWidget = getIfIsInputPortWidget(_app->getEventState()->getSelectedWidget());
    DEBUG("addSelectedPortWidget #0x%0x", _model.portWidget);
-}
+}*/
 
 rack::ModuleWidget* CVWizardWidget::getIfIsModuleWidget(rack::Widget* widget) const
 {
    return dynamic_cast<rack::ModuleWidget*>(widget);
 }
 
-rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) const
+/*rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) const
 {
    rack::PortWidget* result = nullptr;
    if (auto&& p = dynamic_cast<rack::PortWidget*>(widget))
@@ -232,9 +241,9 @@ rack::PortWidget* CVWizardWidget::getIfIsInputPortWidget(rack::Widget* widget) c
       }
    }
    return result;
-}
+}*/
 
-rack::ParamWidget* CVWizardWidget::getIfIsParamWidget(rack::Widget* widget) const
+/*rack::ParamWidget* CVWizardWidget::getIfIsParamWidget(rack::Widget* widget) const
 {
    rack::ParamWidget* result = nullptr;
    if (auto&& paramWidget = dynamic_cast<rack::ParamWidget*>(widget))
@@ -245,12 +254,12 @@ rack::ParamWidget* CVWizardWidget::getIfIsParamWidget(rack::Widget* widget) cons
       }
    }
    return result;
-}
+}*/
 
-void CVWizardWidget::handleHoveredWidget()
+/*void CVWizardWidget::handleHoveredWidget()
 {
    auto hovered = _app->getEventState()->getHoveredWidget();
-   
+
    if (_model.hoveredWidget != hovered)
    {
       if (_model.hoveredWidget && _model.onHoverWidget)
@@ -277,18 +286,19 @@ void CVWizardWidget::handleHoveredWidget()
          _model.hoveredWidget = nullptr;
       }
    }
-}
+}*/
 
 bool CVWizardWidget::isSameModuleWidgetHovered() const
 {
    bool result = false;
    const auto hovered = _app->getEventState()->getHoveredWidget();
-   
+
    if (_model.hoveredModuleWidget == hovered)
    {
       result = true;
+      return true;
    }
-   else
+   /*else  //THIS IS CAUSING THE CRASH!!!
    {
       if (auto&& parent = hovered->parent)
       {
@@ -305,7 +315,7 @@ bool CVWizardWidget::isSameModuleWidgetHovered() const
             }
          }
       }
-   }
+   }*/
    return result;
 }
 
@@ -314,22 +324,16 @@ void CVWizardWidget::addHoveredModuleWidget()
    auto hovered = _app->getEventState()->getHoveredWidget();
    if (auto&& moduleWidget = getIfIsModuleWidget(hovered))
    {
-      DEBUG("addHoveredModuleWidget #0x%0x", hovered);
       _model.hoveredModuleWidget = hovered;
-      _model.onHoverModuleWidget = new ui::HoveredWidget{moduleWidget};
-      hovered->addChild(_model.onHoverModuleWidget);
+      _model.onHoverModuleWidget = std::make_unique<ui::HoveredWidget>(moduleWidget);
+      moduleWidget->addChild(_model.onHoverModuleWidget.get());
    }
 }
 
 void CVWizardWidget::clearHoveredModuleWidget()
 {
-   DEBUG("clearHoveredModuleWidget #0x%0x", _model.hoveredModuleWidget);
-   if (_model.hoveredModuleWidget && _model.onHoverModuleWidget)
-   {
-      delete _model.onHoverModuleWidget;
-     _model.onHoverModuleWidget = nullptr;
-   }
-    _model.hoveredModuleWidget = nullptr;
+   _model.onHoverModuleWidget = nullptr;
+   _model.hoveredModuleWidget = nullptr;
 }
 
 }

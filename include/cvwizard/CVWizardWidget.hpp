@@ -43,31 +43,31 @@ private:
    bool isMappingCancelKeyPressed() const override;
    bool isTooltipKeyPressed() const override;
    
-   void handleHoveredWidget() override;
+//   void handleHoveredWidget() override;
    void addHoveredModuleWidget() override;
    void clearHoveredModuleWidget() override;
    
    bool isModuleWidgetHovered() const override;
 #ifdef QRX_UNITTESTS
 public:
-   model::CVWizardModel& getModel() const { return _model; }
+   model::CVWizardModel& getModel() { return _model; }
 #endif
    bool isSameModuleWidgetHovered() const override;
 #ifdef QRX_UNITTESTS
 private:
 #endif
-   bool isModuleWidgetSelected() const override;
-   bool isParamWidgetHovered() const override;
-   bool isParamWidgetSelected() const override;
-   bool isInputPortWidgetHovered() const override;
-   bool isInputPortWidgetSelected() const override;
+   //  bool isModuleWidgetSelected() const override;
+   //   bool isParamWidgetHovered() const override;
+   //   bool isParamWidgetSelected() const override;
+   //   bool isInputPortWidgetHovered() const override;
+   //   bool isInputPortWidgetSelected() const override;
    
-   void addSelectedParamWidget() override;
-   void addSelectedPortWidget() override;
+   //   void addSelectedParamWidget() override;
+   //  void addSelectedPortWidget() override;
    
    rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
-   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
-   rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
+   //   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
+   // rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
    
    std::shared_ptr<boundary::RackAppBoundary> _app = nullptr;
    CVWizardModule* _module  = nullptr;

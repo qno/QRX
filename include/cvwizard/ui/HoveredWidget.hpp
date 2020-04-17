@@ -27,6 +27,10 @@ public:
       }
    }
    
+   void onRemove(const rack::event::Remove& e) override
+   {
+   }
+   
    void step() override
    {
       // https://stackoverflow.com/questions/14391327/how-to-get-duration-as-int-millis-and-float-seconds-from-chrono

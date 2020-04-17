@@ -22,18 +22,18 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    When(Method(controllableMock, isMappingCancelKeyPressed)).AlwaysReturn(false);
    When(Method(controllableMock, isTooltipKeyPressed)).AlwaysReturn(false);
    
-   When(Method(controllableMock, handleHoveredWidget)).AlwaysReturn();
+   //   When(Method(controllableMock, handleHoveredWidget)).AlwaysReturn();
    When(Method(controllableMock, addHoveredModuleWidget)).AlwaysReturn();
    When(Method(controllableMock, clearHoveredModuleWidget)).AlwaysReturn();
    When(Method(controllableMock, isModuleWidgetHovered)).AlwaysReturn(false);
    When(Method(controllableMock, isSameModuleWidgetHovered)).AlwaysReturn(false);
-   When(Method(controllableMock, isModuleWidgetSelected)).AlwaysReturn(false);
-   When(Method(controllableMock, isParamWidgetHovered)).AlwaysReturn(false);
-   When(Method(controllableMock, isParamWidgetSelected)).AlwaysReturn(false);
-   When(Method(controllableMock, isInputPortWidgetHovered)).AlwaysReturn(false);
-   When(Method(controllableMock, isInputPortWidgetSelected)).AlwaysReturn(false);
-   When(Method(controllableMock, addSelectedParamWidget)).AlwaysReturn();
-   When(Method(controllableMock, addSelectedPortWidget)).AlwaysReturn();
+   //   When(Method(controllableMock, isModuleWidgetSelected)).AlwaysReturn(false);
+   //   When(Method(controllableMock, isParamWidgetHovered)).AlwaysReturn(false);
+   //   When(Method(controllableMock, isParamWidgetSelected)).AlwaysReturn(false);
+   //   When(Method(controllableMock, isInputPortWidgetHovered)).AlwaysReturn(false);
+   //   When(Method(controllableMock, isInputPortWidgetSelected)).AlwaysReturn(false);
+   //   When(Method(controllableMock, addSelectedParamWidget)).AlwaysReturn();
+   //   When(Method(controllableMock, addSelectedPortWidget)).AlwaysReturn();
    
    auto& m = controllableMock.get();
    sml::sm<CVWizardController, sml::testing> controller{m};
