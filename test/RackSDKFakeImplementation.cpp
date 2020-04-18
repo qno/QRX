@@ -133,4 +133,9 @@ void Widget::addChild(Widget*) { }
 void Widget::removeChild(rack::widget::Widget*) { }
 }
 
+namespace ui {
+void Tooltip::step() { }
+void Tooltip::draw(const DrawArgs&) { }
+}
+
 }

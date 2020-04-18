@@ -57,29 +57,53 @@ void CVWizard::onLeave()
    _controller->process_event(controller::event::OnLeave{});
 }
 
+sigslot::connection CVWizard::connectShowWidgetTooltip(std::function<void()> callback)
+{
+   return _showWidgetTooltip.connect(callback);
+}
+
+sigslot::connection CVWizard::connectRemoveWidgetTooltip(std::function<void()> callback)
+{
+   return _removeWidgetTooltip.connect(callback);
+}
+
+sigslot::connection CVWizard::connectShowTooltip(std::function<void()> callback)
+{
+   return _showTooltip.connect(callback);
+}
+
+sigslot::connection CVWizard::connectRemoveTooltip(std::function<void()> callback)
+{
+   return _removeTooltip.connect(callback);
+}
+
 void CVWizard::showWidgetTooltip()
 {
-
+   DEBUG("showWidgetTooltip");
+   _showWidgetTooltip();
 }
 
 void CVWizard::removeWidgetTooltip()
 {
-
+   DEBUG("removeWidgetTooltip");
+   _removeWidgetTooltip();
 }
 
 void CVWizard::showTooltip()
 {
-
+   DEBUG("showTooltip");
+   _showTooltip();
 }
 
 void CVWizard::removeTooltip()
 {
-
+   DEBUG("removeTooltip");
+   _removeTooltip();
 }
 
 bool CVWizard::isShowTooltipsEnabled() const
 {
-   return{};
+   return _settings->getSettings().ShowMappingTooltips;
 }
 
 void CVWizard::toggleTooltip()

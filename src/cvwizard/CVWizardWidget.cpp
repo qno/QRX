@@ -7,9 +7,9 @@
 namespace qrx {
 namespace cvwizard {
 
-std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
-
 using namespace boundary::rack;
+
+std::unique_ptr<rack::ui::Tooltip> CVWizardWidget::s_tooltip = nullptr;
 
 CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    : ModuleWidget{}
@@ -22,7 +22,6 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    DEBUG("CVWizardWidget ctr (#0x%0x)", this);
    
    setModule(_module);
-   _cvWizard.addSettings(_module->getSettings());
    
    setPanel(::rack::appGet()->window->loadSvg(::rack::asset::plugin(pluginInstance, "res/CVWizard/Module_Rack.svg")));
 
@@ -30,6 +29,15 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
    addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
    addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+   
+   if (_module)
+   {
+      _cvWizard.addSettings(_module->getSettings());
+      _showWidgetTooltipConnection   = _cvWizard.connectShowWidgetTooltip(std::bind(&CVWizardWidget::showWidgetTooltip, this));
+      _removeWidgetTooltipConnection = _cvWizard.connectRemoveWidgetTooltip(std::bind(&CVWizardWidget::removeWidgetTooltip, this));
+      _showTooltipConnection         = _cvWizard.connectShowTooltip(std::bind(&CVWizardWidget::showTooltip, this));
+      _removeTooltipConnection       = _cvWizard.connectRemoveTooltip(std::bind(&CVWizardWidget::removeTooltip, this));
+   }
 }
 
 CVWizardWidget::~CVWizardWidget()
@@ -90,16 +98,19 @@ void CVWizardWidget::onLeave(const event::Leave& e)
 
 void CVWizardWidget::onHover(const event::Hover& e)
 {
-   rack::ModuleWidget::onHover(e);
+   ModuleWidget::onHover(e);
    e.consume(this);
 }
 
 void CVWizardWidget::showWidgetTooltip()
 {
    DEBUG("showWidgetTooltip Widget #0x%0x", this);
-   _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
-   _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getSettings().MappingKey);
-   ::rack::appGet()->scene->addChild(_widgetTooltip.get());
+   if (!s_tooltip)
+   {
+      _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
+      _widgetTooltip->text = ui::Tooltip::getStartMappingText(_module->getSettings()->getSettings().MappingKey);
+      ::rack::appGet()->scene->addChild(_widgetTooltip.get());
+   }
 }
 
 void CVWizardWidget::removeWidgetTooltip()

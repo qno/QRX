@@ -46,6 +46,11 @@ private:
    
    std::unique_ptr<rack::ui::Tooltip> _widgetTooltip = nullptr;
    static std::unique_ptr<rack::ui::Tooltip> s_tooltip;
+   
+   sigslot::connection _showWidgetTooltipConnection;
+   sigslot::connection _removeWidgetTooltipConnection;
+   sigslot::connection _showTooltipConnection;
+   sigslot::connection _removeTooltipConnection;
 };
 
 }

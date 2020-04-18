@@ -4,7 +4,9 @@
 #include <cvwizard/controller/CVWizardController.hpp>
 #include <cvwizard/model/CVWizardModel.hpp>
 #include <cvwizard/ModuleSettings.hpp>
+#include <sigslot/signal.hpp>
 
+#include <functional>
 #include <memory>
 
 namespace qrx {
@@ -25,6 +27,11 @@ public:
    
    void onEnter();
    void onLeave();
+   
+   sigslot::connection connectShowWidgetTooltip(std::function<void()> callback);
+   sigslot::connection connectRemoveWidgetTooltip(std::function<void()> callback);
+   sigslot::connection connectShowTooltip(std::function<void()> callback);
+   sigslot::connection connectRemoveTooltip(std::function<void()> callback);
    
    void showWidgetTooltip() override;
    void removeWidgetTooltip() override;
@@ -66,6 +73,11 @@ private:
    const rack::AppBoundary& _appBoundary;
    std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
    std::shared_ptr<ModuleSettings> _settings;
+   
+   sigslot::signal<> _showWidgetTooltip;
+   sigslot::signal<> _removeWidgetTooltip;
+   sigslot::signal<> _showTooltip;
+   sigslot::signal<> _removeTooltip;
 };
 
 }
