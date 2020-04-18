@@ -130,7 +130,7 @@ bool CVWizard::isTooltipKeyPressed() const
    return _appBoundary.isKeyPressed(_settings->getSettings().MappingTooltipKey);
 }
 
-bool CVWizard::isModuleWidgetHovered () const
+bool CVWizard::isModuleWidgetHovered() const
 {
    return nullptr != getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget());
 }
