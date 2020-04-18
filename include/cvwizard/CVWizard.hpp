@@ -31,7 +31,7 @@ public:
    void showTooltip() override;
    void removeTooltip() override;
    bool isShowTooltipsEnabled() const override;
-   void toogleTooltip() override ;
+   void toggleTooltip() override ;
    
    bool isControlKeyPressed() const override;
    bool isMappingKeyPressed() const override;

@@ -12,7 +12,7 @@ public:
    virtual void showTooltip() = 0;
    virtual void removeTooltip() = 0;
    virtual bool isShowTooltipsEnabled() const = 0;
-   virtual void toogleTooltip() = 0;
+   virtual void toggleTooltip() = 0;
    
    virtual bool isControlKeyPressed() const = 0;
    virtual bool isMappingKeyPressed() const = 0;

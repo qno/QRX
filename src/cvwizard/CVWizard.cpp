@@ -82,7 +82,7 @@ bool CVWizard::isShowTooltipsEnabled() const
    return{};
 }
 
-void CVWizard::toogleTooltip()
+void CVWizard::toggleTooltip()
 {
 
 }

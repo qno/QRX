@@ -15,7 +15,7 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    When(Method(controllableMock, showTooltip)).AlwaysReturn();
    When(Method(controllableMock, removeTooltip)).AlwaysReturn();
    When(Method(controllableMock, isShowTooltipsEnabled)).AlwaysReturn(true);
-   When(Method(controllableMock, toogleTooltip)).AlwaysReturn();
+   When(Method(controllableMock, toggleTooltip)).AlwaysReturn();
    
    When(Method(controllableMock, isControlKeyPressed)).AlwaysReturn(false);
    When(Method(controllableMock, isMappingKeyPressed)).AlwaysReturn(false);

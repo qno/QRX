@@ -50,7 +50,7 @@ const auto removeWidgetTooltip = [](CVWizardControllable& c) { c.removeWidgetToo
 const auto showTooltip   = [](CVWizardControllable& c) { c.showTooltip(); };
 const auto removeTooltip = [](CVWizardControllable& c) { c.removeTooltip(); };
 
-const auto toogleTooltip = [](CVWizardControllable& c) { c.toogleTooltip(); };
+const auto toggleTooltip = [](CVWizardControllable& c) { c.toggleTooltip(); };
 
 const auto addHoveredModuleWidget = [](CVWizardControllable& c) { c.addHoveredModuleWidget(); };
 const auto clearHoveredModuleWidget = [](CVWizardControllable& c) { c.clearHoveredModuleWidget(); };
