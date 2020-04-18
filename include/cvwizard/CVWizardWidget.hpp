@@ -39,7 +39,6 @@ private:
    void removeWidgetTooltip();
    void showTooltip();
    void removeTooltip();
-   bool isShowTooltipsEnabled() const;
    
    CVWizard _cvWizard;
    CVWizardModule* _module  = nullptr;

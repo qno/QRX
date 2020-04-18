@@ -148,10 +148,5 @@ void CVWizardWidget::removeTooltip()
    }
 }
 
-bool CVWizardWidget::isShowTooltipsEnabled() const
-{
-   return _module->getSettings()->getSettings().ShowMappingTooltips;
-}
-
 }
 }
