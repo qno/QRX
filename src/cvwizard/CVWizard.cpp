@@ -21,7 +21,6 @@ CVWizard::CVWizard(const AppBoundary& appBoundary)
 CVWizard::~CVWizard()
 {
    DEBUG("CVWizardWidget dtr (#0x%0x)", this);
-   clearHoveredModuleWidget();
 }
 
 void CVWizard::addSettings(const std::shared_ptr<ModuleSettings>& settings)
@@ -249,15 +248,14 @@ bool CVWizard::isSameModuleWidgetHovered() const
 {
    bool result = false;
    const auto hovered = _appBoundary.getEventState()->getHoveredWidget();
-
+   
    if (_model.hoveredModuleWidget == hovered)
    {
       result = true;
-      return true;
    }
-   /*else  //THIS IS CAUSING THE CRASH!!!
+   else
    {
-      if (auto&& parent = hovered->parent)
+      if (auto parent = hovered->parent)
       {
          while (parent)
          {
@@ -272,7 +270,7 @@ bool CVWizard::isSameModuleWidgetHovered() const
             }
          }
       }
-   }*/
+   }
    return result;
 }
 

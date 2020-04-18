@@ -131,6 +131,7 @@ math::Rect Widget::getViewport(math::Rect) { return{}; }
 void Widget::draw(const Widget::DrawArgs&) { }
 void Widget::addChild(Widget*) { }
 void Widget::removeChild(rack::widget::Widget*) { }
+void Widget::requestDelete() { }
 }
 
 namespace ui {
