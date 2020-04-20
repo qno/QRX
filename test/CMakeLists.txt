@@ -27,7 +27,6 @@ target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
   PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
 target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
-  pthread
   SML
   SigSlot
   ${CONAN_LIBS_JANSSON}
