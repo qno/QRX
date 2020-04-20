@@ -1,28 +1,33 @@
 #pragma once
 
+#include <cvwizard/model/ModuleMapping.hpp>
 #include <cvwizard/ui/HoveredWidget.hpp>
 #include <cvwizard/ui/CVIndicatorWidget.hpp>
 
+#include <unordered_map>
 #include <memory>
 
 namespace qrx {
 namespace cvwizard {
 namespace model {
 
-class CVWizardModel
+using namespace boundary;
+
+class CVWizardModel final
 {
+   using ModuleMappings = std::unordered_map<rack::ModuleWidget*, std::shared_ptr<ModuleMapping>>;
 public:
    
-   ~CVWizardModel()
-   {
-   }
+   ~CVWizardModel() noexcept;
    
-   boundary::rack::Widget* hoveredModuleWidget = nullptr;
-   std::unique_ptr<ui::HoveredWidget> onHoverModuleWidget = nullptr;
+   void beginModuleMapping(rack::ModuleWidget* widget);
+   void endModuleMapping();
    
-//   boundary::rack::ParamWidget* paramWidget = nullptr;
-//   boundary::rack::PortWidget* portWidget = nullptr;
-//   ui::CVIndicatorWidget* selectedParamWidget = nullptr;
+   std::shared_ptr<ModuleMapping> getCurrentModuleMapping() const;
+
+private:
+   ModuleMappings _moduleMappings;
+   std::shared_ptr<ModuleMapping> _currentModuleMapping = nullptr;
 };
 
 }

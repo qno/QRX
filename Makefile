@@ -18,6 +18,7 @@ endif
 # Add .cpp files to the build
 SOURCES += $(wildcard src/*.cpp)
 SOURCES += $(wildcard src/cvwizard/*.cpp)
+SOURCES += $(wildcard src/cvwizard/model/*.cpp)
 SOURCES += $(wildcard src/cvwizard/ui/*.cpp)
 
 # Add files to the ZIP package when running `make dist`

@@ -46,8 +46,8 @@ public:
    bool isTooltipKeyPressed() const override;
    
 //   void handleHoveredWidget() override;
-   void addHoveredModuleWidget() override;
-   void clearHoveredModuleWidget() override;
+   void beginModuleMapping() override;
+   void endModuleMapping() override;
    
    bool isModuleWidgetHovered() const override;
 

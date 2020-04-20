@@ -10,7 +10,7 @@ using namespace fakeit;
 TEST_CASE("CVWizard isModuleWidgetHovered", "[cvwizard]")
 {
    Mock<AppBoundary> rackBoundaryMock;
-   //When(Method(rackBoundaryMock, getEventState)).AlwaysReturn(nullptr);
+   When(Method(rackBoundaryMock, getEventState)).AlwaysReturn(nullptr);
    When(Method(rackBoundaryMock, getScene)).AlwaysReturn(nullptr);
    When(Method(rackBoundaryMock, getWindow)).AlwaysReturn(nullptr);
    When(Method(rackBoundaryMock, isKeyPressed)).AlwaysReturn(false);
@@ -31,6 +31,7 @@ TEST_CASE("CVWizard isModuleWidgetHovered", "[cvwizard]")
       rackBoundaryMock.Reset();
    }
    
+   // This test causes segfault in `CVWizard::getIfIsModuleWidget(Widget* widget)` dynamic_cast
    /*SECTION("ensure return true if hovered widget is module widget")
    {
       ModuleWidget moduleWidget;
@@ -61,27 +62,14 @@ TEST_CASE("CVWizard isSameModuleWidgetHovered", "[cvwizard]")
    auto& m = rackBoundaryMock.get();
    CVWizard cvWizard{m};
    auto& model = cvWizard._model;
-   
-   SECTION("ensure return false if hovered module widget is nullptr")
-   {
-      Widget appHoveredWidget;
-      State state;
-      state.hoveredWidget = &appHoveredWidget;
-      
-      When(Method(rackBoundaryMock, getEventState)).Return(&state);
-      REQUIRE(cvWizard.isSameModuleWidgetHovered() == false);
-      Verify(Method(rackBoundaryMock, getEventState));
-      VerifyNoOtherInvocations(rackBoundaryMock);
-      rackBoundaryMock.Reset();
-   }
-   
+
    SECTION("ensure return false if hovered module widget != app hovered widget")
    {
       Widget appHoveredWidget;
       State state;
       state.hoveredWidget = &appHoveredWidget;
-      Widget hoveredWidget;
-      model.hoveredModuleWidget = &hoveredWidget;
+      ModuleWidget hoveredModuleWidget;
+      model.beginModuleMapping(&hoveredModuleWidget);
       
       When(Method(rackBoundaryMock, getEventState)).Return(&state);
       REQUIRE(cvWizard.isSameModuleWidgetHovered() == false);
@@ -92,10 +80,10 @@ TEST_CASE("CVWizard isSameModuleWidgetHovered", "[cvwizard]")
    
    SECTION("ensure return true if hovered module widget == app hovered widget")
    {
-      Widget appHoveredWidget;
+      ModuleWidget appHoveredModuleWidget;
       State state;
-      state.hoveredWidget = &appHoveredWidget;
-      model.hoveredModuleWidget = &appHoveredWidget;
+      state.hoveredWidget = &appHoveredModuleWidget;
+      model.beginModuleMapping(&appHoveredModuleWidget);
       
       When(Method(rackBoundaryMock, getEventState)).Return(&state);
       REQUIRE(cvWizard.isSameModuleWidgetHovered() == true);
@@ -106,13 +94,13 @@ TEST_CASE("CVWizard isSameModuleWidgetHovered", "[cvwizard]")
    
    SECTION("ensure return true if hovered module widget is a parent of app hovered widget")
    {
-      Widget hoveredModuleWidget;
+      ModuleWidget hoveredModuleWidget;
       Widget appHoveredWidget;
       appHoveredWidget.parent = &hoveredModuleWidget;
       
       State state;
       state.hoveredWidget = &appHoveredWidget;
-      model.hoveredModuleWidget = &hoveredModuleWidget;
+      model.beginModuleMapping(&hoveredModuleWidget);
       
       When(Method(rackBoundaryMock, getEventState)).Return(&state);
       REQUIRE(cvWizard.isSameModuleWidgetHovered() == true);
@@ -123,14 +111,14 @@ TEST_CASE("CVWizard isSameModuleWidgetHovered", "[cvwizard]")
    
    SECTION("ensure return false if hovered module widget is not a parent of app hovered widget")
    {
-      Widget hoveredModuleWidget;
+      ModuleWidget hoveredModuleWidget;
       Widget appHoveredWidget;
       Widget appHoveredParentWidget;
       appHoveredWidget.parent = &appHoveredParentWidget;
       
       State state;
       state.hoveredWidget = &appHoveredWidget;
-      model.hoveredModuleWidget = &hoveredModuleWidget;
+      model.beginModuleMapping(&hoveredModuleWidget);
       
       When(Method(rackBoundaryMock, getEventState)).Return(&state);
       REQUIRE(cvWizard.isSameModuleWidgetHovered() == false);

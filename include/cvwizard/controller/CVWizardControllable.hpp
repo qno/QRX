@@ -20,8 +20,8 @@ public:
    virtual bool isTooltipKeyPressed() const = 0;
    
    //   virtual void handleHoveredWidget() = 0;
-   virtual void addHoveredModuleWidget() = 0;
-   virtual void clearHoveredModuleWidget() = 0;
+   virtual void beginModuleMapping() = 0;
+   virtual void endModuleMapping() = 0;
    
    virtual bool isModuleWidgetHovered() const = 0;
    virtual bool isSameModuleWidgetHovered() const = 0;

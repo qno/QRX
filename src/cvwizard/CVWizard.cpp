@@ -248,8 +248,9 @@ bool CVWizard::isSameModuleWidgetHovered() const
 {
    bool result = false;
    const auto hovered = _appBoundary.getEventState()->getHoveredWidget();
+   const auto currentHovered = _model.getCurrentModuleMapping()->getModuleWidget();
    
-   if (_model.hoveredModuleWidget == hovered)
+   if (currentHovered == hovered)
    {
       result = true;
    }
@@ -259,7 +260,7 @@ bool CVWizard::isSameModuleWidgetHovered() const
       {
          while (parent)
          {
-            if (parent == _model.hoveredModuleWidget)
+            if (parent == currentHovered)
             {
                result = true;
                break;
@@ -274,21 +275,17 @@ bool CVWizard::isSameModuleWidgetHovered() const
    return result;
 }
 
-void CVWizard::addHoveredModuleWidget()
+void CVWizard::beginModuleMapping()
 {
-   auto hovered = _appBoundary.getEventState()->getHoveredWidget();
-   if (auto&& moduleWidget = getIfIsModuleWidget(hovered))
+   if (auto moduleWidget = getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget()))
    {
-      _model.hoveredModuleWidget = hovered;
-      _model.onHoverModuleWidget = std::make_unique<ui::HoveredWidget>(moduleWidget);
-      moduleWidget->addChild(_model.onHoverModuleWidget.get());
+      _model.beginModuleMapping(moduleWidget);
    }
 }
 
-void CVWizard::clearHoveredModuleWidget()
+void CVWizard::endModuleMapping()
 {
-   _model.onHoverModuleWidget = nullptr;
-   _model.hoveredModuleWidget = nullptr;
+   _model.endModuleMapping();
 }
 
 }

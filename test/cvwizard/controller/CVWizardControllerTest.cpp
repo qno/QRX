@@ -23,8 +23,8 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    When(Method(controllableMock, isTooltipKeyPressed)).AlwaysReturn(false);
    
    //   When(Method(controllableMock, handleHoveredWidget)).AlwaysReturn();
-   When(Method(controllableMock, addHoveredModuleWidget)).AlwaysReturn();
-   When(Method(controllableMock, clearHoveredModuleWidget)).AlwaysReturn();
+   When(Method(controllableMock, beginModuleMapping)).AlwaysReturn();
+   When(Method(controllableMock, endModuleMapping)).AlwaysReturn();
    When(Method(controllableMock, isModuleWidgetHovered)).AlwaysReturn(false);
    When(Method(controllableMock, isSameModuleWidgetHovered)).AlwaysReturn(false);
    //   When(Method(controllableMock, isModuleWidgetSelected)).AlwaysReturn(false);
@@ -111,7 +111,7 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
       controller.process_event(event::OnWidgetHovered{});
       REQUIRE(controller.is(sml::state<state::ModuleHovered>));
       Verify(Method(controllableMock, isModuleWidgetHovered));
-      Verify(Method(controllableMock, addHoveredModuleWidget));
+      Verify(Method(controllableMock, beginModuleMapping));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();
    }
@@ -124,7 +124,7 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
       controller.process_event(event::OnWidgetHovered{});
       REQUIRE(controller.is(sml::state<state::MappingModeActive>));
       Verify(Method(controllableMock, isSameModuleWidgetHovered));
-      Verify(Method(controllableMock, clearHoveredModuleWidget));
+      Verify(Method(controllableMock, endModuleMapping));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();
    }

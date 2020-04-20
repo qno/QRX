@@ -52,8 +52,8 @@ const auto removeTooltip = [](CVWizardControllable& c) { c.removeTooltip(); };
 
 const auto toggleTooltip = [](CVWizardControllable& c) { c.toggleTooltip(); };
 
-const auto addHoveredModuleWidget = [](CVWizardControllable& c) { c.addHoveredModuleWidget(); };
-const auto clearHoveredModuleWidget = [](CVWizardControllable& c) { c.clearHoveredModuleWidget(); };
+const auto beginModuleMapping = [](CVWizardControllable& c) { c.beginModuleMapping(); };
+const auto endModuleMapping = [](CVWizardControllable& c) { c.endModuleMapping(); };
 //const auto handleHoveredWidget = [](CVWizardControllable& c) { c.handleHoveredWidget(); };
 //const auto addSelectedPortWidget = [](CVWizardControllable& c) { c.addSelectedPortWidget(); };
 //const auto addSelectedParamWidget = [](CVWizardControllable& c) { c.addSelectedParamWidget(); };
@@ -80,13 +80,13 @@ public:
       using namespace action;
       // clang-format off
       return sml::make_transition_table(
-*sml::state<Idle> + sml::event<OnEnter> [isShowTooltipsEnabled] / showWidgetTooltip                                = sml::state<Idle>,
- sml::state<Idle> + sml::event<OnLeave> [isShowTooltipsEnabled] / removeWidgetTooltip                              = sml::state<Idle>,
- sml::state<Idle> + sml::event<OnKeyPressed> [isCtrlKeyPressed]                                                    = sml::state<CtrlKeyPressed>,
- sml::state<CtrlKeyPressed> + sml::event<OnKeyPressed> [isMappingKeyPressed] / showTooltip                         = sml::state<MappingModeActive>,
- sml::state<MappingModeActive> + sml::event<OnKeyPressed> [isMappingCancelKeyPressed] / removeTooltip              = sml::state<Idle>,
- sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / addHoveredModuleWidget      = sml::state<ModuleHovered>,
- sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / clearHoveredModuleWidget = sml::state<MappingModeActive>
+*sml::state<Idle> + sml::event<OnEnter> [isShowTooltipsEnabled] / showWidgetTooltip = sml::state<Idle>,
+ sml::state<Idle> + sml::event<OnLeave> [isShowTooltipsEnabled] / removeWidgetTooltip = sml::state<Idle>,
+ sml::state<Idle> + sml::event<OnKeyPressed> [isCtrlKeyPressed] = sml::state<CtrlKeyPressed>,
+ sml::state<CtrlKeyPressed> + sml::event<OnKeyPressed> [isMappingKeyPressed] / showTooltip = sml::state<MappingModeActive>,
+ sml::state<MappingModeActive> + sml::event<OnKeyPressed> [isMappingCancelKeyPressed] / removeTooltip = sml::state<Idle>,
+ sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / beginModuleMapping = sml::state<ModuleHovered>,
+ sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / endModuleMapping = sml::state<MappingModeActive>
 // sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / handleHoveredWidget = sml::state<InputPortHovered>,
 // sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isInputPortWidgetSelected] / addSelectedPortWidget = sml::state<InputPortSelected>,
 // sml::state<InputPortSelected> + sml::event<OnWidgetSelected> [isParamWidgetHovered] / addSelectedParamWidget = sml::state<InputParamSelected>
