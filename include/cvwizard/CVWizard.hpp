@@ -18,6 +18,14 @@ class CVWizard final : public controller::CVWizardControllable
 {
 public:
   
+   enum class TooltipCallbackKind
+   {
+      ShowWidgetTooltip,
+      RemoveWidgetTooltip,
+      ShowTooltip,
+      RemoveTooltip
+   };
+   
    explicit CVWizard(const rack::AppBoundary& appBoundary);
    ~CVWizard();
    
@@ -28,10 +36,7 @@ public:
    void onEnter();
    void onLeave();
    
-   sigslot::connection connectShowWidgetTooltip(std::function<void()> callback);
-   sigslot::connection connectRemoveWidgetTooltip(std::function<void()> callback);
-   sigslot::connection connectShowTooltip(std::function<void()> callback);
-   sigslot::connection connectRemoveTooltip(std::function<void()> callback);
+   sigslot::connection connectTooltipsCallback(std::function<void(const TooltipCallbackKind)> callback);
    
    void showWidgetTooltip() override;
    void removeWidgetTooltip() override;
@@ -74,10 +79,8 @@ private:
    std::unique_ptr<sml::sm<controller::CVWizardController>> _controller;
    std::shared_ptr<ModuleSettings> _settings;
    
-   sigslot::signal<> _showWidgetTooltip;
-   sigslot::signal<> _removeWidgetTooltip;
-   sigslot::signal<> _showTooltip;
-   sigslot::signal<> _removeTooltip;
+   sigslot::signal<TooltipCallbackKind> _tooltipsCallback;
+
 };
 
 }

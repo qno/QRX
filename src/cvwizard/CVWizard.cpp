@@ -56,48 +56,33 @@ void CVWizard::onLeave()
    _controller->process_event(controller::event::OnLeave{});
 }
 
-sigslot::connection CVWizard::connectShowWidgetTooltip(std::function<void()> callback)
+sigslot::connection CVWizard::connectTooltipsCallback(std::function<void(const TooltipCallbackKind)> callback)
 {
-   return _showWidgetTooltip.connect(callback);
-}
-
-sigslot::connection CVWizard::connectRemoveWidgetTooltip(std::function<void()> callback)
-{
-   return _removeWidgetTooltip.connect(callback);
-}
-
-sigslot::connection CVWizard::connectShowTooltip(std::function<void()> callback)
-{
-   return _showTooltip.connect(callback);
-}
-
-sigslot::connection CVWizard::connectRemoveTooltip(std::function<void()> callback)
-{
-   return _removeTooltip.connect(callback);
+   return _tooltipsCallback.connect(callback);
 }
 
 void CVWizard::showWidgetTooltip()
 {
    DEBUG("showWidgetTooltip");
-   _showWidgetTooltip();
+   _tooltipsCallback(TooltipCallbackKind::ShowWidgetTooltip);
 }
 
 void CVWizard::removeWidgetTooltip()
 {
    DEBUG("removeWidgetTooltip");
-   _removeWidgetTooltip();
+   _tooltipsCallback(TooltipCallbackKind::RemoveWidgetTooltip);
 }
 
 void CVWizard::showTooltip()
 {
    DEBUG("showTooltip");
-   _showTooltip();
+   _tooltipsCallback(TooltipCallbackKind::ShowTooltip);
 }
 
 void CVWizard::removeTooltip()
 {
    DEBUG("removeTooltip");
-   _removeTooltip();
+   _tooltipsCallback(TooltipCallbackKind::RemoveTooltip);
 }
 
 bool CVWizard::isShowTooltipsEnabled() const

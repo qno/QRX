@@ -35,6 +35,7 @@ private:
    void onLeave(const rack::event::Leave& e) override;
    void onHover(const rack::event::Hover& e) override;
    
+   void tooltipCallback(const CVWizard::TooltipCallbackKind kind);
    void showWidgetTooltip();
    void removeWidgetTooltip();
    void showTooltip();
@@ -46,10 +47,7 @@ private:
    std::unique_ptr<rack::ui::Tooltip> _widgetTooltip = nullptr;
    static std::unique_ptr<rack::ui::Tooltip> s_tooltip;
    
-   sigslot::connection _showWidgetTooltipConnection;
-   sigslot::connection _removeWidgetTooltipConnection;
-   sigslot::connection _showTooltipConnection;
-   sigslot::connection _removeTooltipConnection;
+   sigslot::connection _tooltipsCallbackConnection;
 };
 
 }

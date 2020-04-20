@@ -33,10 +33,7 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
    if (_module)
    {
       _cvWizard.addSettings(_module->getSettings());
-      _showWidgetTooltipConnection   = _cvWizard.connectShowWidgetTooltip(std::bind(&CVWizardWidget::showWidgetTooltip, this));
-      _removeWidgetTooltipConnection = _cvWizard.connectRemoveWidgetTooltip(std::bind(&CVWizardWidget::removeWidgetTooltip, this));
-      _showTooltipConnection         = _cvWizard.connectShowTooltip(std::bind(&CVWizardWidget::showTooltip, this));
-      _removeTooltipConnection       = _cvWizard.connectRemoveTooltip(std::bind(&CVWizardWidget::removeTooltip, this));
+      _tooltipsCallbackConnection = _cvWizard.connectTooltipsCallback(std::bind(&CVWizardWidget::tooltipCallback, this, std::placeholders::_1));
    }
 }
 
@@ -100,6 +97,27 @@ void CVWizardWidget::onHover(const event::Hover& e)
 {
    ModuleWidget::onHover(e);
    e.consume(this);
+}
+
+void CVWizardWidget::tooltipCallback(const CVWizard::TooltipCallbackKind kind)
+{
+   using CallbackKind = CVWizard::TooltipCallbackKind;
+   DEBUG("tooltipCallback Widget #0x%0x", this);
+   switch (kind)
+   {
+      case CallbackKind::ShowWidgetTooltip:
+         showWidgetTooltip();
+         break;
+      case CallbackKind::RemoveWidgetTooltip:
+         removeWidgetTooltip();
+         break;
+      case CallbackKind::ShowTooltip:
+         showTooltip();
+         break;
+      case CallbackKind::RemoveTooltip:
+         removeTooltip();
+         break;
+   }
 }
 
 void CVWizardWidget::showWidgetTooltip()
