@@ -31,7 +31,7 @@ TEST_CASE("CVWizard isModuleWidgetHovered", "[cvwizard]")
       rackBoundaryMock.Reset();
    }
    
-   // This test causes segfault in `CVWizard::getIfIsModuleWidget(Widget* widget)` dynamic_cast
+   // This test causes segfault in `CVWizard::getIfIsModuleWidget(Widget* widget)` dynamic_cast under Windows
    /*SECTION("ensure return true if hovered widget is module widget")
    {
       ModuleWidget moduleWidget;
