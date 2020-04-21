@@ -6,6 +6,7 @@ set(SOURCES QRXPlugin.cpp
             cvwizard/CVWizard.cpp
             cvwizard/model/CVWizardModel.cpp
             cvwizard/model/ModuleMapping.cpp
+            cvwizard/model/CVParameterMapping.cpp
             cvwizard/ui/Tooltip.cpp)
 
 add_library(${LIB_NAME} MODULE ${SOURCES})

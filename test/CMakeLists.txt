@@ -10,6 +10,7 @@ set(SOURCES ${SRC}/PluginSettings.cpp
             ${SRC}/cvwizard/CVWizard.cpp
             ${SRC}/cvwizard/model/CVWizardModel.cpp
             ${SRC}/cvwizard/model/ModuleMapping.cpp
+            ${SRC}/cvwizard/model/CVParameterMapping.cpp
             ${SRC}/cvwizard/ui/Tooltip.cpp)
 
 set(TESTS_SOURCES PluginJsonTest.cpp
@@ -20,6 +21,7 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/model/CVWizardModelTest.cpp
                   cvwizard/model/ModuleMappingTest.cpp
+                  cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
 add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
