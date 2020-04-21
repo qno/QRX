@@ -50,7 +50,7 @@ public:
    bool isMappingCancelKeyPressed() const override;
    bool isTooltipKeyPressed() const override;
    
-//   void handleHoveredWidget() override;
+   //void handleHoveredWidget() override;
    void beginModuleMapping() override;
    void endModuleMapping() override;
    
@@ -68,8 +68,8 @@ public:
    //void addSelectedPortWidget() override;
    
    rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
-   //rack::PortWidget* getIfIsInputPortWidget(rackWidget* widget) const;
-   //rack::ParamWidget* getIfIsParamWidget(rackWidget* widget) const;
+   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
+   //rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
    
    model::CVWizardModel _model;
    
@@ -80,7 +80,6 @@ private:
    std::shared_ptr<ModuleSettings> _settings;
    
    sigslot::signal<TooltipCallbackKind> _tooltipsCallback;
-
 };
 
 }

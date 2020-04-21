@@ -4,9 +4,6 @@
 
 #include <boost/sml.hpp>
 
-#include <exception>
-#include <memory>
-
 namespace sml = boost::sml;
 
 namespace qrx {
@@ -39,7 +36,7 @@ const auto isNotSameModuleWidgetHovered = [](const CVWizardControllable& c) { re
 //const auto isParamWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
 //const auto isParamWidgetSelected = [](const CVWizardControllable& c) { return c.isParamWidgetSelected(); };
 
-//const auto isInputPortWidgetHovered = [](const CVWizardControllable& c) { return c.isParamWidgetHovered(); };
+//const auto isInputPortWidgetHovered = [](const CVWizardControllable& c) { return c.isInputPortWidgetHovered(); };
 //const auto isInputPortWidgetSelected = [](const CVWizardControllable& c) { return c.isInputPortWidgetSelected(); };
 }
 
@@ -87,7 +84,7 @@ public:
  sml::state<MappingModeActive> + sml::event<OnKeyPressed> [isMappingCancelKeyPressed] / removeTooltip = sml::state<Idle>,
  sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / beginModuleMapping = sml::state<ModuleHovered>,
  sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / endModuleMapping = sml::state<MappingModeActive>
-// sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / handleHoveredWidget = sml::state<InputPortHovered>,
+// sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / handleHoveredWidget = sml::state<InputPortHovered>
 // sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isInputPortWidgetSelected] / addSelectedPortWidget = sml::state<InputPortSelected>,
 // sml::state<InputPortSelected> + sml::event<OnWidgetSelected> [isParamWidgetHovered] / addSelectedParamWidget = sml::state<InputParamSelected>
       );

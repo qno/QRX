@@ -19,14 +19,14 @@ public:
    virtual bool isMappingCancelKeyPressed() const = 0;
    virtual bool isTooltipKeyPressed() const = 0;
    
-   //   virtual void handleHoveredWidget() = 0;
+   //virtual void handleHoveredWidget() = 0;
    virtual void beginModuleMapping() = 0;
    virtual void endModuleMapping() = 0;
    
    virtual bool isModuleWidgetHovered() const = 0;
    virtual bool isSameModuleWidgetHovered() const = 0;
-   //   virtual bool isModuleWidgetSelected() const = 0;
-   //   virtual bool isParamWidgetHovered() const = 0;
+   //virtual bool isModuleWidgetSelected() const = 0;
+   //virtual bool isParamWidgetHovered() const = 0;
    //virtual bool isParamWidgetSelected() const = 0;
    //virtual bool isInputPortWidgetHovered() const = 0;
    //virtual bool isInputPortWidgetSelected() const = 0;
