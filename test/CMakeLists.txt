@@ -19,6 +19,7 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/CVWizardTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
+                  cvwizard/controller/MappingControllerTest.cpp
                   cvwizard/model/CVWizardModelTest.cpp
                   cvwizard/model/ModuleMappingTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
