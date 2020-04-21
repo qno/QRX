@@ -9,10 +9,9 @@ using namespace boundary::rack;
 ModuleMapping::ModuleMapping(rack::ModuleWidget* widget)
    : _moduleWidget{widget}
 {
-   enableHover();
 }
 
-const ModuleWidget* ModuleMapping::getModuleWidget() const
+ModuleWidget* ModuleMapping::getModuleWidget() const
 {
    return _moduleWidget;
 }

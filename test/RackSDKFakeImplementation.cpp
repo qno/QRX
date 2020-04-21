@@ -28,8 +28,6 @@ void nvgClosePath(NVGcontext*) { }
 
 namespace rack {
 
-App* appGet() { return{}; }
-
 Window::Window() { }
 Window::~Window() { }
 std::shared_ptr<Svg> Window::loadSvg(const std::string&) { return{}; }
@@ -129,8 +127,18 @@ math::Vec Widget::getRelativeOffset(math::Vec, Widget*) { return{}; }
 math::Rect Widget::getViewport(math::Rect) { return{}; }
 
 void Widget::draw(const Widget::DrawArgs&) { }
-void Widget::addChild(Widget*) { }
-void Widget::removeChild(rack::widget::Widget*) { }
+void Widget::addChild(Widget* child) {
+   child->parent = this;
+   children.push_back(child);
+}
+void Widget::removeChild(Widget* child) {
+   assert(child);
+   assert(child->parent == this);
+   auto it = std::find(children.begin(), children.end(), child);
+   assert(it != children.end());
+   children.erase(it);
+   child->parent = nullptr;
+}
 void Widget::requestDelete() { }
 }
 
