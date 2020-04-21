@@ -127,17 +127,8 @@ math::Vec Widget::getRelativeOffset(math::Vec, Widget*) { return{}; }
 math::Rect Widget::getViewport(math::Rect) { return{}; }
 
 void Widget::draw(const Widget::DrawArgs&) { }
-void Widget::addChild(Widget* child) {
-   child->parent = this;
-   children.push_back(child);
-}
-void Widget::removeChild(Widget* child) {
-   assert(child);
-   assert(child->parent == this);
-   auto it = std::find(children.begin(), children.end(), child);
-   assert(it != children.end());
-   children.erase(it);
-   child->parent = nullptr;
+void Widget::addChild(Widget*) { }
+void Widget::removeChild(Widget*) { }
 }
 void Widget::requestDelete() { }
 }
