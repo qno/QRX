@@ -25,14 +25,15 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
-add_library(RackSDKFakeImplementation STATIC RackSDKFakeImplementation.cpp)
-target_compile_definitions(RackSDKFakeImplementation PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
+add_library(RackSDKMissingSymbols STATIC RackSDKMissingSymbols.cpp)
+target_compile_definitions(RackSDKMissingSymbols PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${UT_EXE} CatchMain.cpp ${TESTS_SOURCES} ${SOURCES})
 target_include_directories(${UT_EXE} PRIVATE include ${PROJECT_SOURCE_DIR}/include)
 target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
-target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} PRIVATE RackSDKFakeImplementation
+target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
+                                     PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
+target_link_libraries(${UT_EXE} PRIVATE RackSDKMissingSymbols
   SML
   SigSlot
   ${CONAN_LIBS_JANSSON}
