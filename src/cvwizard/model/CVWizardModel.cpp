@@ -1,5 +1,4 @@
 #include <cvwizard/model/CVWizardModel.hpp>
-#include <app/ModuleWidget.hpp>
 
 namespace qrx {
 namespace cvwizard {

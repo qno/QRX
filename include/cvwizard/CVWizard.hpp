@@ -50,25 +50,23 @@ public:
    bool isMappingCancelKeyPressed() const override;
    bool isTooltipKeyPressed() const override;
    
-   //void handleHoveredWidget() override;
+   bool isModuleWidgetHovered() const override;
+   bool isSameModuleWidgetHovered() const override;
+   
    void beginModuleMapping() override;
    void endModuleMapping() override;
    
-   bool isModuleWidgetHovered() const override;
-
-   bool isSameModuleWidgetHovered() const override;
+   void sendHoveredWidget() override;
 
    //bool isModuleWidgetSelected() const override;
    //bool isParamWidgetHovered() const override;
    //bool isParamWidgetSelected() const override;
-   //bool isInputPortWidgetHovered() const override;
    //bool isInputPortWidgetSelected() const override;
    
    //void addSelectedParamWidget() override;
    //void addSelectedPortWidget() override;
    
    rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
-   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
    //rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
    
    model::CVWizardModel _model;

@@ -16,11 +16,6 @@ struct OnLeave{};
 struct OnKeyPressed{};
 struct OnWidgetHovered{};
 struct OnWidgetSelected{};
-
-struct OnPortWidgetHovered{};
-struct OnParamWidgetHovered{};
-struct OnPortWidgetSelected{};
-struct OnParamWidgetSelected{};
 }
 
 namespace guard {
@@ -51,6 +46,9 @@ const auto toggleTooltip = [](CVWizardControllable& c) { c.toggleTooltip(); };
 
 const auto beginModuleMapping = [](CVWizardControllable& c) { c.beginModuleMapping(); };
 const auto endModuleMapping = [](CVWizardControllable& c) { c.endModuleMapping(); };
+
+const auto sendHoveredWidget = [](CVWizardControllable& c) { c.sendHoveredWidget(); };
+
 //const auto handleHoveredWidget = [](CVWizardControllable& c) { c.handleHoveredWidget(); };
 //const auto addSelectedPortWidget = [](CVWizardControllable& c) { c.addSelectedPortWidget(); };
 //const auto addSelectedParamWidget = [](CVWizardControllable& c) { c.addSelectedParamWidget(); };
@@ -83,8 +81,8 @@ public:
  sml::state<CtrlKeyPressed> + sml::event<OnKeyPressed> [isMappingKeyPressed] / showTooltip = sml::state<MappingModeActive>,
  sml::state<MappingModeActive> + sml::event<OnKeyPressed> [isMappingCancelKeyPressed] / removeTooltip = sml::state<Idle>,
  sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / beginModuleMapping = sml::state<ModuleHovered>,
- sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / endModuleMapping = sml::state<MappingModeActive>
-// sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / handleHoveredWidget = sml::state<InputPortHovered>
+ sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / endModuleMapping = sml::state<MappingModeActive>,
+ sml::state<ModuleHovered> + sml::event<OnWidgetHovered> /*[!isModuleWidgetHovered]*/ / sendHoveredWidget = sml::state<ModuleHovered>
 // sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isInputPortWidgetSelected] / addSelectedPortWidget = sml::state<InputPortSelected>,
 // sml::state<InputPortSelected> + sml::event<OnWidgetSelected> [isParamWidgetHovered] / addSelectedParamWidget = sml::state<InputParamSelected>
       );

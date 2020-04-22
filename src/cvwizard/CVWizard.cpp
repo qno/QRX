@@ -138,12 +138,6 @@ bool CVWizard::isModuleWidgetHovered() const
    return nullptr != getIfIsParamWidget(_appBoundary.getEventState()->getSelectedWidget());
 }*/
 
-/*bool CVWizard::isInputPortWidgetHovered () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsInputPortWidget(_appBoundary.getEventState()->getHoveredWidget());
-}*/
-
 /*bool CVWizard::isInputPortWidgetSelected () const
 {
    DEBUG("entered %s", __FUNCTION__);
@@ -170,19 +164,6 @@ ModuleWidget* CVWizard::getIfIsModuleWidget(Widget* widget) const
 {
    return dynamic_cast<ModuleWidget*>(widget);
 }
-
-/*PortWidget* CVWizard::getIfIsInputPortWidget(Widget* widget) const
-{
-   PortWidget* result = nullptr;
-   if (auto&& p = dynamic_cast<PortWidget*>(widget))
-   {
-      if (PortWidget::INPUT == p->type)
-      {
-         result = p;
-      }
-   }
-   return result;
-}*/
 
 /*ParamWidget* CVWizard::getIfIsParamWidget(Widget* widget) const
 {
@@ -271,6 +252,11 @@ void CVWizard::beginModuleMapping()
 void CVWizard::endModuleMapping()
 {
    _model.endModuleMapping();
+}
+
+void CVWizard::sendHoveredWidget()
+{
+   _model.getCurrentModuleMapping()->sendHoveredWidget(_appBoundary.getEventState()->getHoveredWidget());
 }
 
 }
