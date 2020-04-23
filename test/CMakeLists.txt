@@ -27,7 +27,7 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
-add_library(RackSDKMissingSymbols STATIC RackSDKMissingSymbols.cpp)
+add_library(RackSDKMissingSymbols SHARED RackSDKMissingSymbols.cpp)
 target_compile_definitions(RackSDKMissingSymbols PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${UT_EXE} CatchMain.cpp ${TESTS_SOURCES} ${SOURCES})
