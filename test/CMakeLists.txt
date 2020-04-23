@@ -27,9 +27,9 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
-set (LIBRARY_TYPE STATIC)
-if (MINGW)
-  set (LIBRARY_TYPE SHARED)
+set (LIBRARY_TYPE SHARED)
+if (APPLE)
+  set (LIBRARY_TYPE STATIC)
 endif ()
 
 add_library(RackSDKMissingSymbols ${LIBRARY_TYPE} RackSDKMissingSymbols.cpp)
