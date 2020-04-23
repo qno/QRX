@@ -4,6 +4,7 @@ set(SOURCES QRXPlugin.cpp
             cvwizard/CVWizardModule.cpp
             cvwizard/CVWizardWidget.cpp
             cvwizard/CVWizard.cpp
+            cvwizard/utility/Widget.cpp
             cvwizard/model/CVWizardModel.cpp
             cvwizard/model/ModuleMapping.cpp
             cvwizard/model/CVParameterMapping.cpp

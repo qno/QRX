@@ -8,6 +8,7 @@ set(SRC ${PROJECT_SOURCE_DIR}/src)
 set(SOURCES ${SRC}/PluginSettings.cpp
             ${SRC}/cvwizard/CVWizardModule.cpp
             ${SRC}/cvwizard/CVWizard.cpp
+            ${SRC}/cvwizard/utility/Widget.cpp
             ${SRC}/cvwizard/model/CVWizardModel.cpp
             ${SRC}/cvwizard/model/ModuleMapping.cpp
             ${SRC}/cvwizard/model/CVParameterMapping.cpp
@@ -18,6 +19,7 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/CVWizardModuleTest.cpp
                   cvwizard/CVWizardTest.cpp
                   cvwizard/ModuleSettingsTest.cpp
+                  cvwizard/utility/WidgetTest.cpp
                   cvwizard/controller/CVWizardControllerTest.cpp
                   cvwizard/controller/MappingControllerTest.cpp
                   cvwizard/model/CVWizardModelTest.cpp
