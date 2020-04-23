@@ -1,4 +1,5 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
 
 find_package(Catch2 REQUIRED)
 
