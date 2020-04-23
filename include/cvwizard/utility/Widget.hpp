@@ -11,7 +11,7 @@ class Widget final
 public:
    static boundary::rack::ModuleWidget* getIfIsModuleWidget(boundary::rack::Widget* widget);
 
-   static boundary::rack::ParamWidget* getIfIsParamWidget(boundary::rack::Widget* widget);
+   static boundary::rack::ParamWidget* getIfIsKnobParamWidget(boundary::rack::Widget* widget);
    
    static boundary::rack::PortWidget* getIfIsInputPortWidget(boundary::rack::Widget* widget);
 };

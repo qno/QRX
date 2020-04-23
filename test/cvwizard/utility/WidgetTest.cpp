@@ -44,6 +44,6 @@ TEST_CASE("Widget utility", "[utility] [widget]")
    {
       auto widget = std::make_unique<boundary::rack::PortWidget>();
       widget->type = boundary::rack::PortWidget::OUTPUT;
-      REQUIRE(utility::Widget::getIfIsParamWidget(widget.get()) == nullptr);
+      REQUIRE(utility::Widget::getIfIsKnobParamWidget(widget.get()) == nullptr);
    }*/
 }

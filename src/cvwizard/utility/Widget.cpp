@@ -9,7 +9,7 @@ boundary::rack::ModuleWidget* Widget::getIfIsModuleWidget(boundary::rack::Widget
    return dynamic_cast<boundary::rack::ModuleWidget*>(widget);
 }
 
-boundary::rack::ParamWidget* Widget::getIfIsParamWidget(boundary::rack::Widget* widget)
+boundary::rack::ParamWidget* Widget::getIfIsKnobParamWidget(boundary::rack::Widget* widget)
 {
    boundary::rack::ParamWidget* result = nullptr;
    if (auto&& paramWidget = dynamic_cast<boundary::rack::ParamWidget*>(widget))
