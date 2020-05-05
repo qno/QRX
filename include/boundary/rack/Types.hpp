@@ -23,6 +23,7 @@ using Window = ::rack::Window;
 
 using Module = ::rack::engine::Module;
 using Widget = ::rack::widget::Widget;
+using OpaqueWidget = ::rack::widget::OpaqueWidget;
 using TransparentWidget = ::rack::widget::TransparentWidget;
 using ModuleWidget = ::rack::app::ModuleWidget;
 using ParamWidget = ::rack::app::ParamWidget;
