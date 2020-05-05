@@ -8,15 +8,13 @@ namespace mapping {
 class MappingControllable
 {
 public:
-   //   virtual bool isModuleWidgetSelected() const = 0;
-   //   virtual bool isParamWidgetHovered() const = 0;
-   //virtual bool isParamWidgetSelected() const = 0;
-   virtual bool isInputPortWidgetHovered() const = 0;
-   //virtual bool isInputPortWidgetSelected() const = 0;
-   
-   virtual void hoverWidget() = 0;
-   //virtual void addSelectedParamWidget() = 0;
-   //virtual void addSelectedPortWidget() = 0;
+   virtual bool isKnobParamWidget() const = 0;
+   virtual bool isInputPortWidget() const = 0;
+   virtual bool isSelectedHovered() const = 0;
+   virtual void addSelectedInputPort() = 0;
+   virtual void addSelectedKnobParamWidget() = 0;
+   virtual void enableHoverWidget() = 0;
+   virtual void disableHoverWidget() = 0;
 };
 
 }

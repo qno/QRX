@@ -13,5 +13,24 @@ TEST_CASE("ModuleMapping", "[cvwizard] [model] [mapping]")
       ModuleWidget widget;
       ModuleMapping mapping{&widget};
       REQUIRE(mapping.getModuleWidget() == &widget);
+      REQUIRE(mapping.hasMappedParameter() == false);
+   }
+   
+   SECTION("mapping complete parameter tuple")
+   {
+      ModuleWidget moduleWidget;
+      PortWidget inputPortWidget;
+      inputPortWidget.type = PortWidget::INPUT;
+      Knob knobWidget;
+      ModuleMapping mapping{&moduleWidget};
+      mapping.onEnterWidget(&inputPortWidget);
+      mapping.OnSelectWidget(&inputPortWidget);
+      mapping.onLeaveWidget();
+      REQUIRE(mapping.hasMappedParameter() == false);
+      mapping.onEnterWidget(&knobWidget);
+      mapping.OnSelectWidget(&knobWidget);
+      REQUIRE(mapping.hasMappedParameter() == true);
+      mapping.onLeaveWidget();
+      REQUIRE(mapping.hasMappedParameter() == true);
    }
 }

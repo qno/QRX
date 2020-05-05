@@ -27,17 +27,26 @@ public:
    void enableHover();
    void disableHover();
    
-   void sendHoveredWidget(rack::Widget* widget);
-
+   void onEnterWidget(rack::Widget* widget);
+   void onLeaveWidget();
+   void OnSelectWidget(rack::Widget* widget);
+   
+   bool hasMappedParameter() const;
+   
 private:
    
-   rack::PortWidget* getIfIsInputPortWidget(rack::Widget* widget) const;
-   bool isInputPortWidgetHovered() const override;
-   void hoverWidget() override;
+   bool isInputPortWidget() const override;
+   bool isKnobParamWidget() const override;
+   bool isSelectedHovered() const override;
+   void addSelectedInputPort() override;
+   void addSelectedKnobParamWidget() override;
+   void enableHoverWidget() override;
+   virtual void disableHoverWidget() override;
    std::unique_ptr<sml::sm<controller::mapping::MappingController>> _controller;
    rack::ModuleWidget* _moduleWidget = nullptr;
    std::unique_ptr<ui::HoveredWidget> _moduleOnHoverWidget = nullptr;
-   rack::Widget* _hoveredWidget = nullptr;
+   rack::Widget* _currentHoveredWidget = nullptr;
+   rack::Widget* _selectedWidget = nullptr;
    std::unique_ptr<ui::HoveredWidget> _onHoverWidget = nullptr;
    std::shared_ptr<CVParameterMapping> _currentCVParamMapping;
    CVParameterMappings _cvParameterMappings;

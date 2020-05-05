@@ -14,12 +14,18 @@ TEST_CASE("CVWizardModel", "[cvwizard] [model]")
       REQUIRE(model.getCurrentModuleMapping() == nullptr);
    }
    
-   SECTION("begin mapping module")
+   SECTION("not finished mapping module")
    {
       ModuleWidget moduleWidget;
       model.beginModuleMapping(&moduleWidget);
-      auto&& currentMapping = model.getCurrentModuleMapping();
-      REQUIRE(currentMapping);
-      REQUIRE(currentMapping->getModuleWidget() == &moduleWidget);
+      auto firstMapping = model.getCurrentModuleMapping();
+      REQUIRE(firstMapping);
+      REQUIRE(firstMapping->getModuleWidget() == &moduleWidget);
+      model.endModuleMapping();
+      REQUIRE(model.getCurrentModuleMapping() == nullptr);
+      model.beginModuleMapping(&moduleWidget);
+      auto secondMapping = model.getCurrentModuleMapping();
+      REQUIRE(secondMapping);
+      REQUIRE(secondMapping != firstMapping);
    }
 }

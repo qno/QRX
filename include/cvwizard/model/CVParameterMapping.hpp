@@ -1,9 +1,8 @@
 #pragma once
 
 #include <boundary/rack/Types.hpp>
-#include <cvwizard/ui/HoveredWidget.hpp>
+#include <cvwizard/ui/CVIndicatorWidget.hpp>
 
-#include <unordered_map>
 #include <memory>
 
 namespace qrx {
@@ -14,17 +13,12 @@ using namespace boundary;
 
 class CVParameterMapping final
 {
-//   using ParameterMappings = std::unordered_map<rack::ModuleWidget*, std::shared_ptr<ModuleMapping>>;
-
 public:
-   explicit CVParameterMapping();
+   CVParameterMapping() = default;
    ~CVParameterMapping() noexcept = default;
    
    void setInputPort(rack::PortWidget* widget);
-   void setInputPort(rack::ParamWidget* widget);
-   
-   void enableHover();
-   void disableHover();
+   void setCVParameter(rack::ParamWidget* widget);
 
 private:
    
@@ -32,8 +26,7 @@ private:
    rack::ParamWidget* _cvParamWidget = nullptr;
    rack::ParamWidget* _cvAttenuatorWidget = nullptr;
    
-   std::unique_ptr<ui::HoveredWidget> _inputPortOnHoverWidget = nullptr;
-   std::unique_ptr<ui::HoveredWidget> _paramOnHoverWidget = nullptr;
+   std::unique_ptr<ui::CVIndicatorWidget> _cvIndicatorWidget = nullptr;
 };
 
 }

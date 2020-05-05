@@ -1,7 +1,5 @@
 #include <cvwizard/CVWizard.hpp>
-#include <cvwizard/ui/HoveredWidget.hpp>
-#include <cvwizard/ui/CVIndicatorWidget.hpp>
-#include <cvwizard/ui/Tooltip.hpp>
+#include <cvwizard/utility/Widget.hpp>
 #include <boundary/io/Keys.hpp>
 
 namespace qrx {
@@ -117,98 +115,8 @@ bool CVWizard::isTooltipKeyPressed() const
 
 bool CVWizard::isModuleWidgetHovered() const
 {
-   return nullptr != getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget());
+   return nullptr != utility::Widget::getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget());
 }
-
-/*bool CVWizard::isModuleWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsModuleWidget(_appBoundary.getEventState()->getSelectedWidget());
-}*/
-
-/*bool CVWizard::isParamWidgetHovered () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsParamWidget(_appBoundary.getEventState()->getHoveredWidget());
-}*/
-
-/*bool CVWizard::isParamWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsParamWidget(_appBoundary.getEventState()->getSelectedWidget());
-}*/
-
-/*bool CVWizard::isInputPortWidgetSelected () const
-{
-   DEBUG("entered %s", __FUNCTION__);
-   return nullptr != getIfIsInputPortWidget(_appBoundary.getEventState()->getSelectedWidget());
-}*/
-
-/*void CVWizard::addSelectedParamWidget()
-{
-   DEBUG("entered %s", __FUNCTION__);
-   _model.paramWidget = getIfIsParamWidget(_appBoundary.getEventState()->getSelectedWidget());
-   DEBUG("addSelectedParamWidget #0x%0x", _model.paramWidget);
-   _model.selectedParamWidget = new ui::CVIndicatorWidget{_model.paramWidget, _model.portWidget->module, _model.portWidget->portId};
-   _model.paramWidget->addChild(_model.selectedParamWidget);
-}*/
-
-/*void CVWizard::addSelectedPortWidget()
-{
-   DEBUG("entered %s", __FUNCTION__);
-   _model.portWidget = getIfIsInputPortWidget(_appBoundary.getEventState()->getSelectedWidget());
-   DEBUG("addSelectedPortWidget #0x%0x", _model.portWidget);
-}*/
-
-ModuleWidget* CVWizard::getIfIsModuleWidget(Widget* widget) const
-{
-   return dynamic_cast<ModuleWidget*>(widget);
-}
-
-/*ParamWidget* CVWizard::getIfIsParamWidget(Widget* widget) const
-{
-   ParamWidget* result = nullptr;
-   if (auto&& paramWidget = dynamic_cast<ParamWidget*>(widget))
-   {
-      if (dynamic_cast<Knob*>(paramWidget))
-      {
-         result = paramWidget;
-      }
-   }
-   return result;
-}*/
-
-/*void CVWizard::handleHoveredWidget()
-{
-   auto hovered = _appBoundary->getEventState()->getHoveredWidget();
-
-   if (_model.hoveredWidget != hovered)
-   {
-      if (_model.hoveredWidget && _model.onHoverWidget)
-      {
-         delete _model.onHoverWidget;
-         _model.onHoverWidget = nullptr;
-      }
-      if (auto&& inputPortWidget = getIfIsInputPortWidget(hovered))
-      {
-         DEBUG("handleHovered input port widget #0x%0x", hovered);
-         _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::HoveredWidget{inputPortWidget};
-         hovered->addChild(_model.onHoverWidget);
-      }
-      else if (auto&& paramWidget = getIfIsParamWidget(hovered))
-      {
-         DEBUG("handleHovered param widget #0x%0x", hovered);
-         _model.hoveredWidget = hovered;
-         _model.onHoverWidget = new ui::HoveredWidget{paramWidget};
-         hovered->addChild(_model.onHoverWidget);
-      }
-      else
-      {
-         _model.hoveredWidget = nullptr;
-      }
-   }
-}*/
 
 bool CVWizard::isSameModuleWidgetHovered() const
 {
@@ -241,9 +149,14 @@ bool CVWizard::isSameModuleWidgetHovered() const
    return result;
 }
 
+bool CVWizard::isSelectedHovered() const
+{
+   return _appBoundary.getEventState()->getSelectedWidget() == _appBoundary.getEventState()->getHoveredWidget();
+}
+
 void CVWizard::beginModuleMapping()
 {
-   if (auto moduleWidget = getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget()))
+   if (auto moduleWidget = utility::Widget::getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget()))
    {
       _model.beginModuleMapping(moduleWidget);
    }
@@ -254,9 +167,18 @@ void CVWizard::endModuleMapping()
    _model.endModuleMapping();
 }
 
-void CVWizard::sendHoveredWidget()
+void CVWizard::sendOnEnterModuleChildWidget() const
 {
-   _model.getCurrentModuleMapping()->sendHoveredWidget(_appBoundary.getEventState()->getHoveredWidget());
+   _model.getCurrentModuleMapping()->onEnterWidget(_appBoundary.getEventState()->getHoveredWidget());
+}
+void CVWizard::sendOnLeaveModuleChildWidget() const
+{
+   _model.getCurrentModuleMapping()->onLeaveWidget();
+}
+
+void CVWizard::sendSelectedWidget() const
+{
+   _model.getCurrentModuleMapping()->OnSelectWidget(_appBoundary.getEventState()->getSelectedWidget());
 }
 
 }

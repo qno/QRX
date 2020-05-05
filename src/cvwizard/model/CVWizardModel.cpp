@@ -26,9 +26,11 @@ void CVWizardModel::beginModuleMapping(rack::ModuleWidget* widget)
 
 void CVWizardModel::endModuleMapping()
 {
+   if (_currentModuleMapping->hasMappedParameter())
+   {
+      _moduleMappings.insert(std::make_pair(_currentModuleMapping->getModuleWidget(), _currentModuleMapping));
+   }
    _currentModuleMapping->disableHover();
-   // if param mappings has been added do
-   //_moduleMappings.insert(std::make_pair(widget, _currentModuleMapping));
    _currentModuleMapping = nullptr;
 }
 

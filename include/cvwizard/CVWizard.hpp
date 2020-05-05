@@ -52,22 +52,14 @@ public:
    
    bool isModuleWidgetHovered() const override;
    bool isSameModuleWidgetHovered() const override;
+   bool isSelectedHovered() const override;
    
    void beginModuleMapping() override;
    void endModuleMapping() override;
    
-   void sendHoveredWidget() override;
-
-   //bool isModuleWidgetSelected() const override;
-   //bool isParamWidgetHovered() const override;
-   //bool isParamWidgetSelected() const override;
-   //bool isInputPortWidgetSelected() const override;
-   
-   //void addSelectedParamWidget() override;
-   //void addSelectedPortWidget() override;
-   
-   rack::ModuleWidget* getIfIsModuleWidget(rack::Widget* widget) const;
-   //rack::ParamWidget* getIfIsParamWidget(rack::Widget* widget) const;
+   void sendOnEnterModuleChildWidget() const override;
+   void sendOnLeaveModuleChildWidget() const override;
+   void sendSelectedWidget() const override;
    
    model::CVWizardModel _model;
    

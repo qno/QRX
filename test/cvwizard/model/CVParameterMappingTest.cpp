@@ -8,7 +8,8 @@ using namespace qrx::cvwizard::ui;
 
 TEST_CASE("CVParameterMapping", "[cvwizard] [cvparameter] [mapping]")
 {
-   SECTION("create mapping object")
+   SECTION("can't yet really test this")
    {
+      REQUIRE(true);
    }
 }

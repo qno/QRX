@@ -12,35 +12,30 @@ namespace controller {
 namespace mapping {
 
 namespace event {
-struct OnWidgetHovered {};
+struct OnEnterWidget {};
+struct OnLeaveWidget {};
 struct OnWidgetSelected {};
-struct OnPortWidgetHovered {};
-struct OnParamWidgetHovered {};
-struct OnPortWidgetSelected {};
-struct OnParamWidgetSelected {};
 }
 
 namespace guard {
-//const auto isParamWidgetHovered = [](const MappingControllable& c) { return c.isParamWidgetHovered(); };
-//const auto isParamWidgetSelected = [](const MappingControllable& c) { return c.isParamWidgetSelected(); };
-
-const auto isInputPortWidgetHovered = [](const MappingControllable& c) { return c.isInputPortWidgetHovered(); };
-//const auto isInputPortWidgetSelected = [](const MappingControllable& c) { return c.isInputPortWidgetSelected(); };
+const auto isKnobParamWidget = [](const MappingControllable& c) { return c.isKnobParamWidget(); };
+const auto isInputPortWidget = [](const MappingControllable& c) { return c.isInputPortWidget(); };
+const auto isSelectedHovered = [](const MappingControllable& c) { return c.isSelectedHovered(); };
 }
 
 namespace action {
-const auto hoverWidget = [](MappingControllable& c) { c.hoverWidget(); };
-//const auto handleHoveredWidget = [](MappingControllable& c) { c.handleHoveredWidget(); };
-//const auto addSelectedPortWidget = [](MappingControllable& c) { c.addSelectedPortWidget(); };
-//const auto addSelectedParamWidget = [](MappingControllable& c) { c.addSelectedParamWidget(); };
+const auto enableHoverWidget = [](MappingControllable& c) { c.enableHoverWidget(); };
+const auto disableHoverWidget = [](MappingControllable& c) { c.disableHoverWidget(); };
+const auto addSelectedInputPort = [](MappingControllable& c) { c.addSelectedInputPort(); };
+const auto addSelectedKnobParamWidget = [](MappingControllable& c) { c.addSelectedKnobParamWidget(); };
 }
 
 namespace state {
 class Idle;
 class InputPortHovered;
 class InputPortSelected;
-class InputParamHovered;
-class InputParamSelected;
+class KnobParamHovered;
+class KnobParamSelected;
 }
 
 class MappingController
@@ -54,9 +49,14 @@ public:
       using namespace action;
       // clang-format off
       return sml::make_transition_table(
-         *sml::state<Idle> + sml::event<OnWidgetHovered> [isInputPortWidgetHovered] / hoverWidget = sml::state<InputPortHovered>
-         // sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isInputPortWidgetSelected] / addSelectedPortWidget = sml::state<InputPortSelected>,
-         // sml::state<InputPortSelected> + sml::event<OnWidgetSelected> [isParamWidgetHovered] / addSelectedParamWidget = sml::state<InputParamSelected>
+*sml::state<Idle> + sml::event<OnEnterWidget> [isInputPortWidget] / enableHoverWidget = sml::state<InputPortHovered>,
+ sml::state<InputPortHovered> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<Idle>,
+ sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isSelectedHovered] / addSelectedInputPort = sml::state<InputPortSelected>,
+ sml::state<InputPortSelected> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<InputPortSelected>,
+ sml::state<InputPortSelected> + sml::event<OnEnterWidget> [isKnobParamWidget] / enableHoverWidget = sml::state<KnobParamHovered>,
+ sml::state<KnobParamHovered> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<InputPortSelected>,
+ sml::state<KnobParamHovered> + sml::event<OnWidgetSelected> [isSelectedHovered] / addSelectedKnobParamWidget = sml::state<KnobParamSelected>,
+ sml::state<KnobParamSelected> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<Idle>
       );
       // clang-format on
    }

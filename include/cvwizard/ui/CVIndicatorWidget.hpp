@@ -58,7 +58,7 @@ public:
       nvgArc(vg, c, c, r, 0, ARC_MAX * voltage / 5.f, openingArcDir);
       nvgArc(vg, c, c, r+3.f, ARC_MAX * voltage / 5.f, 0, closingArcDir);
       nvgClosePath(vg);
-      nvgFillColor(vg, nvgRGBA(0,255,0,200));
+      nvgFillColor(vg, nvgRGBA(12,166,78,200));
       nvgFill(vg);
    }
 

@@ -24,16 +24,11 @@ public:
    
    virtual bool isModuleWidgetHovered() const = 0;
    virtual bool isSameModuleWidgetHovered() const = 0;
+   virtual bool isSelectedHovered() const = 0;
    
-   virtual void sendHoveredWidget() = 0;
-   
-   //virtual bool isModuleWidgetSelected() const = 0;
-   //virtual bool isParamWidgetHovered() const = 0;
-   //virtual bool isParamWidgetSelected() const = 0;
-   //virtual bool isInputPortWidgetSelected() const = 0;
-   
-   //virtual void addSelectedParamWidget() = 0;
-   //virtual void addSelectedPortWidget() = 0;
+   virtual void sendOnEnterModuleChildWidget() const = 0;
+   virtual void sendOnLeaveModuleChildWidget() const = 0;
+   virtual void sendSelectedWidget() const = 0;
 };
 
 }

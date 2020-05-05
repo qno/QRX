@@ -40,6 +40,10 @@ CVWizardWidget::CVWizardWidget(CVWizardModule* module)
 CVWizardWidget::~CVWizardWidget()
 {
    DEBUG("CVWizardWidget dtr (#0x%0x)", this);
+   if (_tooltipsCallbackConnection.connected())
+   {
+      _tooltipsCallbackConnection.disconnect();
+   }
    removeWidgetTooltip();
    removeTooltip();
 }
