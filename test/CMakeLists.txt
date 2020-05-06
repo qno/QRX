@@ -1,7 +1,5 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
-find_package(Catch2 REQUIRED)
-
 set(UT_EXE PluginUnittests)
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
@@ -45,7 +43,7 @@ target_link_libraries(${UT_EXE} PRIVATE RackSDKMissingSymbols
   SigSlot
   ${CONAN_LIBS_JANSSON}
   FakeIt
-  Catch2::Catch2)
+  ${CONAN_LIBS_CATCH2})
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
