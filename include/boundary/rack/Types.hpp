@@ -46,6 +46,8 @@ namespace event {
 using Enter = ::rack::event::Enter;
 using Leave = ::rack::event::Leave;
 using Hover = ::rack::event::Hover;
+using Button = ::rack::event::Button;
+using Select = ::rack::event::Select;
 }
 
 namespace logger = ::rack::logger;
