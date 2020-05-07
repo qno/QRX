@@ -102,7 +102,6 @@ void CVWizardWidget::onHover(const event::Hover& e)
 void CVWizardWidget::tooltipCallback(const CVWizard::TooltipCallbackKind kind)
 {
    using CallbackKind = CVWizard::TooltipCallbackKind;
-   DEBUG("tooltipCallback Widget #0x%0x", this);
    switch (kind)
    {
       case CallbackKind::ShowWidgetTooltip:
@@ -122,7 +121,6 @@ void CVWizardWidget::tooltipCallback(const CVWizard::TooltipCallbackKind kind)
 
 void CVWizardWidget::showWidgetTooltip()
 {
-   DEBUG("showWidgetTooltip Widget #0x%0x", this);
    if (!s_tooltip)
    {
       _widgetTooltip = std::make_unique<rack::ui::Tooltip>();
@@ -133,7 +131,6 @@ void CVWizardWidget::showWidgetTooltip()
 
 void CVWizardWidget::removeWidgetTooltip()
 {
-   DEBUG("removeWidgetTooltip Widget #0x%0x", this);
    if (_widgetTooltip)
    {
       ::rack::appGet()->scene->removeChild(_widgetTooltip.get());
@@ -143,7 +140,6 @@ void CVWizardWidget::removeWidgetTooltip()
 
 void CVWizardWidget::showTooltip()
 {
-   DEBUG("showTooltip Widget #0x%0x", this);
    if (_module && _module->isMasterModule())
    {
       removeWidgetTooltip();
@@ -155,7 +151,6 @@ void CVWizardWidget::showTooltip()
 
 void CVWizardWidget::removeTooltip()
 {
-   DEBUG("removeTooltip Widget #0x%0x", this);
    if (_module && _module->isMasterModule())
    {
       if (s_tooltip)

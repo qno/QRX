@@ -68,28 +68,23 @@ public:
    }
    void onEnter(const boundary::rack::event::Enter& e) override
    {
-      DEBUG("%s - #0x%0x", __FUNCTION__, this);
    }
    
    void onLeave(const boundary::rack::event::Leave& e) override
    {
-      DEBUG("%s - #0x%0x", __FUNCTION__, this);
    }
    
    void onHover(const boundary::rack::event::Hover& e) override
    {
-      DEBUG("%s - #0x%0x", __FUNCTION__, this);
    }
    
    void onButton(const boundary::rack::event::Button& e) override
    {
-      DEBUG("%s - #0x%0x", __FUNCTION__, this);
       _onClickCallback(_hoveredWidget);
    }
    
    void onSelect(const boundary::rack::event::Select& e) override
    {
-      DEBUG("%s - #0x%0x", __FUNCTION__, this);
    }
    
    sigslot::connection connectOnClickCallback(std::function<void(boundary::rack::Widget*)> callback)

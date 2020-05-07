@@ -56,25 +56,21 @@ sigslot::connection CVWizard::connectTooltipsCallback(std::function<void(const T
 
 void CVWizard::showWidgetTooltip()
 {
-   DEBUG("showWidgetTooltip");
    _tooltipsCallback(TooltipCallbackKind::ShowWidgetTooltip);
 }
 
 void CVWizard::removeWidgetTooltip()
 {
-   DEBUG("removeWidgetTooltip");
    _tooltipsCallback(TooltipCallbackKind::RemoveWidgetTooltip);
 }
 
 void CVWizard::showTooltip()
 {
-   DEBUG("showTooltip");
    _tooltipsCallback(TooltipCallbackKind::ShowTooltip);
 }
 
 void CVWizard::removeTooltip()
 {
-   DEBUG("removeTooltip");
    _tooltipsCallback(TooltipCallbackKind::RemoveTooltip);
 }
 
@@ -85,7 +81,6 @@ bool CVWizard::isShowTooltipsEnabled() const
 
 void CVWizard::toggleTooltip()
 {
-
 }
 
 bool CVWizard::isControlKeyPressed() const
