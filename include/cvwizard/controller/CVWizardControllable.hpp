@@ -24,11 +24,9 @@ public:
    
    virtual bool isModuleWidgetHovered() const = 0;
    virtual bool isSameModuleWidgetHovered() const = 0;
-   virtual bool isSelectedHovered() const = 0;
    
    virtual void sendOnEnterModuleChildWidget() const = 0;
    virtual void sendOnLeaveModuleChildWidget() const = 0;
-   virtual void sendSelectedWidget() const = 0;
 };
 
 }

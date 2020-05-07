@@ -37,11 +37,6 @@ void CVWizard::process()
    {
       _controller->process_event(controller::event::OnWidgetHovered{});
    }
-
-   if (_appBoundary.getEventState()->getSelectedWidget())
-   {
-      _controller->process_event(controller::event::OnWidgetSelected{});
-   }
 }
 
 void CVWizard::onEnter()
@@ -149,11 +144,6 @@ bool CVWizard::isSameModuleWidgetHovered() const
    return result;
 }
 
-bool CVWizard::isSelectedHovered() const
-{
-   return _appBoundary.getEventState()->getSelectedWidget() == _appBoundary.getEventState()->getHoveredWidget();
-}
-
 void CVWizard::beginModuleMapping()
 {
    if (auto moduleWidget = utility::Widget::getIfIsModuleWidget(_appBoundary.getEventState()->getHoveredWidget()))
@@ -174,11 +164,6 @@ void CVWizard::sendOnEnterModuleChildWidget() const
 void CVWizard::sendOnLeaveModuleChildWidget() const
 {
    _model.getCurrentModuleMapping()->onLeaveWidget();
-}
-
-void CVWizard::sendSelectedWidget() const
-{
-   _model.getCurrentModuleMapping()->OnSelectWidget(_appBoundary.getEventState()->getSelectedWidget());
 }
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cvwizard/model/ModuleMapping.hpp>
-#include <cvwizard/ui/HoveredWidget.hpp>
+#include <cvwizard/ui/OnHoverWidget.hpp>
 #include <cvwizard/ui/CVIndicatorWidget.hpp>
 
 #include <unordered_map>

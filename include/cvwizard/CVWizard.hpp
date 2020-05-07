@@ -52,14 +52,12 @@ public:
    
    bool isModuleWidgetHovered() const override;
    bool isSameModuleWidgetHovered() const override;
-   bool isSelectedHovered() const override;
    
    void beginModuleMapping() override;
    void endModuleMapping() override;
    
    void sendOnEnterModuleChildWidget() const override;
    void sendOnLeaveModuleChildWidget() const override;
-   void sendSelectedWidget() const override;
    
    model::CVWizardModel _model;
    

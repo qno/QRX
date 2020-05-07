@@ -24,7 +24,7 @@ ModuleWidget* ModuleMapping::getModuleWidget() const
 void ModuleMapping::enableHover()
 {
    DEBUG("entered %s", __FUNCTION__);
-   _moduleOnHoverWidget = std::make_unique<ui::HoveredWidget>(_moduleWidget);
+   _moduleOnHoverWidget = std::make_unique<ui::OnHoverWidget>(_moduleWidget);
    _moduleWidget->addChild(_moduleOnHoverWidget.get());
 }
 
@@ -45,13 +45,6 @@ void ModuleMapping::onLeaveWidget()
 {
    DEBUG("entered %s", __FUNCTION__);
    _controller->process_event(event::OnLeaveWidget{});
-}
-
-void ModuleMapping::OnSelectWidget(rack::Widget* widget)
-{
-   DEBUG("entered %s, widget (#0x%0x)", __FUNCTION__, widget);
-   _selectedWidget = widget;
-   _controller->process_event(event::OnWidgetSelected{});
 }
 
 bool ModuleMapping::isInputPortWidget() const
@@ -91,8 +84,9 @@ void ModuleMapping::addSelectedKnobParamWidget()
 void ModuleMapping::enableHoverWidget()
 {
    DEBUG("entered %s", __FUNCTION__);
-   _onHoverWidget = std::make_unique<ui::HoveredWidget>(_currentHoveredWidget);
+   _onHoverWidget = std::make_unique<ui::ClickableOnHoverWidget>(_currentHoveredWidget);
    _currentHoveredWidget->addChild(_onHoverWidget.get());
+   _onClickCallbackConnection = _onHoverWidget->connectOnClickCallback(std::bind(&ModuleMapping::onClicked, this, std::placeholders::_1));
 }
 
 void ModuleMapping::disableHoverWidget()
@@ -106,6 +100,16 @@ bool ModuleMapping::hasMappedParameter() const
    DEBUG("entered %s", __FUNCTION__);
    DEBUG("_cvParameterMappings size is %d", _cvParameterMappings.size());
    return !_cvParameterMappings.empty();
+}
+
+void ModuleMapping::onClicked(boundary::rack::Widget* widget)
+{
+   DEBUG("entered %s", __FUNCTION__);
+   DEBUG("clicked widget #0x%0x", widget);
+   _selectedWidget = widget;
+   _controller->process_event(event::OnWidgetSelected{});
+   _onHoverWidget = nullptr;
+   _selectedWidget = nullptr;
 }
 
 }

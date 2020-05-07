@@ -15,7 +15,6 @@ struct OnEnter{};
 struct OnLeave{};
 struct OnKeyPressed{};
 struct OnWidgetHovered{};
-struct OnWidgetSelected{};
 }
 
 namespace guard {
@@ -27,7 +26,6 @@ const auto isTooltipKeyPressed = [](const CVWizardControllable& c) { return c.is
 const auto isModuleWidgetHovered = [](const CVWizardControllable& c) { return c.isModuleWidgetHovered(); };
 const auto isNotSameModuleWidgetHovered = [](const CVWizardControllable& c) { return !c.isSameModuleWidgetHovered(); };
 const auto isNotModuleWidgetHovered = [](const CVWizardControllable& c) { return !c.isModuleWidgetHovered(); };
-const auto isSelectedWidgetValid  = [](const CVWizardControllable& c) { return !c.isModuleWidgetHovered() && c.isSelectedHovered(); };
 }
 
 namespace action {
@@ -40,7 +38,6 @@ const auto beginModuleMapping = [](CVWizardControllable& c) { c.beginModuleMappi
 const auto endModuleMapping = [](CVWizardControllable& c) { c.endModuleMapping(); };
 const auto sendOnEnterWidget = [](CVWizardControllable& c) { c.sendOnEnterModuleChildWidget(); };
 const auto sendOnLeaveWidget = [](CVWizardControllable& c) { c.sendOnLeaveModuleChildWidget(); };
-const auto sendSelectedWidget = [](CVWizardControllable& c) { c.sendSelectedWidget(); };
 }
 
 namespace state {
@@ -49,7 +46,6 @@ class CtrlKeyPressed;
 class MappingModeActive;
 class ModuleHovered;
 class ModuleChildHovered;
-class ModuleChildSelected;
 }
 
 class CVWizardController
@@ -71,9 +67,7 @@ public:
  sml::state<MappingModeActive> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / beginModuleMapping = sml::state<ModuleHovered>,
  sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotSameModuleWidgetHovered] / endModuleMapping = sml::state<MappingModeActive>,
  sml::state<ModuleHovered> + sml::event<OnWidgetHovered> [isNotModuleWidgetHovered] / sendOnEnterWidget = sml::state<ModuleChildHovered>,
- sml::state<ModuleChildHovered> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / sendOnLeaveWidget = sml::state<ModuleHovered>,
- sml::state<ModuleChildHovered> + sml::event<OnWidgetSelected> [isSelectedWidgetValid] / sendSelectedWidget = sml::state<ModuleChildSelected>,
- sml::state<ModuleChildSelected> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / sendOnLeaveWidget = sml::state<ModuleHovered>
+ sml::state<ModuleChildHovered> + sml::event<OnWidgetHovered> [isModuleWidgetHovered] / sendOnLeaveWidget = sml::state<ModuleHovered>
       );
       // clang-format on
    }

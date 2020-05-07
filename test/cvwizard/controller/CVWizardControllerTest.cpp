@@ -26,11 +26,9 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
    When(Method(controllableMock, endModuleMapping)).AlwaysReturn();
    When(Method(controllableMock, isModuleWidgetHovered)).AlwaysReturn(false);
    When(Method(controllableMock, isSameModuleWidgetHovered)).AlwaysReturn(false);
-   When(Method(controllableMock, isSelectedHovered)).AlwaysReturn(false);
    
    When(Method(controllableMock, sendOnEnterModuleChildWidget)).AlwaysReturn();
    When(Method(controllableMock, sendOnLeaveModuleChildWidget)).AlwaysReturn();
-   When(Method(controllableMock, sendSelectedWidget)).AlwaysReturn();
    
    auto& m = controllableMock.get();
    sml::sm<CVWizardController, sml::testing> controller{m};
@@ -143,45 +141,6 @@ TEST_CASE("CVWizard controller", "[cvwizard] [controller]")
       REQUIRE(controller.is(sml::state<state::ModuleHovered>));
       Verify(Method(controllableMock, isModuleWidgetHovered));
       Verify(Method(controllableMock, sendOnLeaveModuleChildWidget));
-      VerifyNoOtherInvocations(controllableMock);
-      controllableMock.Reset();
-   }
-   
-   SECTION("ensure controller is in state ModuleChildSelected if module child widget is selected")
-   {
-      When(Method(controllableMock, isModuleWidgetHovered)).Return(false);
-      When(Method(controllableMock, isSelectedHovered)).Return(true);
-      controller.set_current_states(sml::state<state::ModuleChildHovered>);
-      controller.process_event(event::OnWidgetSelected{});
-      REQUIRE(controller.is(sml::state<state::ModuleChildSelected>));
-      Verify(Method(controllableMock, isModuleWidgetHovered));
-      Verify(Method(controllableMock, isSelectedHovered));
-      Verify(Method(controllableMock, sendSelectedWidget));
-      VerifyNoOtherInvocations(controllableMock);
-      controllableMock.Reset();
-   }
-   
-   SECTION("ensure controller stays in state ModuleChildHovered if hovered is  selected not widget")
-   {
-      When(Method(controllableMock, isModuleWidgetHovered)).Return(false);
-      When(Method(controllableMock, isSelectedHovered)).Return(false);
-      controller.set_current_states(sml::state<state::ModuleChildHovered>);
-      controller.process_event(event::OnWidgetSelected{});
-      REQUIRE(controller.is(sml::state<state::ModuleChildHovered>));
-      Verify(Method(controllableMock, isModuleWidgetHovered));
-      Verify(Method(controllableMock, isSelectedHovered));
-      VerifyNoOtherInvocations(controllableMock);
-      controllableMock.Reset();
-   }
-   
-   SECTION("ensure controller is in state ModuleHovered if selected module child widget is not hovered anymore")
-   {
-      When(Method(controllableMock, isModuleWidgetHovered)).Return(true);
-      controller.set_current_states(sml::state<state::ModuleChildHovered>);
-      controller.process_event(event::OnWidgetHovered{});
-      REQUIRE(controller.is(sml::state<state::ModuleHovered>));
-      Verify(Method(controllableMock, sendOnLeaveModuleChildWidget));
-      Verify(Method(controllableMock, isModuleWidgetHovered));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();
    }

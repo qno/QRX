@@ -24,11 +24,11 @@ TEST_CASE("ModuleMapping", "[cvwizard] [model] [mapping]")
       Knob knobWidget;
       ModuleMapping mapping{&moduleWidget};
       mapping.onEnterWidget(&inputPortWidget);
-      mapping.OnSelectWidget(&inputPortWidget);
+      mapping.onClicked(&inputPortWidget);
       mapping.onLeaveWidget();
       REQUIRE(mapping.hasMappedParameter() == false);
       mapping.onEnterWidget(&knobWidget);
-      mapping.OnSelectWidget(&knobWidget);
+      mapping.onClicked(&knobWidget);
       REQUIRE(mapping.hasMappedParameter() == true);
       mapping.onLeaveWidget();
       REQUIRE(mapping.hasMappedParameter() == true);

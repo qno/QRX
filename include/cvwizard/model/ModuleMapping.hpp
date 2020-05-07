@@ -3,7 +3,8 @@
 #include <boundary/rack/Types.hpp>
 #include <cvwizard/controller/MappingController.hpp>
 #include <cvwizard/model/CVParameterMapping.hpp>
-#include <cvwizard/ui/HoveredWidget.hpp>
+#include <cvwizard/ui/ClickableOnHoverWidget.hpp>
+#include <cvwizard/ui/OnHoverWidget.hpp>
 
 #include <list>
 #include <memory>
@@ -29,9 +30,10 @@ public:
    
    void onEnterWidget(rack::Widget* widget);
    void onLeaveWidget();
-   void OnSelectWidget(rack::Widget* widget);
    
    bool hasMappedParameter() const;
+   
+   void onClicked(boundary::rack::Widget* widget);
    
 private:
    
@@ -41,15 +43,17 @@ private:
    void addSelectedInputPort() override;
    void addSelectedKnobParamWidget() override;
    void enableHoverWidget() override;
-   virtual void disableHoverWidget() override;
+   void disableHoverWidget() override;
+   
    std::unique_ptr<sml::sm<controller::mapping::MappingController>> _controller;
    rack::ModuleWidget* _moduleWidget = nullptr;
-   std::unique_ptr<ui::HoveredWidget> _moduleOnHoverWidget = nullptr;
+   std::unique_ptr<ui::OnHoverWidget> _moduleOnHoverWidget = nullptr;
    rack::Widget* _currentHoveredWidget = nullptr;
    rack::Widget* _selectedWidget = nullptr;
-   std::unique_ptr<ui::HoveredWidget> _onHoverWidget = nullptr;
-   std::shared_ptr<CVParameterMapping> _currentCVParamMapping;
+   std::unique_ptr<ui::ClickableOnHoverWidget> _onHoverWidget = nullptr;
+   std::shared_ptr<CVParameterMapping>         _currentCVParamMapping;
    CVParameterMappings _cvParameterMappings;
+   sigslot::connection _onClickCallbackConnection;
 };
 
 }
