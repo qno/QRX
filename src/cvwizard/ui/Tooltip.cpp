@@ -28,6 +28,12 @@ std::string Tooltip::getStartMappingText(const char mappingKey)
    return _startMappingText;
 }
 
+std::string Tooltip::getMappingInputText()
+{
+   return std::string{"Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!"};
+}
+
+
 }
 }
 }

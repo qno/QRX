@@ -144,7 +144,7 @@ void CVWizardWidget::showTooltip()
    {
       removeWidgetTooltip();
       s_tooltip = std::make_unique<rack::ui::Tooltip>();
-      s_tooltip->text = "Mapping mode is active (Press 'Esc' to cancel).\nClick now on a module input!";
+      s_tooltip->text = ui::Tooltip::getMappingInputText();
       ::rack::appGet()->scene->addChild(s_tooltip.get());
    }
 }
