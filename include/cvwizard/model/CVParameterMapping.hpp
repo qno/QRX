@@ -18,7 +18,9 @@ public:
    ~CVParameterMapping() noexcept = default;
    
    void setInputPort(rack::PortWidget* widget);
+   rack::PortWidget* getInputPort() const;
    void setCVParameter(rack::ParamWidget* widget);
+   rack::ParamWidget* getCVParameter() const;
 
 private:
    

@@ -9,8 +9,8 @@ using namespace fakeit;
 TEST_CASE("Mapping controller", "[mapping] [controller]")
 {
    Mock<MappingControllable> controllableMock;
-   When(Method(controllableMock, isInputPortWidget)).AlwaysReturn(false);
-   When(Method(controllableMock, isKnobParamWidget)).AlwaysReturn(false);
+   When(Method(controllableMock, isInputPortWidgetAndNotMapped)).AlwaysReturn(false);
+   When(Method(controllableMock, isKnobParamWidgetAndNotMapped)).AlwaysReturn(false);
    When(Method(controllableMock, isSelectedHovered)).AlwaysReturn(false);
    When(Method(controllableMock, enableHoverWidget)).AlwaysReturn();
    When(Method(controllableMock, disableHoverWidget)).AlwaysReturn();
@@ -29,10 +29,10 @@ TEST_CASE("Mapping controller", "[mapping] [controller]")
    
    SECTION("ensure controller is in state InputPortHovered if input port widget is hovered")
    {
-      When(Method(controllableMock, isInputPortWidget)).Return(true);
+      When(Method(controllableMock, isInputPortWidgetAndNotMapped)).Return(true);
       controller.process_event(event::OnEnterWidget{});
       REQUIRE(controller.is(sml::state<state::InputPortHovered>));
-      Verify(Method(controllableMock, isInputPortWidget));
+      Verify(Method(controllableMock, isInputPortWidgetAndNotMapped));
       Verify(Method(controllableMock, enableHoverWidget));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();
@@ -72,11 +72,11 @@ TEST_CASE("Mapping controller", "[mapping] [controller]")
    
    SECTION("ensure controller is in state KnobParamHovered if knob param widget is hovered")
    {
-      When(Method(controllableMock, isKnobParamWidget)).Return(true);
+      When(Method(controllableMock, isKnobParamWidgetAndNotMapped)).Return(true);
       controller.set_current_states(sml::state<state::InputPortSelected>);
       controller.process_event(event::OnEnterWidget{});
       REQUIRE(controller.is(sml::state<state::KnobParamHovered>));
-      Verify(Method(controllableMock, isKnobParamWidget));
+      Verify(Method(controllableMock, isKnobParamWidgetAndNotMapped));
       Verify(Method(controllableMock, enableHoverWidget));
       VerifyNoOtherInvocations(controllableMock);
       controllableMock.Reset();

@@ -18,8 +18,8 @@ struct OnWidgetSelected {};
 }
 
 namespace guard {
-const auto isKnobParamWidget = [](const MappingControllable& c) { return c.isKnobParamWidget(); };
-const auto isInputPortWidget = [](const MappingControllable& c) { return c.isInputPortWidget(); };
+const auto isInputPortWidgetAndNotMapped = [](const MappingControllable& c) { return c.isInputPortWidgetAndNotMapped(); };
+const auto isKnobParamWidgetAndNotMapped = [](const MappingControllable& c) { return c.isKnobParamWidgetAndNotMapped(); };
 const auto isSelectedHovered = [](const MappingControllable& c) { return c.isSelectedHovered(); };
 }
 
@@ -49,11 +49,11 @@ public:
       using namespace action;
       // clang-format off
       return sml::make_transition_table(
-*sml::state<Idle> + sml::event<OnEnterWidget> [isInputPortWidget] / enableHoverWidget = sml::state<InputPortHovered>,
+*sml::state<Idle> + sml::event<OnEnterWidget> [isInputPortWidgetAndNotMapped] / enableHoverWidget = sml::state<InputPortHovered>,
  sml::state<InputPortHovered> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<Idle>,
  sml::state<InputPortHovered> + sml::event<OnWidgetSelected> [isSelectedHovered] / addSelectedInputPort = sml::state<InputPortSelected>,
  sml::state<InputPortSelected> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<InputPortSelected>,
- sml::state<InputPortSelected> + sml::event<OnEnterWidget> [isKnobParamWidget] / enableHoverWidget = sml::state<KnobParamHovered>,
+ sml::state<InputPortSelected> + sml::event<OnEnterWidget> [isKnobParamWidgetAndNotMapped] / enableHoverWidget = sml::state<KnobParamHovered>,
  sml::state<KnobParamHovered> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<InputPortSelected>,
  sml::state<KnobParamHovered> + sml::event<OnWidgetSelected> [isSelectedHovered] / addSelectedKnobParamWidget = sml::state<KnobParamSelected>,
  sml::state<KnobParamSelected> + sml::event<OnLeaveWidget> / disableHoverWidget = sml::state<Idle>

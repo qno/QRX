@@ -1,6 +1,8 @@
 #include <cvwizard/model/ModuleMapping.hpp>
 #include <cvwizard/utility/Widget.hpp>
 
+#include <algorithm>
+
 namespace qrx {
 namespace cvwizard {
 namespace model {
@@ -42,14 +44,61 @@ void ModuleMapping::onLeaveWidget()
    _controller->process_event(event::OnLeaveWidget{});
 }
 
-bool ModuleMapping::isInputPortWidget() const
+bool ModuleMapping::hasMappedParameter() const
 {
-   return nullptr != utility::Widget::getIfIsInputPortWidget(_currentHoveredWidget);
+   return !_cvParameterMappings.empty();
 }
 
-bool ModuleMapping::isKnobParamWidget() const
+void ModuleMapping::onClicked(boundary::rack::Widget* widget)
 {
-   return nullptr != utility::Widget::getIfIsKnobParamWidget(_currentHoveredWidget);
+   _selectedWidget = widget;
+   _controller->process_event(event::OnWidgetSelected{});
+   _onHoverWidget = nullptr;
+   _selectedWidget = nullptr;
+}
+
+bool ModuleMapping::isWidgetMapped(const boundary::rack::Widget* widget) const
+{
+   auto result = false;
+   
+   const auto it = std::find_if(_cvParameterMappings.begin(), _cvParameterMappings.end(),
+                                [widget](const std::shared_ptr<CVParameterMapping>& pm)
+                                { return pm->getInputPort() == widget || pm->getCVParameter() == widget; });
+   
+   if (_cvParameterMappings.end() != it)
+   {
+      result = true;
+   }
+   
+   return result;
+}
+
+bool ModuleMapping::isInputPortWidgetAndNotMapped() const
+{
+   auto result = false;
+   if (const auto widget = utility::Widget::getIfIsInputPortWidget(_currentHoveredWidget))
+   {
+      result = true;
+      if (isWidgetMapped(widget))
+      {
+         result = false;
+      }
+   }
+   return result;
+}
+
+bool ModuleMapping::isKnobParamWidgetAndNotMapped() const
+{
+   auto result = false;
+   if (const auto widget = utility::Widget::getIfIsKnobParamWidget(_currentHoveredWidget))
+   {
+      result = true;
+      if (isWidgetMapped(widget))
+      {
+         result = false;
+      }
+   }
+   return result;
 }
 
 bool ModuleMapping::isSelectedHovered() const
@@ -80,19 +129,6 @@ void ModuleMapping::enableHoverWidget()
 void ModuleMapping::disableHoverWidget()
 {
    _onHoverWidget = nullptr;
-}
-
-bool ModuleMapping::hasMappedParameter() const
-{
-   return !_cvParameterMappings.empty();
-}
-
-void ModuleMapping::onClicked(boundary::rack::Widget* widget)
-{
-   _selectedWidget = widget;
-   _controller->process_event(event::OnWidgetSelected{});
-   _onHoverWidget = nullptr;
-   _selectedWidget = nullptr;
 }
 
 }

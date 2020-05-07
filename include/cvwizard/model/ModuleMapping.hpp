@@ -37,8 +37,9 @@ public:
    
 private:
    
-   bool isInputPortWidget() const override;
-   bool isKnobParamWidget() const override;
+   bool isWidgetMapped(const boundary::rack::Widget* widget) const;
+   bool isInputPortWidgetAndNotMapped() const override;
+   bool isKnobParamWidgetAndNotMapped() const override;
    bool isSelectedHovered() const override;
    void addSelectedInputPort() override;
    void addSelectedKnobParamWidget() override;
