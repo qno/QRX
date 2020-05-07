@@ -41,9 +41,8 @@
     msys2/20190524
     [env]
     ```
-* Add the following conan remotes:
+* Add the following conan remote:
   * `conan remote add qno https://api.bintray.com/conan/qno/conan-public` 
-  * `conan remote add conan-transit https://api.bintray.com/conan/conan/conan-transit`
 * Clone the repository
   * `git clone https://github.com/qno/QRX.git` 
 * Create a build directory and change into this directory
