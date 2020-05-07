@@ -22,7 +22,6 @@ TEST_CASE("CVWizard ModuleSettings", "[cvwizard] [settings]")
    {
       const auto defaultSettings = m.getSettings();
       REQUIRE(defaultSettings.MappingKey == qrx::boundary::io::keys::M);
-      REQUIRE(defaultSettings.MappingCancelKey == qrx::boundary::io::keys::ESCAPE);
       REQUIRE(defaultSettings.MappingTooltipKey == qrx::boundary::io::keys::T);
       REQUIRE(defaultSettings.ShowMappingTooltips ==  true);
    }

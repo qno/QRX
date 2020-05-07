@@ -95,7 +95,7 @@ bool CVWizard::isMappingKeyPressed() const
 
 bool CVWizard::isMappingCancelKeyPressed() const
 {
-   return _appBoundary.isKeyPressed(_settings->getSettings().MappingCancelKey);
+   return _appBoundary.isKeyPressed(io::keys::ESCAPE);
 }
 
 bool CVWizard::isTooltipKeyPressed() const

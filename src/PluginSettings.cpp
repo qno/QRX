@@ -80,11 +80,6 @@ void PluginSettings::loadCVWizardSettings(const json_t& json)
       {
          _cvWizardSettings.MappingKey = json_integer_value(mappingKey);
       }
-      const auto mappingCancelKey = json_object_get(cvWizard, MappingCancelKey);
-      if (mappingCancelKey)
-      {
-         _cvWizardSettings.MappingCancelKey = json_integer_value(mappingCancelKey);
-      }
       const auto mappingTooltipKey = json_object_get(cvWizard, MappingTooltipKey);
       if (mappingTooltipKey)
       {
@@ -105,7 +100,6 @@ std::unique_ptr<json_t> PluginSettings::dumpCVWizardSettings() const
    auto cvWizardSettingsJson = std::unique_ptr<json_t>(json_object());
    
    json_object_set_new(cvWizardSettingsJson.get(), MappingKey, json_integer(_cvWizardSettings.MappingKey));
-   json_object_set_new(cvWizardSettingsJson.get(), MappingCancelKey, json_integer(_cvWizardSettings.MappingCancelKey));
    json_object_set_new(cvWizardSettingsJson.get(), MappingTooltipKey, json_integer(_cvWizardSettings.MappingTooltipKey));
    json_object_set_new(cvWizardSettingsJson.get(), ShowMappingTooltips, json_boolean(_cvWizardSettings.ShowMappingTooltips));
    

@@ -11,7 +11,6 @@ class ModuleSettings
 {
 protected:
    static constexpr char const* MappingKey          = "MappingKey";
-   static constexpr char const* MappingCancelKey    = "MappingCancelKey";
    static constexpr char const* MappingTooltipKey   = "MappingTooltipKey";
    static constexpr char const* ShowMappingTooltips = "ShowMappingTooltips";
 
@@ -20,14 +19,12 @@ public:
    struct Settings
    {
       int  MappingKey          = io::keys::M;
-      int  MappingCancelKey    = io::keys::ESCAPE;
       int  MappingTooltipKey   = io::keys::T;
       bool ShowMappingTooltips = true;
       
       bool operator== (const Settings& other) const
       {
          return MappingKey == other.MappingKey &&
-                MappingCancelKey == other.MappingCancelKey &&
                 MappingTooltipKey == other.MappingTooltipKey &&
                 ShowMappingTooltips == other.ShowMappingTooltips;
       }

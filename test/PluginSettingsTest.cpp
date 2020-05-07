@@ -24,7 +24,6 @@ TEST_CASE("PluginSettings", "[plugin] [settings]")
       auto dumpedSettings = cvwizard::ModuleSettings::Settings{};
       dumpedSettings.ShowMappingTooltips = false;
       dumpedSettings.MappingKey = 22;
-      dumpedSettings.MappingCancelKey = 33;
       dumpedSettings.MappingTooltipKey = 44;
       pluginSettings.dumpSettings(dumpedSettings);
       REQUIRE(pluginSettings.getSettings() == dumpedSettings);
@@ -88,7 +87,6 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
       
       auto settingsToDump = cvwizard::ModuleSettings::Settings{};
       settingsToDump.MappingTooltipKey   = 1111;
-      settingsToDump.MappingCancelKey    = 2222;
       settingsToDump.MappingKey          = 3333;
       settingsToDump.ShowMappingTooltips = false;
       
@@ -106,7 +104,6 @@ TEST_CASE("save PluginSettings", "[plugin] [settings]")
    {
       auto testSettings = cvwizard::ModuleSettings::Settings{};
       testSettings.MappingTooltipKey = 1;
-      testSettings.MappingCancelKey = 2;
       testSettings.MappingKey = 3;
       testSettings.ShowMappingTooltips = false;
       
