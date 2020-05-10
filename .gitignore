@@ -1,21 +1,12 @@
 /.idea
 /cmake-*
 /build
+/dep
 /dist
 /plugin.so
 /plugin.dylib
 /plugin.dll
 .DS_Store
-
-# conan make in source build artifacts
-conanbuild*
-*.bat
-*.env
-*.ps1
-*.sh
-conan*.txt
-conan.lock
-graph_info*
 
 # visual studio build artifacts
 CMakeSettings.json
