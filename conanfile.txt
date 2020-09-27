@@ -1,9 +1,9 @@
 [requires]
 vcvrack-sdk/1.1.6@vcvrack/stable
-catch2/2.12.1
-ninja/1.9.0
+catch2/2.13.1
+ninja/1.10.1
 # extra deps for unit test build
-jansson/2.12
+jansson/2.13.1
 
 [generators]
 cmake
