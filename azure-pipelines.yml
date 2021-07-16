@@ -26,7 +26,7 @@ variables:
 
   conan-add-remotes: |
     conan user
-    conan remote add qno https://api.bintray.com/conan/qno/conan-public --insert
+    conan remote add qno https://qno.jfrog.io/artifactory/api/conan/public-conan --insert
 
   add-gitrev-to-plugin-version: |
     gitrev=`git rev-parse --short HEAD`
@@ -124,6 +124,7 @@ stages:
             $(pip-command) install --user --upgrade pip
             $(pip-command) install --user conan gcovr
             conan user
+            conan config set general.revisions_enabled=1
             $(conan-add-remotes)
             $(define-plugin-slug)
             mkdir build && cd build
