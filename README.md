@@ -5,7 +5,7 @@
 
 ---
 ![Version](https://img.shields.io/badge/Version-1.dev.0-blue)
-[![conan vcvrack-sdk](https://img.shields.io/badge/conan-vcvrack--sdk%2F1.1.6%40vcvrack%2Fstable-blue)](https://bintray.com/qno/conan-public/vcvrack-sdk%3Avcvrack/1.1.6%3Astable)
+[![conan vcvrack-sdk](https://img.shields.io/badge/conan-vcvrack--sdk%2F1.1.6%40vcvrack%2Fstable-blue)](https://qno.jfrog.io/ui/repos/tree/General/public-conan-local%2Fvcvrack%2Fvcvrack-sdk)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/qno/QRX?include_prereleases)](https://github.com/qno/QRX/releases)
 [![GitHub All Releases](https://img.shields.io/github/downloads/qno/QRX/total)](https://github.com/qno/QRX/releases)
 
