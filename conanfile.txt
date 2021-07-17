@@ -1,7 +1,7 @@
 [requires]
 vcvrack-sdk/1.1.6@vcvrack/stable
-catch2/2.13.1
-ninja/1.10.1
+catch2/2.13.6
+ninja/1.10.2
 # extra deps for unit test build
 jansson/2.13.1
 
