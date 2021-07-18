@@ -19,6 +19,8 @@ TEST_CASE("plugin.json", "[plugin] [json]")
    const auto ManualUrl = std::string{PluginUrl + "/wiki"};
    const auto CVWizardSLUG = std::string{qrx::cvwizard::CVWizardModule::SLUG};
    const auto CVWizardManualUrl = std::string{ManualUrl + "/CVWizard-Module"};
+   const auto CVWizardTag_Utility = std::string{"Utility"};
+   const auto CVWizardTags = std::vector<std::string>{CVWizardTag_Utility};
    
    const auto jsonFile = std::string{GETSTRING(PLUGIN_JSON_FILE)};
    REQUIRE(!jsonFile.empty());
@@ -119,11 +121,19 @@ TEST_CASE("plugin.json", "[plugin] [json]")
          REQUIRE(manualUrl != nullptr);
          REQUIRE(std::string(json_string_value(manualUrl)) == CVWizardManualUrl);
       }
-      SECTION("ensure that CVWizard module tags are not empty")
+      SECTION("ensure that CVWizard module tags are correct")
       {
          const auto tags = json_object_get(value, "tags");
          REQUIRE(tags != nullptr);
-         REQUIRE(json_array_size(tags) > 0);
+         const auto tagsSize = json_array_size(tags);
+         REQUIRE(tagsSize > 0);
+         REQUIRE(tagsSize == 1);
+         size_t index;
+         json_t *value;
+         json_array_foreach(tags, index, value)
+         {
+            REQUIRE(std::string{json_string_value(value)} == CVWizardTags.at(index));
+         }
       }
    }
 }

@@ -17,7 +17,7 @@
       "slug": "CVWizard",
       "name": "CVWizard",
       "description": "Visualization of voltage controlled module parameters.",
-      "tags": ["Utility", "Attenuator"],
+      "tags": ["Utility"],
       "manualUrl": "https://github.com/qno/QRX/wiki/CVWizard-Module"
     }
   ]
