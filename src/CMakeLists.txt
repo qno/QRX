@@ -12,4 +12,4 @@ set(SOURCES QRXPlugin.cpp
 
 target_sources(${RACK_PLUGIN_LIB} PRIVATE ${SOURCES})
 target_include_directories(${RACK_PLUGIN_LIB} PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(${RACK_PLUGIN_LIB} PRIVATE RackSDK SML SigSlot)
+target_link_libraries(${RACK_PLUGIN_LIB} PRIVATE SML SigSlot)

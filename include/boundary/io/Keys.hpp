@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
-#include <event.hpp>
+#include <widget/event.hpp>
 
 namespace qrx {
 namespace boundary {

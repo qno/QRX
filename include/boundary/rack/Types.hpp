@@ -1,8 +1,8 @@
 #pragma once
 
-#include <event.hpp>
+#include <widget/event.hpp>
 #include <app/Scene.hpp>
-#include <window.hpp>
+#include <window/Window.hpp>
 #include <engine/Module.hpp>
 #include <widget/Widget.hpp>
 #include <widget/TransparentWidget.hpp>
@@ -17,9 +17,9 @@ namespace qrx {
 namespace boundary {
 namespace rack {
 
-using State = ::rack::event::State;
+using State = ::rack::widget::EventState;
 using Scene = ::rack::app::Scene;
-using Window = ::rack::Window;
+using Window = ::rack::window::Window;
 
 using Module = ::rack::engine::Module;
 using Widget = ::rack::widget::Widget;
