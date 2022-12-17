@@ -1,5 +1,8 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 set(UT_EXE PluginUnittests)
 
 set(SRC ${PROJECT_SOURCE_DIR}/src)
@@ -25,30 +28,23 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
-set (LIBRARY_TYPE SHARED)
-if (APPLE)
-  set (LIBRARY_TYPE STATIC)
-endif ()
-
-add_library(RackSDKMissingSymbols ${LIBRARY_TYPE} RackSDKMissingSymbols.cpp)
+add_library(RackSDKMissingSymbols STATIC RackSDKMissingSymbols.cpp)
+target_link_libraries(RackSDKMissingSymbols PUBLIC RackSDK)
 target_compile_definitions(RackSDKMissingSymbols PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${UT_EXE} CatchMain.cpp ${TESTS_SOURCES} ${SOURCES})
 target_include_directories(${UT_EXE} PRIVATE include ${PROJECT_SOURCE_DIR}/include)
-target_compile_options(${UT_EXE} PRIVATE "-fuse-ld=gold" "-flto")
 target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
                                      PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} PRIVATE RackSDKMissingSymbols
+target_link_libraries(${UT_EXE} PRIVATE RackSDK
   SML
   SigSlot
-  ${CONAN_LIBS_JANSSON}
   FakeIt
-  ${CONAN_LIBS_CATCH2})
+  CONAN_PKG::catch2)
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")
-  target_compile_options(${UT_EXE} PRIVATE "--coverage")
-  #target_link_options(${UT_EXE} PRIVATE "--coverage") # only possible since CMake 3.13
+  target_link_options(${UT_EXE} PRIVATE "--coverage")
   set_target_properties(${UT_EXE} PROPERTIES LINK_FLAGS "--coverage")
 endif ()
 
