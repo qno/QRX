@@ -4,8 +4,7 @@
 
 #include <rack.hpp>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary::rack;
 
@@ -161,5 +160,4 @@ void CVWizardWidget::removeTooltip()
    }
 }
 
-}
 }

@@ -7,9 +7,7 @@
 
 #include <functional>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 class ClickableOnHoverWidget final : public boundary::rack::OpaqueWidget, public AnimatedValue
 {
@@ -98,6 +96,4 @@ private:
    sigslot::signal<boundary::rack::Widget*> _onClickCallback;
 };
 
-}
-}
 }

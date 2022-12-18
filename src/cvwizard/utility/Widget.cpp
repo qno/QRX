@@ -1,8 +1,6 @@
 #include <cvwizard/utility/Widget.hpp>
 
-namespace qrx {
-namespace cvwizard {
-namespace utility {
+namespace qrx::cvwizard::utility {
 
 boundary::rack::ModuleWidget* Widget::getIfIsModuleWidget(boundary::rack::Widget* widget)
 {
@@ -35,6 +33,4 @@ boundary::rack::PortWidget* Widget::getIfIsInputPortWidget(boundary::rack::Widge
    return result;
 }
 
-}
-}
 }

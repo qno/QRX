@@ -9,8 +9,7 @@
 #include <functional>
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary;
 
@@ -70,5 +69,4 @@ private:
    sigslot::signal<TooltipCallbackKind> _tooltipsCallback;
 };
 
-}
 }

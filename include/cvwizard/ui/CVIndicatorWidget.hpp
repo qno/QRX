@@ -5,9 +5,7 @@
 #include <chrono>
 #include <cmath>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 class CVIndicatorWidget final : public boundary::rack::TransparentWidget
 {
@@ -69,6 +67,4 @@ private:
    int _portId;
 };
 
-}
-}
 }

@@ -3,9 +3,7 @@
 #include <chrono>
 #include <cmath>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 class AnimatedValue
 {
@@ -40,6 +38,4 @@ protected:
    const std::chrono::time_point<std::chrono::steady_clock> _start = std::chrono::steady_clock::now();
 };
 
-}
-}
 }

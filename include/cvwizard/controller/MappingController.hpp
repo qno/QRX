@@ -6,10 +6,7 @@
 
 namespace sml = boost::sml;
 
-namespace qrx {
-namespace cvwizard {
-namespace controller {
-namespace mapping {
+namespace qrx::cvwizard::controller::mapping {
 
 namespace event {
 struct OnEnterWidget {};
@@ -62,7 +59,4 @@ public:
    }
 };
 
-}
-}
-}
 }

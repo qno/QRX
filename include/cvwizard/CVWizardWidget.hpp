@@ -6,8 +6,7 @@
 
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary;
 
@@ -50,5 +49,4 @@ private:
    sigslot::connection _tooltipsCallbackConnection;
 };
 
-}
 }

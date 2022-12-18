@@ -13,9 +13,7 @@
 #include <ui/Tooltip.hpp>
 #include <logger.hpp>
 
-namespace qrx {
-namespace boundary {
-namespace rack {
+namespace qrx::boundary::rack {
 
 using State = ::rack::widget::EventState;
 using Scene = ::rack::app::Scene;
@@ -53,6 +51,4 @@ using Select = ::rack::event::Select;
 
 namespace logger = ::rack::logger;
 
-}
-}
 }

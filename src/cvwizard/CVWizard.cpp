@@ -2,8 +2,7 @@
 #include <cvwizard/utility/Widget.hpp>
 #include <boundary/io/Keys.hpp>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary::rack;
 
@@ -161,5 +160,4 @@ void CVWizard::sendOnLeaveModuleChildWidget() const
    _model.getCurrentModuleMapping()->onLeaveWidget();
 }
 
-}
 }

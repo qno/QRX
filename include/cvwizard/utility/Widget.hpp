@@ -2,9 +2,7 @@
 
 #include <boundary/rack/Types.hpp>
 
-namespace qrx {
-namespace cvwizard {
-namespace utility {
+namespace qrx::cvwizard::utility {
 
 class Widget final
 {
@@ -16,6 +14,4 @@ public:
    static boundary::rack::PortWidget* getIfIsInputPortWidget(boundary::rack::Widget* widget);
 };
 
-}
-}
 }

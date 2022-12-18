@@ -2,8 +2,7 @@
 
 #include <boundary/io/Keys.hpp>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary;
 
@@ -39,5 +38,4 @@ public:
    virtual void dumpSettings(const Settings& settings) = 0;
 };
 
-}
 }

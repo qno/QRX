@@ -2,9 +2,7 @@
 
 #include <string>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 class Tooltip
 {
@@ -18,6 +16,4 @@ private:
    static std::string _mappingInputText;
 };
 
-}
-}
 }

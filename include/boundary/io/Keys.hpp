@@ -3,10 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <widget/event.hpp>
 
-namespace qrx {
-namespace boundary {
-namespace io {
-namespace keys {
+namespace qrx::boundary::io::keys {
 
 constexpr auto MOD_CTRL       = RACK_MOD_CTRL;
 constexpr auto MOD_CTRL_NAME  = RACK_MOD_CTRL_NAME;
@@ -17,7 +14,4 @@ constexpr auto ESCAPE = GLFW_KEY_ESCAPE;
 constexpr auto M = GLFW_KEY_M;
 constexpr auto T = GLFW_KEY_T;
 
-}
-}
-}
 }

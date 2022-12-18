@@ -1,8 +1,6 @@
 #pragma once
 
-namespace qrx {
-namespace cvwizard {
-namespace controller {
+namespace qrx::cvwizard::controller {
 
 class CVWizardControllable
 {
@@ -29,6 +27,4 @@ public:
    virtual void sendOnLeaveModuleChildWidget() const = 0;
 };
 
-}
-}
 }

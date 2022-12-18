@@ -1,9 +1,6 @@
 #pragma once
 
-namespace qrx {
-namespace cvwizard {
-namespace controller {
-namespace mapping {
+namespace qrx::cvwizard::controller::mapping {
 
 class MappingControllable
 {
@@ -17,7 +14,4 @@ public:
    virtual void disableHoverWidget() = 0;
 };
 
-}
-}
-}
 }

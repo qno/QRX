@@ -12,8 +12,7 @@ std::shared_ptr<qrx::cvwizard::ModuleSettings> addPluginSettings()
 }
 #endif
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary::rack;
 
@@ -93,5 +92,4 @@ void CVWizardModule::determineMasterModuleStatus()
    }
 }
 
-}
 }

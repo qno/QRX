@@ -3,9 +3,7 @@
 
 #include <algorithm>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary::rack;
 using namespace controller::mapping;
@@ -131,6 +129,4 @@ void ModuleMapping::disableHoverWidget()
    _onHoverWidget = nullptr;
 }
 
-}
-}
 }

@@ -7,9 +7,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary;
 
@@ -30,6 +28,4 @@ private:
    std::shared_ptr<ModuleMapping> _currentModuleMapping = nullptr;
 };
 
-}
-}
 }

@@ -5,9 +5,7 @@
 
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary;
 
@@ -31,6 +29,4 @@ private:
    std::unique_ptr<ui::CVIndicatorWidget> _cvIndicatorWidget = nullptr;
 };
 
-}
-}
 }

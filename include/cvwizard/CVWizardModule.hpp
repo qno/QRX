@@ -6,8 +6,7 @@
 #include <atomic>
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
+namespace qrx::cvwizard {
 
 using namespace boundary;
 
@@ -61,5 +60,4 @@ private:
    std::shared_ptr<ModuleSettings> _settings;
 };
 
-}
 }

@@ -4,9 +4,7 @@
 #include <locale>
 #include <sstream>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 namespace {
 std::locale locale;
@@ -34,6 +32,4 @@ std::string Tooltip::getMappingInputText()
 }
 
 
-}
-}
 }

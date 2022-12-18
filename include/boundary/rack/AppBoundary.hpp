@@ -2,9 +2,7 @@
 
 #include <boundary/rack/Types.hpp>
 
-namespace qrx {
-namespace boundary {
-namespace rack {
+namespace qrx::boundary::rack {
 
 class AppBoundary
 {
@@ -17,6 +15,4 @@ public:
    virtual bool isModKeyPressed(const int modKeyCode) const = 0;
 };
 
-}
-}
 }

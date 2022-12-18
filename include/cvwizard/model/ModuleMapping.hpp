@@ -9,9 +9,7 @@
 #include <list>
 #include <memory>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary;
 
@@ -57,6 +55,4 @@ private:
    sigslot::connection _onClickCallbackConnection;
 };
 
-}
-}
 }

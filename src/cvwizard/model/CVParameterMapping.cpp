@@ -1,8 +1,6 @@
 #include <cvwizard/model/CVParameterMapping.hpp>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary::rack;
 
@@ -28,6 +26,4 @@ rack::ParamWidget* CVParameterMapping::getCVParameter() const
    return _cvParamWidget;
 }
 
-}
-}
 }

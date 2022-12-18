@@ -1,8 +1,6 @@
 #include <cvwizard/model/CVWizardModel.hpp>
 
-namespace qrx {
-namespace cvwizard {
-namespace model {
+namespace qrx::cvwizard::model {
 
 using namespace boundary::rack;
 
@@ -39,6 +37,4 @@ std::shared_ptr<ModuleMapping> CVWizardModel::getCurrentModuleMapping() const
    return _currentModuleMapping;
 }
 
-}
-}
 }

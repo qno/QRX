@@ -3,9 +3,7 @@
 #include <boundary/rack/Types.hpp>
 #include <cvwizard/ui/AnimatedValue.hpp>
 
-namespace qrx {
-namespace cvwizard {
-namespace ui {
+namespace qrx::cvwizard::ui {
 
 class OnHoverWidget final : public boundary::rack::TransparentWidget, public AnimatedValue
 {
@@ -69,6 +67,4 @@ private:
    boundary::rack::Widget* _hoveredWidget = nullptr;
 };
 
-}
-}
 }
