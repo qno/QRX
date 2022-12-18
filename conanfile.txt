@@ -1,8 +1,9 @@
 [requires]
-catch2/2.13.6
+catch2/2.13.9
+fakeit/2.3.2
 
 [generators]
-cmake
+CMakeDeps
 
 [options]
 

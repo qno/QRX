@@ -1,7 +1,7 @@
 option(ENABLE_COVERAGE "Enable code coverage analysis" OFF)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+find_package(Catch2 REQUIRED CONFIG)
+find_package(fakeit REQUIRED CONFIG)
 
 set(UT_EXE PluginUnittests)
 
@@ -28,19 +28,13 @@ set(TESTS_SOURCES PluginJsonTest.cpp
                   cvwizard/model/CVParameterMappingTest.cpp
                   cvwizard/ui/TooltipTest.cpp)
 
-add_library(RackSDKMissingSymbols STATIC RackSDKMissingSymbols.cpp)
-target_link_libraries(RackSDKMissingSymbols PUBLIC RackSDK)
-target_compile_definitions(RackSDKMissingSymbols PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR})
-
-add_executable(${UT_EXE} CatchMain.cpp ${TESTS_SOURCES} ${SOURCES})
+add_executable(${UT_EXE} CatchMain.cpp RackSDKOverrides.cpp ${TESTS_SOURCES} ${SOURCES})
 target_include_directories(${UT_EXE} PRIVATE include ${PROJECT_SOURCE_DIR}/include)
 target_compile_definitions(${UT_EXE} PRIVATE QRX_UNITTESTS
+                                     PRIVATE QRX_UNITTESTS_ASSET_DIR=${CMAKE_CURRENT_BINARY_DIR}
                                      PRIVATE PLUGIN_JSON_FILE=${PROJECT_SOURCE_DIR}/plugin.json)
-target_link_libraries(${UT_EXE} PRIVATE RackSDK
-  SML
-  SigSlot
-  FakeIt
-  CONAN_PKG::catch2)
+target_link_libraries(${UT_EXE} PRIVATE RackSDK SML SigSlot Catch2::Catch2 fakeit::fakeit)
+target_compile_options(${UT_EXE} PRIVATE -O0)
 
 if (ENABLE_COVERAGE)
   message (STATUS "code coverage analysis is enabled")

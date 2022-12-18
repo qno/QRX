@@ -34,14 +34,14 @@ TEST_CASE("Widget utility", "[utility] [widget]")
    SECTION("ensure getIfIsInputPortWidget returns pointer if widget is a input PortWidget")
    {
       auto widget = std::make_unique<boundary::rack::PortWidget>();
-      widget->type = boundary::rack::PortWidget::INPUT;
+      widget->type = boundary::rack::Port::INPUT;
       REQUIRE(utility::Widget::getIfIsInputPortWidget(widget.get()) != nullptr);
    }
    
    SECTION("ensure getIfIsInputPortWidget returns nullptr if widget is not a input PortWidget")
    {
       auto widget = std::make_unique<boundary::rack::PortWidget>();
-      widget->type = boundary::rack::PortWidget::OUTPUT;
+      widget->type = boundary::rack::Port::OUTPUT;
       REQUIRE(utility::Widget::getIfIsKnobParamWidget(widget.get()) == nullptr);
    }
 }

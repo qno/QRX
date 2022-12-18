@@ -11,12 +11,11 @@ include(RackSDK.cmake)
 
 include(thirdparty/sml/SML.cmake)
 include(thirdparty/sigslot/SigSlot.cmake)
-include(thirdparty/fakeit/FakeIt.cmake)
 
 add_subdirectory(src)
 
-# unit test dependency Catch2 requires Conan package manager (https://conan.io)
-if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+# Unit Test dependencies handled with Conan Package Manager (https://conan.io)
+if (EXISTS ${CMAKE_BINARY_DIR}/conaninfo.txt)
 include(CTest)
 add_subdirectory(test)
 endif ()

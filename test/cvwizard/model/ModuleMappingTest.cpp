@@ -20,7 +20,7 @@ TEST_CASE("ModuleMapping", "[cvwizard] [model] [mapping]")
    {
       ModuleWidget moduleWidget;
       PortWidget inputPortWidget;
-      inputPortWidget.type = PortWidget::INPUT;
+      inputPortWidget.type = Port::INPUT;
       Knob knobWidget;
       ModuleMapping mapping{&moduleWidget};
       mapping.onEnterWidget(&inputPortWidget);
