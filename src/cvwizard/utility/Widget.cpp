@@ -27,7 +27,7 @@ boundary::rack::PortWidget* Widget::getIfIsInputPortWidget(boundary::rack::Widge
    boundary::rack::PortWidget* result = nullptr;
    if (auto&& p = dynamic_cast<boundary::rack::PortWidget*>(widget))
    {
-      if (boundary::rack::PortWidget::INPUT == p->type)
+      if (boundary::rack::Port::INPUT == p->type)
       {
          result = p;
       }

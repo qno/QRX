@@ -29,6 +29,7 @@ using ModuleWidget = ::rack::app::ModuleWidget;
 using ParamWidget = ::rack::app::ParamWidget;
 using PortWidget = ::rack::app::PortWidget;
 using Knob = ::rack::app::Knob;
+using Port = ::rack::engine::Port;
 
 namespace ui {
 using Tooltip = ::rack::ui::Tooltip;
