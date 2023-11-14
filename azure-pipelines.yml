@@ -1,0 +1,219 @@
+# https://docs.microsoft.com/de-de/azure/devops/pipelines/agents/hosted?view=azure-devops#software
+trigger:
+- master
+pr:
+- master
+
+variables:
+  python-version: "3.7"
+  create-mingw-profile: |
+    (
+      echo [settings]
+      echo os=Windows
+      echo os_build=Windows
+      echo arch=x86_64
+      echo arch_build=x86_64
+      echo compiler=gcc
+      echo compiler.version=8
+      echo compiler.exception=seh
+      echo compiler.libcxx=libstdc++11
+      echo compiler.threads=posix
+      echo build_type=Release
+      echo [build_requires]
+      echo mingw-w64/8.1
+    ) > mingw
+
+  conan-add-remotes: |
+    conan user
+    conan remote add qno https://qno.jfrog.io/artifactory/api/conan/public-conan --insert
+
+  add-gitrev-to-plugin-version: |
+    gitrev=`git rev-parse --short HEAD`
+    version="1.dev.${gitrev}"
+    echo "Updating to version=$version"
+    tf=`mktemp`
+    jq --arg VERSION "$version" '.version=$VERSION' plugin.json > $tf
+    mv $tf plugin.json
+  add-release-notes: |
+    cat <<- EOH
+    # VCV Rack QRX plugin binaries (development builds)
+    The build date and most recent commits are:
+    EOH
+    date
+    echo ""
+    echo "Most recent commits:"
+    echo ""
+    git log --pretty=oneline | head -5
+
+
+stages:
+  - stage: build
+    displayName: Build Plugin
+    jobs:
+    - job: CompilePlugin
+      strategy:
+        matrix:
+          Ubuntu:
+            imageName: ubuntu-latest
+            prepare-env: |
+              export PATH="$PATH:/home/vsts/.local/bin"
+              sudo apt install -y python3-setuptools p7zip-full
+            pip-command: pip3
+            conan-libcxx-setting: -s compiler.libcxx=libstdc++11
+            conan-profile: ""
+            define-plugin-slug: |
+              PLUGIN_SLUG=`jq -r .slug plugin.json`
+              PLUGIN_VERSION=`jq -r .version plugin.json`
+            cmake-defines: -DPLUGIN_SLUG=$PLUGIN_SLUG
+            create-dist: |
+              strip -s $PLUGIN_SLUG/plugin.so
+              7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-lin.zip $PLUGIN_SLUG
+            activate-env: ". ./activate.sh"
+            deactivate-env: ". ./deactivate.sh"
+            artifact: Plugin-Linux
+          MacOS:
+            imageName: macOS-latest
+            prepare-env: |
+              export PATH=$PATH:$HOME/.local/bin
+              brew update || brew update
+              brew install p7zip
+            pip-command: pip
+            conan-libcxx-setting: ""
+            conan-profile: ""
+            define-plugin-slug: |
+              PLUGIN_SLUG=`jq -r .slug plugin.json`
+              PLUGIN_VERSION=`jq -r .version plugin.json`
+            cmake-defines: -DPLUGIN_SLUG=$PLUGIN_SLUG
+            create-dist: |
+              strip -S $PLUGIN_SLUG/plugin.dylib
+              7z a -tzip -mx=9 $PLUGIN_SLUG-$PLUGIN_VERSION-mac.zip $PLUGIN_SLUG
+            activate-env: ". ./activate.sh"
+            deactivate-env: ". ./deactivate.sh"
+            artifact: Plugin-Mac
+          Windows:
+            imageName: windows-latest
+            prepare-env: $(create-mingw-profile)
+            pip-command: python -m pip
+            conan-libcxx-setting: -s compiler.libcxx=libstdc++11
+            conan-profile: -pr ..\mingw
+            define-plugin-slug: |
+              jq .slug plugin.json > tmpPluginSlug
+              set /p PLUGIN_SLUG= < tmpPluginSlug
+              jq .version plugin.json > tmpPluginVersion
+              set /p PLUGIN_VERSION= < tmpPluginVersion
+            cmake-defines: -DPLUGIN_SLUG=%PLUGIN_SLUG% -DCMAKE_SH=CMAKE_SH-NOTFOUND ..
+            create-dist: |
+              strip -s %PLUGIN_SLUG%\plugin.dll
+              7z a -tzip -mx=9 %PLUGIN_SLUG%-%PLUGIN_VERSION%-win.zip %PLUGIN_SLUG%
+            activate-env: call .\activate.bat
+            deactivate-env: call .\deactivate.bat
+            artifact: Plugin-Win
+
+      pool:
+        vmImage: $(imageName)
+      steps:
+        - task: UsePythonVersion@0
+          inputs:
+           versionSpec: $(python-version)
+        - bash: |
+            $(add-gitrev-to-plugin-version)
+          displayName: add git rev
+        - script: |
+            $(prepare-env)
+            $(pip-command) install --user --upgrade pip
+            $(pip-command) install --user conan gcovr
+            conan user
+            conan config set general.revisions_enabled=1
+            $(conan-add-remotes)
+            $(define-plugin-slug)
+            mkdir build && cd build
+            conan install .. $(conan-libcxx-setting) -s build_type=Release $(conan-profile) --build missing
+            $(activate-env)
+            cmake $(cmake-defines) -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=dist -G Ninja -DENABLE_COVERAGE=On ..
+            cmake --build . --target install
+          displayName: compile
+        - script: |
+            cd build
+            $(activate-env)
+            ctest -T Test -VV --output-on-failure --no-compress-output
+          failOnStderr: true
+          displayName: run unit tests
+        - script: |
+            $(prepare-env)
+            cd build
+            $(activate-env)
+            gcovr -o coverage.xml -x -v -p --exclude-throw-branches --exclude-unreachable-branches -r ../src .
+          displayName: gcovr
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: CTest
+            testResultsFiles: "**/Test.xml"
+            mergeTestResults: true
+            failTaskOnFailedTests: false
+            testRunTitle: $(artifact)
+        - task: PublishCodeCoverageResults@1
+          inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: $(System.DefaultWorkingDirectory)/build/coverage.xml
+              pathToSources: $(System.DefaultWorkingDirectory)
+              failIfCoverageEmpty: false
+        - script: |
+           $(define-plugin-slug)
+            cd build
+            $(activate-env)
+            cd dist
+            $(create-dist)
+          displayName: create dist
+        - task: PublishPipelineArtifact@1
+          inputs:
+            path: $(System.DefaultWorkingDirectory)/build/dist
+            artifact: $(artifact)
+        - script: |
+            cd build
+            $(activate-env)
+            cd ..
+            make
+          displayName: Rack Makefile build
+
+  - stage: publish
+    displayName: Publish Plugin
+    dependsOn: build
+    jobs:
+      - job: PublishArtifacts
+        steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: Plugin-Linux
+              patterns: "**/*.zip"
+              targetPath: $(Build.ArtifactStagingDirectory)
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: Plugin-Mac
+              patterns: "**/*.zip"
+              targetPath: $(Build.ArtifactStagingDirectory)
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: Plugin-Win
+              patterns: "**/*.zip"
+              targetPath: $(Build.ArtifactStagingDirectory)
+          - script: |
+              ls -l $(Build.ArtifactStagingDirectory)
+              export EXTEND_TAG=`date "+%Y%m%d"`
+              for file in $(Build.ArtifactStagingDirectory)/*.zip; do mv "$file" "${file/.zip/-${EXTEND_TAG}.zip}"; done
+              ls -l $(Build.ArtifactStagingDirectory)
+            displayName: Tag asset names with Date
+          - script: |
+              $(add-release-notes) > $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
+            displayName: Add release notes
+          - task: GitHubRelease@0
+            displayName: Update Github Release
+            inputs:
+              gitHubConnection: github.com_qno
+              repositoryName: qno/QRX
+              action: edit
+              tag: Nightly
+              target: $(Build.SourceVersion)
+              isPreRelease: true
+              addChangeLog: false
+              releaseNotesFile: $(Build.ArtifactStagingDirectory)/ReleaseNotes.md
+              assets: $(Build.ArtifactStagingDirectory)/*.zip

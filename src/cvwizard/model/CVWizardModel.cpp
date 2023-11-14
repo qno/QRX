@@ -1,0 +1,40 @@
+#include <cvwizard/model/CVWizardModel.hpp>
+
+namespace qrx::cvwizard::model {
+
+using namespace boundary::rack;
+
+CVWizardModel::~CVWizardModel()
+{
+}
+
+void CVWizardModel::beginModuleMapping(rack::ModuleWidget* widget)
+{
+   auto existingMapping = _moduleMappings.find(widget);
+   if (_moduleMappings.end() != existingMapping)
+   {
+      _currentModuleMapping = existingMapping->second;
+   }
+   else
+   {
+      _currentModuleMapping = std::make_shared<ModuleMapping>(widget);
+   }
+   _currentModuleMapping->enableHover();
+}
+
+void CVWizardModel::endModuleMapping()
+{
+   if (_currentModuleMapping->hasMappedParameter())
+   {
+      _moduleMappings.insert(std::make_pair(_currentModuleMapping->getModuleWidget(), _currentModuleMapping));
+   }
+   _currentModuleMapping->disableHover();
+   _currentModuleMapping = nullptr;
+}
+
+std::shared_ptr<ModuleMapping> CVWizardModel::getCurrentModuleMapping() const
+{
+   return _currentModuleMapping;
+}
+
+}

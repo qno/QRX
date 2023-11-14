@@ -1,0 +1,14 @@
+/.idea
+/cmake-*
+/build
+/dep
+/dist
+/plugin.so
+/plugin.dylib
+/plugin.dll
+.DS_Store
+
+# visual studio build artifacts
+CMakeSettings.json
+/.vs
+/out
