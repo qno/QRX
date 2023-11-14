@@ -37,6 +37,7 @@ jobs:
       image: ghcr.io/qno/rack-plugin-toolchain
       options: --user root
     strategy:
+      fail-fast: false
       matrix:
         platform: [win-x64, linux-x64, mac-x64, mac-arm64]
     steps:
